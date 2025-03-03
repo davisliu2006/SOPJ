@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>UOPJ</title>
+        <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <style>
+            #main-table {
+                width: 100%;
+            }
+        </style>
+
+        <!--header scripts-->
+        <script src="src/global.js"></script>
+        <script src="src/collapsables.js"></script>
+    </head>
+
+    <body>
+        <!--global-->
+        <div id="global">
+            <script src="src/load_global.js"></script>
+        </div>
+
+        <!--main-->
+        <div id="main">
+            <!--about-->
+            <div id="problems" class="text-block">
+                <h2>
+                    Problems
+                    <hr>
+                </h2>
+                <table id="main-table">
+                    <tr>
+                        <th>Problem</th>
+                        <th>Points</th>
+                        <th>AC</th>
+                    </tr>
+                    <% for (let i = 0; i < problemData.problems.length; i++) { %>
+                        <tr>
+                            <td>
+                                <a href="/problems-view?problem=<%= problemData.problems[i].name %>">
+                                    <%= problemData.problems[i].name %>
+                                </a>
+                            </td>
+                            <td>
+                                <%= problemData.problems[i].points %>
+                            </td>
+                            <td>
+                                <%= problemData.problems[i].ac %>
+                            </td>
+                        </tr>
+                    <% } %>
+                </table>
+            </div>
+
+            <!--footer-->
+            <div id="footer">
+                <script src="src/load_footer.js"></script>
+            </div>
+        </div>
+        
+        <!--scripts-->
+        <script src="src/index.js"></script>
+    </body>
+</html>

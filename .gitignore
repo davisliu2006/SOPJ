@@ -1,0 +1,18 @@
+# folders
+.vscode/
+__pycache__/
+./__pycache__/
+bin/
+*/bin/
+data/
+js/
+*/js/
+node_modules/
+test/
+venv/
+
+# files
+.DS_Store
+package-lock.json
+
+#extensions
