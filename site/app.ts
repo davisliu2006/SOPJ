@@ -1,6 +1,7 @@
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as express from "express";
+import * as session from "express-session";
 import * as jwt from "jsonwebtoken";
 import * as globals from "./globals";
 import * as pages from "./pages";
@@ -11,6 +12,12 @@ app.set("views", globals.DIR+"/views");
 app.use(express.static(globals.DIR+"/static"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(session({
+    secret: globals.SESSIONSECRET, // replace with a secure secret
+    resave: false, saveUninitialized: true,
+    cookie: {secure: false}
+}));
+
 app.use(function(req, res, next) {
     req.user = globals.jwtAuth(req, res);
     next();
@@ -33,6 +40,8 @@ app.get("/signup", pages.signup);
 app.post("/signup-request", pages.signup_request);
 app.post("/login-request", pages.login_request);
 app.get("/logout", pages.logout)
+
+app.get("/captcha", pages.captcha);
 
 app.get("/error-500", pages.error_500);
 app.get("/*", pages.error_404);

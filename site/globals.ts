@@ -8,13 +8,19 @@ export const DIR = process.cwd();
 
 // get environment variables
 export const JWTSECRET: string = env.JWTSECRET;
+export const SESSIONSECRET: string = env.SESSIONSECRET;
 
-// types extensions
+// type extensions
 declare global {
     namespace Express {
         interface Request {
             user?: any;
         }
+    }
+}
+declare module 'express-session' {
+    interface SessionData {
+        captcha: string;
     }
 }
 
