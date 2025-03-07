@@ -29,7 +29,7 @@
             <!--about-->
             <div id="problem" class="text-block">
                 <h2>
-                    Problem
+                    <%= problem.name %>
                     <hr>
                 </h2>
                 <div id="submission">
@@ -40,11 +40,14 @@
                         <a href="/problems-submit">My Submissions</a>
                     </p>
                     <p>
-                        <a href="/problems-submit?<%=  %>">Submit</a>
+                        <a href="/problems-submit?id=<%= problem.id %>">Submit</a>
                     </p>
                 </div>
                 <p>
-                    
+                    Points: <%= problem.points %>
+                </p>
+                <p>
+                    <%= problem.description %>
                 </p>
             </div>
 

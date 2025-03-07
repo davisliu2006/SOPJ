@@ -54,7 +54,8 @@ export namespace dbSetup {
         conn.query("CREATE TABLE IF NOT EXISTS problems ( \
             id INT AUTO_INCREMENT PRIMARY KEY, \
             name VARCHAR(50) NOT NULL, \
-            points INT DEFAULT 0 \
+            points INT DEFAULT 0 \, \
+            description VARCHAR(10000) DEFAULT '' \
         );");
     }
 }

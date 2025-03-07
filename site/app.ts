@@ -19,6 +19,7 @@ app.use(session({
 }));
 
 app.use(function(req, res, next) {
+    console.log("Unreleased DB connections: "+globals.pool.activeConnections());
     req.user = globals.jwtAuth(req, res);
     next();
 })
