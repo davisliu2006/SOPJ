@@ -19,6 +19,7 @@ app.use(session({
 }));
 
 app.use(function(req, res, next) {
+    console.log("Unreleased DB connections: "+globals.pool.activeConnections());
     req.user = globals.jwtAuth(req, res);
     next();
 })
@@ -32,6 +33,10 @@ app.get("/users", pages.users);
 app.get("/problems", pages.problems);
 app.get("/problems-view", pages.problems_view);
 app.get("/problems-submit", pages.problems_submit);
+app.post("/submit-request", pages.submit_request);
+
+app.get("/submissions", pages.submissions);
+app.get("/submissions-view", pages.submissions_view);
 
 app.get("/contests", pages.contests);
 

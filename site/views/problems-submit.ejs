@@ -10,7 +10,13 @@
         <link rel="stylesheet" href="css/global.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <style>
-            
+            #submission #code {
+                width: 100%;
+                height: 20em;
+            }
+            #submission .button {
+                width: 100%;
+            }
         </style>
 
         <!--header scripts-->
@@ -29,19 +35,21 @@
             <!--about-->
             <div id="problem" class="text-block">
                 <h2>
-                    Problem
+                    <%= problem.name %>
                     <hr>
                 </h2>
                 <div id="submission">
-                    <textarea name="" id="" placeholder="Paste your code here."></textarea>
-                    <select name="" id="">
-                        <option value="c++">C++ (G++ 17)</option>
-                        <option value="java">Java (Java 8)</option>
-                        <option value="python">Python (Python 3)</option>
-                    </select>
-                    <div class="button">
-                        Submit
-                    </div>
+                    <form action="/submit-request" method="post">
+                        <textarea class="text-entry" name="code" id="code" placeholder="Paste your code here."></textarea><br><br>
+                        <select name="language" id="language">
+                            <option value="c++">C++ (G++ 17)</option>
+                            <option value="java">Java (Java 8)</option>
+                            <option value="python">Python (Python 3)</option>
+                        </select><br><br>
+                        <button class="button" type="submit">
+                            Submit
+                        </button>
+                    </form>
                 </div>
             </div>
 

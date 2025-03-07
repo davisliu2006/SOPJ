@@ -314,6 +314,10 @@ span.unbold {
     font-size: 16px; color: rgb(50, 50, 50);
     cursor: text;
 }
+textarea {
+    resize: none;
+    height: 10em;
+}
 
 /*image holder*/
 .image-holder {
