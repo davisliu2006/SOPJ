@@ -7,6 +7,7 @@ import * as env from "./env";
 export const DIR = process.cwd();
 
 // get environment variables
+export const HOSTNAME: string = env.HOSTNAME;
 export const ISDEPLOY: boolean = env.ISDEPLOY;
 export const JWTSECRET: string = env.JWTSECRET;
 export const PORT: number = env.PORT;
@@ -27,7 +28,7 @@ declare module 'express-session' {
 }
 
 export const pool = mariadb.createPool({
-    host: "localhost",
+    host: HOSTNAME,
     user: "root",
     password: "",
     database: "opj",
