@@ -32,16 +32,16 @@
                 <div id="login" class="align-left">
                     <form action="/signup-request" method="post">
                         <h2 style="margin-top: 0px;">Create an Account</h2>
-                        <label for="username">Username:*</label><br>
-                        <input type="text" name="username" id="username" class="text-entry" required><br><br>
-                        <label for="password">Password:*</label><br>
-                        <input type="password" name="password" id="password" class="text-entry" required><br><br>
-                        <label for="conf-password">Confirm Password:*</label><br>
-                        <input type="password" name="conf-password" id="conf-password" class="text-entry" required><br><br>
+                        <label for="username"><b>Username:</b>*</label><br>
+                        <input class="text-entry" type="text" name="username" id="username" required><br><br>
+                        <label for="password"><b>Password:</b>*</label><br>
+                        <input class="text-entry" type="password" name="password" id="password" required><br><br>
+                        <label for="conf-password"><b>Confirm Password:</b>*</label><br>
+                        <input class="text-entry" type="password" name="conf-password" id="conf-password" required><br><br>
                         <div class="captcha">
-                            <label for="captcha">Captcha:</label><br>
+                            <label for="captcha"><b>Captcha:</b>*</label><br>
                             <div id="captcha-img" class="inline"></div><br>
-                            <input type="text" name="captcha" placeholder="Type the text above" class="text-entry" required>
+                            <input class="text-entry" type="text" name="captcha" placeholder="Type the text above" required>
                             <script>
                                 async function loadCaptcha() {
                                     let response = await fetch("/captcha");

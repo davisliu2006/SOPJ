@@ -14,6 +14,17 @@ export async function login_request(req: express.Request, res: express.Response)
         let username = (typeof(req.body["username"]) == "string"? req.body["username"] : "");
         let password = (typeof(req.body["password"]) == "string"? req.body["password"] : "");
 
+        // CAPTCHA
+        let captcha = (typeof(req.body["captcha"]) == "string"? req.body["captcha"] : "");
+        if (captcha != req.session.captcha) {
+            console.log("CAPTCHA: got ["+captcha+"] expected ["+req.session.captcha+"]");
+            errors = "CAPTCHA failed";
+            res.redirect("/login?error="+encodeURIComponent(errors));
+            return;
+        } else {
+            console.log("CAPTCHA verification successful!");
+        }
+
         let conn = await globals.pool.getConnection();
         globals.dbSetup.initUsers(conn);
         let rows = await conn.query("SELECT * FROM users WHERE username = ?", [username]);
@@ -75,7 +86,7 @@ export async function signup_request(req: express.Request, res: express.Response
         let password = (typeof(req.body["password"]) == "string"? req.body["password"] : "");
         let confirm = (typeof(req.body["conf-password"]) == "string"? req.body["conf-password"] : "");
 
-        //  CAPTCHA
+        // CAPTCHA
         let captcha = (typeof(req.body["captcha"]) == "string"? req.body["captcha"] : "");
         if (captcha != req.session.captcha) {
             console.log("CAPTCHA: got ["+captcha+"] expected ["+req.session.captcha+"]");
@@ -83,7 +94,7 @@ export async function signup_request(req: express.Request, res: express.Response
             res.redirect("/signup?error="+encodeURIComponent(errors));
             return;
         } else {
-            console.log('CAPTCHA verification successful!');
+            console.log("CAPTCHA verification successful!");
         }
 
         let vUsername = validateUsername(username);
