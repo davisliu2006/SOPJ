@@ -27,7 +27,7 @@ export async function login_request(req: express.Request, res: express.Response)
 
         let conn = await globals.pool.getConnection();
         globals.dbSetup.initUsers(conn);
-        let rows = await conn.query("SELECT * FROM users WHERE username = ?", [username]);
+        let rows = await conn.query("SELECT id, username, password FROM users WHERE username = ?;", [username]);
         if (rows.length == 0) {
             conn.release();
             errors = "Account does not exist";
@@ -106,7 +106,7 @@ export async function signup_request(req: express.Request, res: express.Response
         
         let conn = await globals.pool.getConnection();
         globals.dbSetup.initUsers(conn);
-        let rows = await conn.query("SELECT * FROM users WHERE username = ?", [username]);
+        let rows = await conn.query("SELECT id, username, password FROM users WHERE username = ?;", [username]);
         if (rows.length != 0) {
             conn.release();
             errors = "User already exists";
@@ -129,7 +129,7 @@ export async function signup_request(req: express.Request, res: express.Response
         }
 
         let hashed = bcrypt.hashSync(password, 8);
-        await conn.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hashed]);
+        await conn.query("INSERT INTO users (username, password) VALUES (?, ?);", [username, hashed]);
         conn.release();
         res.redirect("/login");
     } catch (e) {

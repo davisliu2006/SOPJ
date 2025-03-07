@@ -46,14 +46,15 @@ export namespace dbSetup {
         conn.query("CREATE TABLE IF NOT EXISTS users ( \
             id INT AUTO_INCREMENT PRIMARY KEY, \
             username VARCHAR(50) NOT NULL UNIQUE, \
-            password VARCHAR(255) NOT NULL \
+            password VARCHAR(255) NOT NULL, \
+            points INT DEFAULT 0 \
         );");
     }
     export function initProblems(conn: mariadb.PoolConnection) {
         conn.query("CREATE TABLE IF NOT EXISTS problems ( \
             id INT AUTO_INCREMENT PRIMARY KEY, \
             name VARCHAR(50) NOT NULL, \
-            points INT NOT NULL \
+            points INT DEFAULT 0 \
         );");
     }
 }

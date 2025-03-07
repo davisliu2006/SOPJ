@@ -41,19 +41,19 @@
                         <th>Points</th>
                         <th>Problems</th>
                     </tr>
-                    <% for (let i = 0; i < userData.users.length; i++) { %>
+                    <% for (let i = 0; i < users.length; i++) { %>
                         <tr>
                             <td>
                                 <%= i+1 %>
                             </td>
                             <td>
-                                <%= userData.users[i].username %>
+                                <%= users[i].username %>
                             </td>
                             <td>
-                                <%= userData.users[i].points %>
+                                <%= users[i].points %>
                             </td>
                             <td>
-                                <%= userData.users[i].problems %>
+                                <%= users[i].problems %>
                             </td>
                         </tr>
                     <% } %>
