@@ -28,11 +28,26 @@
         <!--main-->
         <div id="main">
             <!--login-->
-            <div id="about" class="text-block td-center">
-                <div id="login">
-                    <h3>Login In</h3>
-                    
-                    <input type="text">
+            <div id="about" class="text-block align-center">
+                <div id="login" class="align-left">
+                    <form action="/login-request" method="post">
+                        <h2 style="margin-top: 0px;">Login</h2>
+                        <label for="username">Username:*</label><br>
+                        <input type="text" name="username" id="username" class="text-entry" required><br><br>
+                        <label for="password">Password:*</label><br>
+                        <input type="password" name="password" id="password" class="text-entry" required><br><br>
+                        <% if (errors != "") {%>
+                            <div id="errors">
+                                <label>
+                                    <%= errors %>
+                                </label>
+                                <br><br>
+                            </div>
+                        <% } %>
+                        <button class="button" type="submit">
+                            Log In
+                        </button>
+                    </form>
                 </div>
             </div>
 

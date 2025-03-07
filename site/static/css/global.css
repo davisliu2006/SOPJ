@@ -70,6 +70,9 @@ hr {
 .absolute {
     position: absolute;
 }
+.align-left {text-align: left;}
+.align-center {text-align: center;}
+.align-right {text-align: right;}
 
 /*table*/
 table {
@@ -84,9 +87,6 @@ td {
     border: solid 1px;
     padding: 4px 12px 4px 12px;
 }
-.td-left {text-align: left;}
-.td-center {text-align: center;}
-.td-right {text-align: right;}
 
 /*text styles*/
 span.minor {
@@ -294,21 +294,24 @@ span.unbold {
 /*ELMENENTS*/
 
 .button {
-    display: inline;
+    box-sizing: border-box;
+    border: solid 1px;
+    padding: 6px;
+    border-radius: 5px;
+    text-align: center;
     background-color: rgb(200, 200, 200);
-    border: solid 1px; border-radius: 5px;
-    font-size: 16px; text-align: center; color: rgb(50, 50, 50);
-    padding: 4px 4px 4px 4px;
+    cursor: pointer;
 }
 .button:hover {
     background-color: rgb(180, 180, 180);
 }
 
 .text-entry {
+    box-sizing: border-box;
     border: solid 1px;
-    font-size: 16px;
-    padding: 4px 4px 4px 4px;
-    font-size: 16px;
+    border-radius: 5px;
+    padding: 4px;
+    font-size: 16px; color: rgb(50, 50, 50);
     cursor: text;
 }
 
