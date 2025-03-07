@@ -32,10 +32,23 @@
                 <div id="login" class="align-left">
                     <form action="/login-request" method="post">
                         <h2 style="margin-top: 0px;">Login</h2>
-                        <label for="username">Username:*</label><br>
-                        <input type="text" name="username" id="username" class="text-entry" required><br><br>
-                        <label for="password">Password:*</label><br>
-                        <input type="password" name="password" id="password" class="text-entry" required><br><br>
+                        <label for="username"><b>Username:</b>*</label><br>
+                        <input class="text-entry" type="text" name="username" id="username" required><br><br>
+                        <label for="password"><b>Password:</b>*</label><br>
+                        <input class="text-entry" type="password" name="password" id="password" required><br><br>
+                        <div class="captcha">
+                            <label for="captcha"><b>Captcha:</b>*</label><br>
+                            <div id="captcha-img" class="inline"></div><br>
+                            <input class="text-entry" type="text" name="captcha" placeholder="Type the text above" required>
+                            <script>
+                                async function loadCaptcha() {
+                                    let response = await fetch("/captcha");
+                                    let text = await response.text();
+                                    document.querySelector(".captcha #captcha-img").innerHTML = text;
+                                }
+                                window.addEventListener("load", loadCaptcha);
+                              </script>
+                        </div><br>
                         <% if (errors != "") {%>
                             <div id="errors">
                                 <label>
