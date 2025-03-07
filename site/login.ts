@@ -4,8 +4,9 @@ import * as jwt from "jsonwebtoken";
 import * as globals from "./globals";
 
 export function login(req: express.Request, res: express.Response) {
-    let errors = "";
-    res.render("login.ejs", {errors});
+    let user = req.user;
+    let errors = (req.query["error"]? req.query["error"] : "");
+    res.render("login.ejs", {user, errors});
 };
 export async function login_request(req: express.Request, res: express.Response) {
     try {
@@ -18,7 +19,7 @@ export async function login_request(req: express.Request, res: express.Response)
         if (rows.length == 0) {
             conn.release();
             errors = "Account does not exist";
-            res.render("login.ejs", {errors});
+            res.redirect("/login?error="+encodeURIComponent(errors));
             return;
         }
 
@@ -26,7 +27,7 @@ export async function login_request(req: express.Request, res: express.Response)
         if (!bcrypt.compareSync(password, user.password)) {
             conn.release();
             errors = "Incorrect password";
-            res.render("login.ejs", {errors});
+            res.redirect("/login?error="+encodeURIComponent(errors));
             return;
         }
 
@@ -39,7 +40,7 @@ export async function login_request(req: express.Request, res: express.Response)
             httpOnly: true, secure: true, sameSite: "strict",
             maxAge: 1000*3600*24
         });
-        res.render("login.ejs", {errors});
+        res.redirect("/login?error="+encodeURIComponent(errors));
     } catch (e) {
         console.log(e);
         res.render("500.ejs");
@@ -47,8 +48,9 @@ export async function login_request(req: express.Request, res: express.Response)
 }
 
 export function signup(req: express.Request, res: express.Response) {
-    let errors = "";
-    res.render("signup.ejs", {errors});
+    let user = req.user;
+    let errors = (req.query["error"]? req.query["error"] : "");
+    res.render("signup.ejs", {user, errors});
 };
 export async function signup_request(req: express.Request, res: express.Response) {
     function validateUsername(str: string): string {
@@ -75,18 +77,18 @@ export async function signup_request(req: express.Request, res: express.Response
         let vUsername = validateUsername(username);
         if (vUsername != "") {
             errors = vUsername;
-            res.render("signup.ejs", {errors});
+            res.redirect("/signup?error="+encodeURIComponent(errors));
             return;
         }
         let vPassword = validatePassword(password);
         if (vPassword != "") {
             errors = vPassword;
-            res.render("signup.ejs", {errors});
+            res.redirect("/signup?error="+encodeURIComponent(errors));
             return;
         }
         if (password != confirm) {
             errors = "Passwords do not match";
-            res.render("signup.ejs", {errors});
+            res.redirect("/signup?error="+encodeURIComponent(errors));
             return;
         }
         
@@ -95,7 +97,7 @@ export async function signup_request(req: express.Request, res: express.Response
         if (rows.length != 0) {
             conn.release();
             errors = "User already exists";
-            res.render("signup.ejs", {errors});
+            res.redirect("/signup?error="+encodeURIComponent(errors));
             return;
         }
 
@@ -103,7 +105,7 @@ export async function signup_request(req: express.Request, res: express.Response
         await conn.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hashed]);
         conn.release();
         errors = "Successfully registered!";
-        res.render("signup.ejs", {errors});
+        res.redirect("/signup?error="+encodeURIComponent(errors));
     } catch (e) {
         console.log(e)
         res.render("500.ejs");
