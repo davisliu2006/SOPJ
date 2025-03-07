@@ -9,6 +9,7 @@ export const DIR = process.cwd();
 // get environment variables
 export const ISDEPLOY: boolean = env.ISDEPLOY;
 export const JWTSECRET: string = env.JWTSECRET;
+export const PORT: number = env.PORT;
 export const SESSIONSECRET: string = env.SESSIONSECRET;
 
 // type extensions
