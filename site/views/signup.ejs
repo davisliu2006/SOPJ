@@ -38,6 +38,21 @@
                         <input type="password" name="password" id="password" class="text-entry" required><br><br>
                         <label for="conf-password">Confirm Password:*</label><br>
                         <input type="password" name="conf-password" id="conf-password" class="text-entry" required><br><br>
+                        <div class="captcha">
+                            <label for="captcha">Captcha:</label><br>
+                            <div id="captcha-img" class="inline"></div><br>
+                            <input type="text" name="captcha" placeholder="Type the text above" class="text-entry" required>
+                            <script>
+                                async function loadCaptcha() {
+                                    let response = await fetch("/captcha");
+                                    let text = await response.text();
+                                    document.querySelector(".captcha #captcha-img").innerHTML = text;
+                                }
+                                window.addEventListener("load", function() {
+                                    loadCaptcha();
+                                })
+                              </script>
+                        </div><br>
                         <% if (errors != "") {%>
                             <div id="errors">
                                 <label>

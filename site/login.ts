@@ -73,7 +73,19 @@ export async function signup_request(req: express.Request, res: express.Response
         let errors = "";
         let username = (typeof(req.body["username"]) == "string"? req.body["username"] : "");
         let password = (typeof(req.body["password"]) == "string"? req.body["password"] : "");
-        let confirm = (typeof(req.body["conf-password"]) == "string"? req.body["conf-password"] : "");;
+        let confirm = (typeof(req.body["conf-password"]) == "string"? req.body["conf-password"] : "");
+
+        //  CAPTCHA
+        let captcha = (typeof(req.body["captcha"]) == "string"? req.body["captcha"] : "");
+        if (captcha != req.session.captcha) {
+            console.log("CAPTCHA: got ["+captcha+"] expected ["+req.session.captcha+"]");
+            errors = "CAPTCHA failed";
+            res.redirect("/signup?error="+encodeURIComponent(errors));
+            return;
+        } else {
+            console.log('CAPTCHA verification successful!');
+        }
+
         let vUsername = validateUsername(username);
         if (vUsername != "") {
             errors = vUsername;
