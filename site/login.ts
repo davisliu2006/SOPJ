@@ -92,17 +92,6 @@ export async function signup_request(req: express.Request, res: express.Response
             res.redirect("/signup?error="+encodeURIComponent(errors));
             return;
         }
-        let vPassword = validatePassword(password);
-        if (vPassword != "") {
-            errors = vPassword;
-            res.redirect("/signup?error="+encodeURIComponent(errors));
-            return;
-        }
-        if (password != confirm) {
-            errors = "Passwords do not match";
-            res.redirect("/signup?error="+encodeURIComponent(errors));
-            return;
-        }
         
         let conn = await globals.pool.getConnection();
         globals.dbSetup.initUsers(conn);
@@ -110,6 +99,20 @@ export async function signup_request(req: express.Request, res: express.Response
         if (rows.length != 0) {
             conn.release();
             errors = "User already exists";
+            res.redirect("/signup?error="+encodeURIComponent(errors));
+            return;
+        }
+
+        let vPassword = validatePassword(password);
+        if (vPassword != "") {
+            conn.release();
+            errors = vPassword;
+            res.redirect("/signup?error="+encodeURIComponent(errors));
+            return;
+        }
+        if (password != confirm) {
+            conn.release();
+            errors = "Passwords do not match";
             res.redirect("/signup?error="+encodeURIComponent(errors));
             return;
         }
