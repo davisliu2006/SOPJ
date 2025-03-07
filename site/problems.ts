@@ -62,9 +62,16 @@ export async function submit_request(req: express.Request, res: express.Response
             res.redirect("/login");
         }
 
+        let problem = (req.body["problem"]? req.body["problem"] : "");
         let code = (req.body["code"]? req.body["code"] : "");
         let lang = (req.body["language"]? req.body["language"] : "");
         console.log(code);
+
+        let conn = await globals.pool.getConnection();
+        globals.dbSetup.initUsers(conn);
+        conn.release();
+        await conn.query("INSERT INTO submissions (problem, user, language) VALUES (?, ?, ?);", [problem, user.userid, lang]);
+
         if (globals.ISDEPLOY) {
             if (lang == "c++") {
                 childProcess.exec("ls", function(err, stdout, stderr) {
@@ -77,7 +84,8 @@ export async function submit_request(req: express.Request, res: express.Response
         } else {
             res.send("Cannot send");
         }
-    } catch {
-        res.redirect("/error-505");
+    } catch (e) {
+        console.log(e);
+        res.redirect("/error-500");
     }
 }
