@@ -51,4 +51,4 @@ app.get("/captcha", pages.captcha);
 app.get("/error-500", pages.error_500);
 app.get("/*", pages.error_404);
 
-app.listen(3000);
+app.listen(globals.PORT);
