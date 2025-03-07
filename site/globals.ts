@@ -34,3 +34,20 @@ export function jwtAuth(req: express.Request, res: express.Response) {
         return null;
     }
 }
+
+export namespace dbSetup {
+    export function initUsers(conn: mariadb.PoolConnection) {
+        conn.query("CREATE TABLE IF NOT EXISTS users ( \
+            id INT AUTO_INCREMENT PRIMARY KEY, \
+            username VARCHAR(50) NOT NULL UNIQUE, \
+            password VARCHAR(255) NOT NULL \
+        );");
+    }
+    export function initProblems(conn: mariadb.PoolConnection) {
+        conn.query("CREATE TABLE IF NOT EXISTS problems ( \
+            id INT AUTO_INCREMENT PRIMARY KEY, \
+            name VARCHAR(50) NOT NULL, \
+            points INT NOT NULL \
+        );");
+    }
+}

@@ -15,6 +15,7 @@ export async function login_request(req: express.Request, res: express.Response)
         let password = (typeof(req.body["password"]) == "string"? req.body["password"] : "");
 
         let conn = await globals.pool.getConnection();
+        globals.dbSetup.initUsers(conn);
         let rows = await conn.query("SELECT * FROM users WHERE username = ?", [username]);
         if (rows.length == 0) {
             conn.release();
@@ -92,6 +93,7 @@ export async function signup_request(req: express.Request, res: express.Response
         }
         
         let conn = await globals.pool.getConnection();
+        globals.dbSetup.initUsers(conn);
         let rows = await conn.query("SELECT * FROM users WHERE username = ?", [username]);
         if (rows.length != 0) {
             conn.release();
