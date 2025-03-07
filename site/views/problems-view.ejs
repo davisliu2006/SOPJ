@@ -32,7 +32,7 @@
                     <%= problem.name %>
                     <hr>
                 </h2>
-                <div id="submission">
+                <div id="submission" style="border: solid 1px;">
                     <p>
                         <a href="/problems-submit">View Submissions</a>
                     </p>
@@ -42,10 +42,10 @@
                     <p>
                         <a href="/problems-submit?id=<%= problem.id %>">Submit</a>
                     </p>
+                    <p>
+                        Points: <%= problem.points %>
+                    </p>
                 </div>
-                <p>
-                    Points: <%= problem.points %>
-                </p>
                 <p>
                     <%= problem.description %>
                 </p>

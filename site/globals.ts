@@ -7,6 +7,7 @@ import * as env from "./env";
 export const DIR = process.cwd();
 
 // get environment variables
+export const ISDEPLOY: boolean = env.ISDEPLOY;
 export const JWTSECRET: string = env.JWTSECRET;
 export const SESSIONSECRET: string = env.SESSIONSECRET;
 
@@ -56,6 +57,14 @@ export namespace dbSetup {
             name VARCHAR(50) NOT NULL, \
             points INT DEFAULT 0 \, \
             description VARCHAR(10000) DEFAULT '' \
+        );");
+    }
+    export function initSubmissions(conn: mariadb.PoolConnection) {
+        conn.query("CREATE TABLE IF NOT EXISTS submissions ( \
+            id INT AUTO_INCREMENT PRIMARY KEY, \
+            problem INT NOT NULL, \
+            user INT NOT NULL \, \
+            language VARCHAR(50) NOT NULL \
         );");
     }
 }

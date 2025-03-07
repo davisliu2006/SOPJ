@@ -1,3 +1,4 @@
+import * as childProcess from "child_process";
 import * as express from "express";
 import * as fs from "fs";
 import * as globals from "./globals";
@@ -34,9 +35,49 @@ export async function problems_view(req: express.Request, res: express.Response)
     }
 }
 
-export function problems_submit(req: express.Request, res: express.Response) {
-    let user = req.user;
-    let read = fs.readFileSync(globals.DIR+"/../data/problems.json", "utf8");
-    let problemData = JSON.parse(read);
-    res.render("problems-submit.ejs", {user});
+export async function problems_submit(req: express.Request, res: express.Response) {
+    try {
+        let user = req.user;
+        if (!user) {
+            res.redirect("/login");
+        }
+
+        let problemID = (req.query["id"]? req.query["id"] : "");
+        let problem: any;
+        let conn = await globals.pool.getConnection();
+        let rows = await conn.query("SELECT id, name FROM problems WHERE id = ?;", [problemID]);
+        conn.release();
+        problem = rows[0];
+        res.render("problems-submit.ejs", {user, problem});
+    } catch (e) {
+        console.log(e);
+        res.redirect("/error-500");
+    }
+}
+
+export async function submit_request(req: express.Request, res: express.Response) {
+    try {
+        let user = req.user;
+        if (!user) {
+            res.redirect("/login");
+        }
+
+        let code = (req.body["code"]? req.body["code"] : "");
+        let lang = (req.body["language"]? req.body["language"] : "");
+        console.log(code);
+        if (globals.ISDEPLOY) {
+            if (lang == "c++") {
+                childProcess.exec("ls", function(err, stdout, stderr) {
+                    console.log(err);
+                    console.log(stdout);
+                    console.log(stderr);
+                });
+            }
+            res.send("Sent");
+        } else {
+            res.send("Cannot send");
+        }
+    } catch {
+        res.redirect("/error-505");
+    }
 }

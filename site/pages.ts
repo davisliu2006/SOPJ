@@ -4,6 +4,7 @@ export * from "./contests";
 export * from "./index";
 export * from "./login";
 export * from "./problems";
+export * from "./submissions";
 export * from "./users";
 
 export function error_404(req: express.Request, res: express.Response) {

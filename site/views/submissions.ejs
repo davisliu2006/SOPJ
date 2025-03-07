@@ -10,11 +10,7 @@
         <link rel="stylesheet" href="css/global.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <style>
-            #submission #code {
-                width: 100%;
-                height: 20em;
-            }
-            #submission .button {
+            #main-table {
                 width: 100%;
             }
         </style>
@@ -33,24 +29,33 @@
         <!--main-->
         <div id="main">
             <!--about-->
-            <div id="problem" class="text-block">
+            <div id="problems" class="text-block">
                 <h2>
-                    <%= problem.name %>
+                    Submissions
                     <hr>
                 </h2>
-                <div id="submission">
-                    <form action="/submit-request" method="post">
-                        <textarea class="text-entry" name="code" id="code" placeholder="Paste your code here."></textarea><br><br>
-                        <select name="language" id="language">
-                            <option value="c++">C++ (G++ 17)</option>
-                            <option value="java">Java (Java 8)</option>
-                            <option value="python">Python (Python 3)</option>
-                        </select><br><br>
-                        <button class="button" type="submit">
-                            Submit
-                        </button>
-                    </form>
-                </div>
+                <table id="main-table">
+                    <tr>
+                        <th>Submission</th>
+                        <th>Problem</th>
+                        <th>Language</th>
+                    </tr>
+                    <% for (let i = 0; i < submissions.length; i++) { %>
+                        <tr>
+                            <td>
+                                <a href="/submissions-view?id=<%= submissions[i].id %>">
+                                    <%= submissions[i].id %>
+                                </a>
+                            </td>
+                            <td>
+                                <%= submissions[i].problem %>
+                            </td>
+                            <td>
+                                <%= submissions[i].language %>
+                            </td>
+                        </tr>
+                    <% } %>
+                </table>
             </div>
 
             <!--footer-->
