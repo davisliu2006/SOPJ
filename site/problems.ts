@@ -70,7 +70,10 @@ export async function submit_request(req: express.Request, res: express.Response
         let conn = await globals.pool.getConnection();
         globals.dbSetup.initUsers(conn);
         conn.release();
-        await conn.query("INSERT INTO submissions (problem, user, language, code) VALUES (?, ?, ?, ?);", [problem, user.userid, lang, code]);
+        await conn.query(
+            "INSERT INTO submissions (problem, user, language, code, status) VALUES (?, ?, ?, ?, ?);",
+            [problem, user.userid, lang, code, "wwwww"]
+        );
 
         if (globals.ISDEPLOY) {
             if (lang == "c++") {

@@ -41,6 +41,15 @@
                     User: <%= submission.user %><br>
                     Language: <%= submission.language %>
                 </p>
+                <p>
+                    Status:
+                </p>
+                <p>
+                    <% for (let c of submission.status) { %>
+                        <%= c %>
+                    <% } %>
+                </p>
+                <p>Code:</p>
                 <pre><%= submission.code %></pre>
             </div>
 

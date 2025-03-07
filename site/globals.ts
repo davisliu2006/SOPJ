@@ -65,7 +65,8 @@ export namespace dbSetup {
             problem INT NOT NULL, \
             user INT NOT NULL \, \
             language VARCHAR(50) NOT NULL, \
-            code VARCHAR(10000) DEFAULT '' \
+            code VARCHAR(10000) DEFAULT '', \
+            status VARCHAR(50) DEFAULT '' \
         );");
     }
 }
