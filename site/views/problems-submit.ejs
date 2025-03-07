@@ -40,6 +40,7 @@
                 </h2>
                 <div id="submission">
                     <form action="/submit-request" method="post">
+                        <input type="hidden" name="problem" value="<%= problem.id %>">
                         <textarea class="text-entry" name="code" id="code" placeholder="Paste your code here."></textarea><br><br>
                         <select name="language" id="language">
                             <option value="c++">C++ (G++ 17)</option>

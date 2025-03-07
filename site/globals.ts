@@ -1,5 +1,6 @@
 // import * as dotenv from "dotenv";
 import * as express from "express";
+import * as fs from "fs";
 import * as jwt from "jsonwebtoken"
 import * as mariadb from "mariadb";
 import * as env from "./env";
@@ -7,8 +8,10 @@ import * as env from "./env";
 export const DIR = process.cwd();
 
 // get environment variables
+export const HOSTNAME: string = env.HOSTNAME;
 export const ISDEPLOY: boolean = env.ISDEPLOY;
 export const JWTSECRET: string = env.JWTSECRET;
+export const PORT: number = env.PORT;
 export const SESSIONSECRET: string = env.SESSIONSECRET;
 
 // type extensions
@@ -26,7 +29,7 @@ declare module 'express-session' {
 }
 
 export const pool = mariadb.createPool({
-    host: "localhost",
+    host: HOSTNAME,
     user: "root",
     password: "",
     database: "opj",
@@ -64,7 +67,15 @@ export namespace dbSetup {
             id INT AUTO_INCREMENT PRIMARY KEY, \
             problem INT NOT NULL, \
             user INT NOT NULL \, \
-            language VARCHAR(50) NOT NULL \
+            language VARCHAR(50) NOT NULL, \
+            code VARCHAR(10000) DEFAULT '', \
+            status VARCHAR(50) DEFAULT '' \
         );");
+    }
+}
+
+export function mkdirP(path: string) {
+    if (!fs.existsSync(path)) {
+        fs.mkdirSync(path, {recursive: true});
     }
 }
