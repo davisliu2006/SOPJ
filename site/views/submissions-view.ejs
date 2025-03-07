@@ -34,7 +34,14 @@
                     Submission <%= submission.id %>
                     <hr>
                 </h2>
-                
+                <p>
+                    <a href="/problems-view?id=<%= submission.problem %>">
+                        Problem: <%= submission.problem %>
+                    </a><br>
+                    User: <%= submission.user %><br>
+                    Language: <%= submission.language %>
+                </p>
+                <pre><%= submission.code %></pre>
             </div>
 
             <!--footer-->

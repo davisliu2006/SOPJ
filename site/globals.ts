@@ -64,7 +64,8 @@ export namespace dbSetup {
             id INT AUTO_INCREMENT PRIMARY KEY, \
             problem INT NOT NULL, \
             user INT NOT NULL \, \
-            language VARCHAR(50) NOT NULL \
+            language VARCHAR(50) NOT NULL, \
+            code VARCHAR(10000) DEFAULT '' \
         );");
     }
 }

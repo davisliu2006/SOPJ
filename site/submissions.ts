@@ -23,7 +23,7 @@ export async function submissions_view(req: express.Request, res: express.Respon
         let submissionID = (req.query["id"]? req.query["id"] : "");
         let submission: any;
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, problem, user, language FROM submissions WHERE id = ?;", [submissionID]);
+        let rows = await conn.query("SELECT id, problem, user, language, code FROM submissions WHERE id = ?;", [submissionID]);
         conn.release();
         submission = rows[0];
         res.render("submissions-view.ejs", {user, submission});
