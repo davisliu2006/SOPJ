@@ -17,13 +17,6 @@ declare global {
         }
     }
 }
-declare global {
-    namespace Express {
-        interface Request {
-            errors?: any;
-        }
-    }
-}
 
 export const pool = mariadb.createPool({
     host: "localhost",

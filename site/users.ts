@@ -9,6 +9,6 @@ export function users(req: express.Request, res: express.Response) {
         let userData = JSON.parse(read);
         res.render("users.ejs", {user, userData});
     } catch {
-        res.render("505.ejs");
+        res.redirect("/error-500");
     }
 }

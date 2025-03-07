@@ -43,7 +43,7 @@ export async function login_request(req: express.Request, res: express.Response)
         res.redirect("/login?error="+encodeURIComponent(errors));
     } catch (e) {
         console.log(e);
-        res.render("500.ejs");
+        res.redirect("/error-500");
     }
 }
 
@@ -108,6 +108,11 @@ export async function signup_request(req: express.Request, res: express.Response
         res.redirect("/signup?error="+encodeURIComponent(errors));
     } catch (e) {
         console.log(e)
-        res.render("500.ejs");
+        res.redirect("/error-500");
     }
 };
+
+export function logout(req: express.Request, res: express.Response) {
+    res.clearCookie("opj");
+    res.redirect("/");
+}
