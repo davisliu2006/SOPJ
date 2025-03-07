@@ -32,18 +32,17 @@ export async function login_request(req: express.Request, res: express.Response)
         }
 
         conn.release();
-        errors = "Logged in";
         let cookieToken = jwt.sign({
-            userid: user.id
+            userid: user.id, username: user.username
         }, globals.JWTSECRET);
         res.cookie("opj", cookieToken, {
             httpOnly: true, secure: true, sameSite: "strict",
             maxAge: 1000*3600*24
         });
-        res.redirect("/login?error="+encodeURIComponent(errors));
+        res.redirect("/");
     } catch (e) {
         console.log(e);
-        res.render("500.ejs");
+        res.redirect("/error-500");
     }
 }
 
@@ -104,10 +103,14 @@ export async function signup_request(req: express.Request, res: express.Response
         let hashed = bcrypt.hashSync(password, 8);
         await conn.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hashed]);
         conn.release();
-        errors = "Successfully registered!";
-        res.redirect("/signup?error="+encodeURIComponent(errors));
+        res.redirect("/login");
     } catch (e) {
         console.log(e)
-        res.render("500.ejs");
+        res.redirect("/error-500");
     }
 };
+
+export function logout(req: express.Request, res: express.Response) {
+    res.clearCookie("opj");
+    res.redirect("/");
+}

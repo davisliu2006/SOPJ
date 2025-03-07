@@ -13,7 +13,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(function(req, res, next) {
     req.user = globals.jwtAuth(req, res);
-    console.log(req.user);
     next();
 })
 
@@ -33,10 +32,9 @@ app.get("/login", pages.login);
 app.get("/signup", pages.signup);
 app.post("/signup-request", pages.signup_request);
 app.post("/login-request", pages.login_request);
+app.get("/logout", pages.logout)
 
-app.get("/*", function(req, res) {
-    let params = req.params;
-    res.render("404.ejs", {params});
-});
+app.get("/error-500", pages.error_500);
+app.get("/*", pages.error_404);
 
 app.listen(3000);

@@ -9,11 +9,11 @@ export function problems(req: express.Request, res: express.Response) {
         let problemData = JSON.parse(read);
         res.render("problems.ejs", {user, problemData});
     } catch {
-        res.render("505.ejs");
+        res.redirect("/error-500");
     }
 }
 
-export function problems_view(req, res) {
+export function problems_view(req: express.Request, res: express.Response) {
     let user = req.user;
     let read = fs.readFileSync(globals.DIR+"/../data/problems.json", "utf8");
     let problemData = JSON.parse(read);
@@ -21,7 +21,7 @@ export function problems_view(req, res) {
     res.render("problems-view.ejs", {user, read});
 }
 
-export function problems_submit(req, res) {
+export function problems_submit(req: express.Request, res: express.Response) {
     let user = req.user;
     let read = fs.readFileSync(globals.DIR+"/../data/problems.json", "utf8");
     let problemData = JSON.parse(read);
