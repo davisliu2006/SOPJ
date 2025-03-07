@@ -1,4 +1,12 @@
 #login {
     display: inline-block;
     border: solid 1px;
+    border-radius: 10px;
+    padding: 50px;
+}
+#login .text-entry {
+    width: 100%;
+}
+#login .button {
+    width: 100%;
 }
