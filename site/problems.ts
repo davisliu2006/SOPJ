@@ -9,7 +9,7 @@ export function problems(req: express.Request, res: express.Response) {
         let problemData = JSON.parse(read);
         res.render("problems.ejs", {user, problemData});
     } catch {
-        res.render("505.ejs");
+        res.redirect("/error-500");
     }
 }
 
