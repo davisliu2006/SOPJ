@@ -1,5 +1,6 @@
 // import * as dotenv from "dotenv";
 import * as express from "express";
+import * as fs from "fs";
 import * as jwt from "jsonwebtoken"
 import * as mariadb from "mariadb";
 import * as env from "./env";
@@ -70,5 +71,11 @@ export namespace dbSetup {
             code VARCHAR(10000) DEFAULT '', \
             status VARCHAR(50) DEFAULT '' \
         );");
+    }
+}
+
+export function mkdirP(path: string) {
+    if (!fs.existsSync(path)) {
+        fs.mkdirSync(path, {recursive: true});
     }
 }
