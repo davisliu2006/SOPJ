@@ -1,6 +1,6 @@
-import Docker from "dockerode";
-import fs from "fs";
-import path from "path";
+import * as Docker from "dockerode";
+import * as fs from "fs";
+import * as path from "path";
 
 // setup docker
 let docker = new Docker();
