@@ -3,9 +3,9 @@ import * as express from "express";
 import * as fs from "fs";
 import * as jwt from "jsonwebtoken"
 import * as mariadb from "mariadb";
-import * as env from "./env";
+import * as env from "../include/env";
 
-export const DIR = process.cwd();
+export const DIR = env.DIR;
 
 // get environment variables
 export const HOSTNAME: string = env.HOSTNAME;
