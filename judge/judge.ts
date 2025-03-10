@@ -19,7 +19,7 @@ export async function execute(language: string, code: string) {
 
         // execute code in docker container
         let [container, output]: [Docker.Container, Buffer] = await docker.run(
-            "online-judge", // docker image name
+            "online_judge", // docker image name
             [language],     // command to run (language)
             process.stdout, // stream stdout to the host
             {
