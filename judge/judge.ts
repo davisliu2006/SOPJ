@@ -25,7 +25,7 @@ export async function execute(language: string, code: string) {
         );
 
         console.log(status);
-        const logsStream = await container.logs({
+        let logsStream = await container.logs({
             follow: false, // don't follow real time output
             stdout: true, // stdout
             stderr: false // stderr
