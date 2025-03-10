@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 export * from "./captcha";
 export * from "./contests";
 export * from "./index";

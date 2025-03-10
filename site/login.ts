@@ -1,5 +1,5 @@
 import * as bcrypt from "bcrypt";
-import * as express from "express";
+import express from "express";
 import * as jwt from "jsonwebtoken";
 import * as globals from "./globals";
 

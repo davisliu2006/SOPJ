@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         "target": "es6",
-        "strict": false
+        "strict": false,
+        "esModuleInterop": true
     },
     "include": ["node_modules"]
 }

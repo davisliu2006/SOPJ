@@ -1,11 +1,15 @@
 // import * as dotenv from "dotenv";
-import * as express from "express";
+import DOMPurify from "dompurify";
+import express from "express";
 import * as fs from "fs";
+import {JSDOM} from "jsdom";
 import * as jwt from "jsonwebtoken"
 import * as mariadb from "mariadb";
+import {marked} from "marked";
 import * as env from "../include/env";
 
 export const DIR = env.DIR;
+console.log("Running from directory: "+DIR);
 
 // get environment variables
 export const HOSTNAME: string = env.HOSTNAME;
@@ -78,4 +82,26 @@ export function mkdirP(path: string) {
     if (!fs.existsSync(path)) {
         fs.mkdirSync(path, {recursive: true});
     }
+}
+
+export async function mdToHTML(str: string) {
+    // remove the most common zerowidth characters from the start of the file
+    str = await marked.parse(
+        str.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,"")
+    )
+
+    // purify
+    const window = new JSDOM("").window;
+    const purify = DOMPurify(window);
+    str = purify.sanitize(str, {
+        SAFE_FOR_TEMPLATES: true,
+        ALLOWED_TAGS: [
+            "h1", "h2", "h3", "p", "a", // text
+            "strong", "em", "ul", "li", "ol", // text formatting
+            "br", "hr", // whitespaces
+            "code", "pre", "blockquote" // code and quotes
+        ]
+    });
+
+    return str;
 }

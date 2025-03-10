@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import * as svgCaptcha from "svg-captcha";
 import * as globals from "./globals";
 
