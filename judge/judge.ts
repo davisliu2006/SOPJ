@@ -1,16 +1,17 @@
 import * as Docker from "dockerode";
 import * as fs from "fs";
 import * as path from "path";
+import * as globals from "./globals";
 
 // setup docker
 let docker = new Docker();
 
 // tmp directory for code
-const TMPDIR = path.join("/tmp", "opj");
+const TMPDIR = globals.DIR+"/../data/tmp";
 
 // execute code
 export async function execute(language: string, code: string) {
-    const FILENAME = path.join(TMPDIR, "main.cpp");
+    const FILENAME = TMPDIR+"/main.cpp";
     try {
         // make file for code
         fs.mkdirSync(TMPDIR, {recursive: true});
