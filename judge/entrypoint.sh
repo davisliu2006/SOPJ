@@ -5,18 +5,27 @@ ulimit -m 262144     # memory limit (256 MB)
 ulimit -f 1024       # file size limit (1 MB)
 
 # execute the user's code
+cd /home/judge
 case "$1" in
     c)
-        gcc /home/judge/main.c -o /tmp/main && /tmp/main
+        touch main.c
+        printf "%s" "$2" > main.c
+        gcc main.c -o main && ./main
         ;;
     cpp)
-        g++ /home/judge/main.cpp -o /tmp/main && /tmp/main
+        touch main.cpp
+        printf "%s" "$2" > main.cpp
+        g++ main.cpp -o main && ./main
         ;;
     python)
-        python3 /home/judge/main.py
+        touch main.py
+        printf "%s" "$2" > main.py
+        python3 ./main.py
         ;;
     java)
-        javac /home/judge/main.java && java -cp /home/judge Main
+        touch Main.java
+        printf "%s" "$2" > Main.java
+        javac Main.java && java -cp Main
         ;;
     *)
         echo "Unsupported language"

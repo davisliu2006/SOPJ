@@ -20,7 +20,7 @@ export async function execute(language: string, code: string) {
         // execute code in docker container
         let [container, output]: [Docker.Container, Buffer] = await docker.run(
             "online_judge", // docker image name
-            [language],     // command to run (language)
+            [language, code],     // command to run (language)
             process.stdout, // stream stdout to the host
             {
                 HostConfig: {
@@ -29,9 +29,6 @@ export async function execute(language: string, code: string) {
                     CpuQuota: 100000,      // cpu quota (1 second)
                     NetworkMode: "none",   // disable network access
                     AutoRemove: true,      // remove container after execution
-                },
-                Volumes: {
-                    [TMPDIR]: {}, // mount the temporary directory
                 },
                 WorkingDir: "/home/judge", // working directory in the container
             }
