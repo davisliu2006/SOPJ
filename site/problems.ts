@@ -1,6 +1,4 @@
-import * as childProcess from "child_process";
-import * as express from "express";
-import * as fs from "fs";
+import express from "express";
 import * as globals from "./globals";
 
 export async function problems(req: express.Request, res: express.Response) {
@@ -28,6 +26,7 @@ export async function problems_view(req: express.Request, res: express.Response)
         let rows = await conn.query("SELECT id, name, points, description FROM problems WHERE id = ?;", [problemID]);
         conn.release();
         problem = rows[0];
+        problem.description = await globals.mdToHTML(problem.description); // SECURITY IMPORTANCE
         res.render("problems-view.ejs", {user, problem});
     } catch (e) {
         console.log(e);
@@ -77,13 +76,6 @@ export async function submit_request(req: express.Request, res: express.Response
         globals.mkdirP(globals.DIR+"/../data");
 
         if (globals.ISDEPLOY) {
-            if (lang == "c++") {
-                childProcess.exec("ls", function(err, stdout, stderr) {
-                    console.log(err);
-                    console.log(stdout);
-                    console.log(stderr);
-                });
-            }
             res.send("Sent");
         } else {
             res.send("Cannot send");

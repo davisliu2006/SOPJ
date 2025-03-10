@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import * as fs from "fs";
 import * as globals from "./globals";
 

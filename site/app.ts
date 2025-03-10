@@ -1,7 +1,7 @@
-import * as bodyParser from "body-parser";
-import * as cookieParser from "cookie-parser";
-import * as express from "express";
-import * as session from "express-session";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import express from "express";
+import session from "express-session";
 import * as jwt from "jsonwebtoken";
 import * as globals from "./globals";
 import * as pages from "./pages";

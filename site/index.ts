@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 
 export function index(req: express.Request, res: express.Response) {
     let user = req.user;

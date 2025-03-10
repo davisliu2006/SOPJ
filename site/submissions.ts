@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import * as globals from "./globals";
 
 export async function submissions(req: express.Request, res: express.Response) {

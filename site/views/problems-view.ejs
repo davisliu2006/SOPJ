@@ -10,7 +10,9 @@
         <link rel="stylesheet" href="css/global.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <style>
-            
+            #submission {
+                float: right;
+            }
         </style>
 
         <!--header scripts-->
@@ -32,7 +34,7 @@
                     <%= problem.name %>
                     <hr>
                 </h2>
-                <div id="submission" style="border: solid 1px;">
+                <div id="submission" class="content-box">
                     <p>
                         <a href="/submissions">View Submissions</a>
                     </p>
@@ -42,13 +44,24 @@
                     <p>
                         <a href="/problems-submit?id=<%= problem.id %>">Submit</a>
                     </p>
+                    <hr>
                     <p>
                         Points: <%= problem.points %>
                     </p>
+                    <p>
+                        Time Limit: 1s
+                    </p>
+                    <p>
+                        Memory Limit: 256 MB
+                    </p>
+                    <hr>
+                    <p>
+                        Problem Type
+                    </p>
                 </div>
-                <p>
-                    <%= problem.description %>
-                </p>
+                <div>
+                    <%- problem.description %>
+                </div>
             </div>
 
             <!--footer-->

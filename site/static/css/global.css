@@ -429,3 +429,8 @@ textarea {
         margin-left: 2%; margin-right: 2%;
     }
 }
+
+.content-box {
+    border: solid 1px; border-radius: 10px;
+    padding-left: 25px; padding-right: 25px;
+}
