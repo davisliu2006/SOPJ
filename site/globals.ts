@@ -1,6 +1,7 @@
 // import * as dotenv from "dotenv";
 import DOMPurify from "dompurify";
 import express from "express";
+import session from "express-session";
 import * as fs from "fs";
 import {JSDOM} from "jsdom";
 import * as jwt from "jsonwebtoken"
@@ -26,7 +27,7 @@ declare global {
         }
     }
 }
-declare module 'express-session' {
+declare module "express-session" {
     interface SessionData {
         captcha: string;
     }

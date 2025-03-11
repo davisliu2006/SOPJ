@@ -38,7 +38,7 @@
                     <hr>
                 </h2>
                 <div id="submission" class="content-box">
-                    <p>
+                    <p style="margin-top: 0px;">
                         <a href="/submissions">View Submissions</a>
                     </p>
                     <p>
@@ -52,17 +52,17 @@
                         Points: <%= problem.points %>
                     </p>
                     <p>
-                        Time Limit: 1s
+                        Time Limit: 1.0s
                     </p>
                     <p>
                         Memory Limit: 256 MB
                     </p>
                     <hr>
-                    <p>
-                        Problem Type
+                    <p style="margin-bottom: 0px;">
+                        Problem Type: Undefined
                     </p>
                 </div>
-                <div>
+                <div class="markdown">
                     <%- problem.description %>
                 </div>
             </div>
