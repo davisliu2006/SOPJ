@@ -1,4 +1,4 @@
-import * as Docker from "dockerode";
+import Docker from "dockerode";
 import * as checker from "./checker";
 
 // setup docker
