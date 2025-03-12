@@ -44,11 +44,14 @@
                 <p>
                     Status:
                 </p>
-                <p>
-                    <% for (let c of submission.status) { %>
-                        <%= c %>
-                    <% } %>
-                </p>
+                <% for (let subtask of submission.json.subtasks) { %>
+                    <p>
+                        <%= subtask.name %><br>
+                        <% for (let v of subtask.verdict) { %>
+                            <%= v %><br>
+                        <% } %>
+                    </p>
+                <% } %>
                 <p>Code:</p>
                 <pre><%= submission.code %></pre>
             </div>
