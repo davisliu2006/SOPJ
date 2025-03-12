@@ -1,5 +1,4 @@
 import express from "express";
-import * as fs from "fs";
 import * as globals from "./globals";
 
 export async function users(req: express.Request, res: express.Response) {

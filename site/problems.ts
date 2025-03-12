@@ -68,18 +68,19 @@ export async function submit_request(req: express.Request, res: express.Response
 
         let conn = await globals.pool.getConnection();
         globals.dbSetup.initUsers(conn);
-        await conn.query(
+        let query = await conn.query(
             "INSERT INTO submissions (problem, user, language, code, status) VALUES (?, ?, ?, ?, ?);",
             [problem, user.userid, lang, code, "wwwww"]
         );
         conn.release();
-        globals.mkdirP(globals.DIR+"/../data");
+        let id = Number(query.insertId);
 
         if (globals.ISDEPLOY) {
-            res.send("Sent");
+            // res.send("Sent");
         } else {
-            res.send("Cannot send");
+            // res.send("Cannot send");
         }
+        res.redirect(`/submissions-view?id=${id}`);
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
