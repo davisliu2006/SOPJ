@@ -78,9 +78,16 @@ export async function submit_request(req: express.Request, res: express.Response
         let id = Number(query.insertId);
 
         if (globals.ISDEPLOY) {
-            res.redirect(`/submissions-view?id=${id}`);
             lang = "cpp";
             let config: database.ProblemJSON = await database.problems.readConfig(problem);
+            for (let subtask of config.subtasks) {
+                subtask.verdict = [];
+                for (let test of subtask.tests) {
+                    subtask.verdict.push("Q");
+                }
+            }
+            database.submissions.write(id, config);
+            res.redirect(`/submissions-view?id=${id}`);
             let points = 0;
             let totPoints = 0;
             for (let subtask of config.subtasks) {
@@ -94,7 +101,15 @@ export async function submit_request(req: express.Request, res: express.Response
             }
             database.submissions.write(id, config);
         } else {
-            res.send("Cannot send");
+            let config: database.ProblemJSON = await database.problems.readConfig(problem);
+            for (let subtask of config.subtasks) {
+                subtask.verdict = [];
+                for (let test of subtask.tests) {
+                    subtask.verdict.push("IE");
+                }
+            }
+            database.submissions.write(id, config);
+            res.redirect(`/submissions-view?id=${id}`);
         }
     } catch (e) {
         console.log(e);

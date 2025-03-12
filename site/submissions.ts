@@ -27,9 +27,7 @@ export async function submissions_view(req: express.Request, res: express.Respon
         let rows = await conn.query("SELECT id, problem, user, language, code, status FROM submissions WHERE id = ?;", [submissionID]);
         conn.release();
         submission = rows[0];
-        if (submission.status != "queuing") {
-            submission.json = await database.submissions.read(submissionID);
-        }
+        submission.json = await database.submissions.read(submissionID);
         res.render("submissions-view.ejs", {user, submission});
     } catch (e) {
         console.log(e);
