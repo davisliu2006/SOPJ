@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as fsP from "fs/promises";
 import * as globals from "./globals";
 import {ProblemJSON, SubtaskJSON} from "./problem";
+export {ProblemJSON, SubtaskJSON} from "./problem";
 
 export function exists(path: string): boolean {
     return fs.existsSync(globals.DB_DIR+"/"+path);
@@ -28,10 +29,10 @@ export namespace problems {
         mkdirP(`problems/${id}`);
         writeData(`problems/${id}/config.json`, JSON.stringify(new ProblemJSON()));
     }
-    export async function readConfig(id: number): Promise<object> {
+    export async function readConfig(id: number): Promise<ProblemJSON> {
         return JSON.parse(await readData(`problems/${id}/config.json`));
     }
-    export async function writeConfig(id: number, data: object) {
+    export async function writeConfig(id: number, data: ProblemJSON) {
         writeData(`problms/${id}/config.json`, JSON.stringify(data));
     }
     export async function readTest(id: number, testName: string): Promise<string> {

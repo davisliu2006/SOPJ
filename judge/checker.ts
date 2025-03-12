@@ -16,7 +16,7 @@ export function standard_checker(output: string, expected: string) {
     return true;
 }
 
-export function checker(output: string, expected: string, options: object = {
+export function checker(output: string, expected: string, options: any = {
     checker: "identical"
 }) {
     return identical_checker(output, expected);
