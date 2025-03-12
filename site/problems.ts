@@ -72,13 +72,15 @@ export async function submit_request(req: express.Request, res: express.Response
         globals.dbSetup.initUsers(conn);
         let query = await conn.query(
             "INSERT INTO submissions (problem, user, language, code, status) VALUES (?, ?, ?, ?, ?);",
-            [problem, user.userid, lang, code, "wwwww"]
+            [problem, user.userid, lang, code, "queuing"]
         );
         conn.release();
         let id = Number(query.insertId);
 
         if (globals.ISDEPLOY) {
-            let config: database.ProblemJSON = await database.problems.readConfig(id);
+            res.redirect(`/submissions-view?id=${id}`);
+            lang = "cpp";
+            let config: database.ProblemJSON = await database.problems.readConfig(problem);
             let points = 0;
             let totPoints = 0;
             for (let subtask of config.subtasks) {
@@ -94,7 +96,6 @@ export async function submit_request(req: express.Request, res: express.Response
         } else {
             res.send("Cannot send");
         }
-        res.redirect(`/submissions-view?id=${id}`);
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
