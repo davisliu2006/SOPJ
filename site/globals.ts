@@ -1,8 +1,6 @@
 // import * as dotenv from "dotenv";
 import DOMPurify from "dompurify";
 import express from "express";
-import session from "express-session";
-import * as fs from "fs";
 import {JSDOM} from "jsdom";
 import * as jwt from "jsonwebtoken"
 import * as mariadb from "mariadb";
@@ -33,6 +31,7 @@ declare module "express-session" {
     }
 }
 
+// mariadb connection pool
 export const pool = mariadb.createPool({
     host: HOSTNAME,
     user: "root",
@@ -41,6 +40,7 @@ export const pool = mariadb.createPool({
     connectionLimit: 5,
 });
 
+// authenitcate user
 export function jwtAuth(req: express.Request, res: express.Response) {
     try {
         let decode = jwt.verify(req.cookies["opj"], JWTSECRET);
@@ -79,12 +79,7 @@ export namespace dbSetup {
     }
 }
 
-export function mkdirP(path: string) {
-    if (!fs.existsSync(path)) {
-        fs.mkdirSync(path, {recursive: true});
-    }
-}
-
+// markdown to html converter
 export async function mdToHTML(str: string) {
     // remove the most common zerowidth characters from the start of the file
     str = await marked.parse(

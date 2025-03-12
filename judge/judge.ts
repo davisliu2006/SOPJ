@@ -38,3 +38,7 @@ export async function execute(language: string, code: string) {
         console.error(e);
     }
 }
+
+export async function judge(language, code) {
+    
+}
