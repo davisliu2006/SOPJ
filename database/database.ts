@@ -58,3 +58,11 @@ export namespace problems {
         }
     }
 }
+export namespace submissions {
+    export async function read(id: number): Promise<ProblemJSON> {
+        return JSON.parse(await readData(`submissions/${id}.json`));
+    }
+    export async function write(id: number, data: ProblemJSON) {
+        writeData(`submissions/${id}.json`, JSON.stringify(data));
+    }
+}
