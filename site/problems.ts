@@ -1,5 +1,7 @@
 import express from "express";
 import * as globals from "./globals";
+import * as database from "../database/database";
+import * as judge from "../judge/judge";
 
 export async function problems(req: express.Request, res: express.Response) {
     try {
@@ -76,9 +78,21 @@ export async function submit_request(req: express.Request, res: express.Response
         let id = Number(query.insertId);
 
         if (globals.ISDEPLOY) {
-            // res.send("Sent");
+            let config: database.ProblemJSON = await database.problems.readConfig(id);
+            let points = 0;
+            let totPoints = 0;
+            for (let subtask of config.subtasks) {
+                subtask.verdict = [];
+                for (let test of subtask.tests) {
+                    let input = await database.problems.readTest(problem, test+".in");
+                    let expected = await database.problems.readTest(problem, test+".out");
+                    let verdict = await judge.judge(lang, code, expected, input);
+                    subtask.verdict.push(verdict);
+                }
+            }
+            database.submissions.write(id, config);
         } else {
-            // res.send("Cannot send");
+            res.send("Cannot send");
         }
         res.redirect(`/submissions-view?id=${id}`);
     } catch (e) {

@@ -10,22 +10,22 @@ case "$1" in
     c)
         touch main.c
         printf "%s" "$2" > main.c
-        gcc main.c -o main && ./main
+        gcc main.c -o main && printf "%s" "$3" | ./main
         ;;
     cpp)
         touch main.cpp
         printf "%s" "$2" > main.cpp
-        g++ main.cpp -o main && ./main
+        g++ main.cpp -o main && printf "%s" "$3" | ./main
         ;;
     python)
         touch main.py
         printf "%s" "$2" > main.py
-        python3 ./main.py
+        printf "%s" "$3" | python3 ./main.py
         ;;
     java)
         touch Main.java
         printf "%s" "$2" > Main.java
-        javac Main.java && java -cp Main
+        javac Main.java && printf "%s" "$3" | java -cp Main
         ;;
     *)
         echo "Unsupported language"
