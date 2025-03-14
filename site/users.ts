@@ -9,12 +9,22 @@ export async function users(req: express.Request, res: express.Response) {
         globals.dbSetup.initUsers(conn);
         let rows = await conn.query("SELECT id, username, points FROM users;");
         conn.release();
-        for (let row of rows) {
-            users.push({
-                username: row.username, points: row.points, problems: 0
-            });
-        }
+        users = rows;
         res.render("users.ejs", {user, users});
+    } catch {
+        res.redirect("/error-500");
+    }
+}
+
+export async function users_view(req: express.Request, res: express.Response) {
+    try {
+        let user = req.user;
+        let userID = (req.query["id"]? req.query["id"] : "");
+        let conn = await globals.pool.getConnection();
+        let rows = await conn.query("SELECT id, username, points FROM users WHERE id = ?;", [userID]);
+        conn.release();
+        let userV = rows[0];
+        res.render("users-view.ejs", {user, userV});
     } catch {
         res.redirect("/error-500");
     }
