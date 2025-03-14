@@ -141,18 +141,18 @@ export async function execute(language: string, code: Buffer,
 
 export async function judge(language: string, code: Buffer, expected: string,
     input: string = ""
-): Promise<[string, number]> {
+): Promise<string> {
     let t0 = performance.now();
     let [status, output] = await execute(language, code, input);
     let t1 = performance.now();
     if (!status || !output) {
-        return [verdicts.IE, t1-t0];
+        return verdicts.IE;
     } else if (status.StatusCode == 0) {
         console.log("Expected: ["+expected+"]");
         let chk = checker.checker(output, expected);
-        if (chk) {return [verdicts.AC, t1-t0];}
-        else {return [verdicts.WA, t1-t0];}
+        if (chk) {return verdicts.AC;}
+        else {return verdicts.WA;}
     } else {
-        return [verdicts.RTE, t1-t0];
+        return verdicts.RTE;
     }
 }

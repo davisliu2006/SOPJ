@@ -96,9 +96,8 @@ export async function submit_request(req: express.Request, res: express.Response
                     for (let test of subtask.tests) {
                         let input = await database.problems.readTest(problem, test+".in");
                         let expected = await database.problems.readTest(problem, test+".out");
-                        let [verdict, t] = await judge.judge(lang, compile, expected, input);
+                        let verdict = await judge.judge(lang, compile, expected, input);
                         subtask.verdict.push(verdict);
-                        console.log("Judged in: "+t/1000);
                     }
                 }
             }
