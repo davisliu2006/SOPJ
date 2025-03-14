@@ -29,6 +29,7 @@ app.get("/", pages.index);
 app.get("/about", pages.about);
 
 app.get("/users", pages.users);
+app.get("/users-view", pages.users_view);
 
 app.get("/problems", pages.problems);
 app.get("/problems-view", pages.problems_view);

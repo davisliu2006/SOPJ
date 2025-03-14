@@ -34,6 +34,14 @@
                     Users
                     <hr>
                 </h2>
+                <div id="search" class="content-box">
+                    <form action="/users">
+                        <label style="margin-top: 0px;">Search:</label>
+                        <input class="text-entry" type="text" name="search" id="search-bar">
+                        <button class="button">Search</button>
+                    </form>
+                </div>
+                <br>
                 <table id="main-table">
                     <tr>
                         <th>#</th>
@@ -47,7 +55,7 @@
                                 <%= i+1 %>
                             </td>
                             <td>
-                                <%= users[i].username %>
+                                <a href="/users-view?id=<%= users[i].id %>"><%= users[i].username %></a>
                             </td>
                             <td>
                                 <%= users[i].points %>
