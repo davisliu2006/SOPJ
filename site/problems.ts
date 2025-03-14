@@ -7,9 +7,16 @@ export async function problems(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
         let problems: Array<any> = [];
+        let search = (typeof(req.query["search"]) == "string"? req.query["search"] : "");
         let conn = await globals.pool.getConnection();
         globals.dbSetup.initProblems(conn);
-        let rows = await conn.query("SELECT id, name, points FROM problems ORDER BY name;");
+        let rows;
+        if (search == "") {
+            rows = await conn.query("SELECT id, name, points FROM problems ORDER BY name;");
+        } else {
+            rows = await conn.query(`SELECT id, name, points FROM problems WHERE name LIKE '%${search}%' ORDER BY name;`);
+        }
+        
         conn.release();
         problems = rows;
         res.render("problems.ejs", {user, problems});
