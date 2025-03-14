@@ -27,7 +27,11 @@ const runFile = {
 let docker = new Docker();
 
 // compile code
-export async function compile(language: string, code: string): Promise<[any | null, string | null]> {
+export async function compile(language: string, code: string): Promise<[any | null, Buffer | null]> {
+    if (!sourceFile[language]) {
+        return [{StatusCode: 0}, Buffer.from(code)];
+    }
+
     try {
         console.log("Compiling "+language+"...");
 
@@ -54,16 +58,16 @@ export async function compile(language: string, code: string): Promise<[any | nu
             }
         );
 
-        let output: string = "";
+        let output: Buffer;
         if (status.StatusCode == 0) {
-            output = (await fsP.readFile(compileDir+"/"+binFile[language])).toString();
+            output = await fsP.readFile(compileDir+"/"+binFile[language]);
         } else {
             let logsStream = await container.logs({
                 follow: false, // don't follow real time output
                 stdout: true, // stdout
                 stderr: true // stderr
             });
-            output = logsStream.toString(); // convert logs to string
+            output = logsStream; // convert logs to string
         }
 
         // remove bind directory
@@ -79,7 +83,7 @@ export async function compile(language: string, code: string): Promise<[any | nu
 }
 
 // execute code
-export async function execute(language: string, code: string,
+export async function execute(language: string, code: Buffer,
     input: string = ""
 ): Promise<[any | null, string | null]> {
     try {
@@ -111,16 +115,16 @@ export async function execute(language: string, code: string,
             }
         );
 
-        let output: string = "";
+        let output: string;
         if (status.StatusCode == 0) {
-            output = (await fsP.readFile(runDir+"/output.txt")).toString();
+            output = (await fsP.readFile(runDir+"/output.out")).toString();
         } else {
             let logsStream = await container.logs({
                 follow: false, // don't follow real time output
                 stdout: true, // stdout
                 stderr: true // stderr
             });
-            output = logsStream.toString(); // convert logs to string
+            output = logsStream.toString();; // convert logs to string
         }
 
         // remove bind directory
@@ -135,7 +139,7 @@ export async function execute(language: string, code: string,
     }
 }
 
-export async function judge(language: string, code: string, expected: string,
+export async function judge(language: string, code: Buffer, expected: string,
     input: string = ""
 ): Promise<string> {
     let [status, output] = await execute(language, code, input);
