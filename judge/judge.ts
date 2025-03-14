@@ -38,7 +38,7 @@ export async function compile(language: string, code: string): Promise<[any | nu
         // create bind directory
         let compileDir = `${globals.TMPDIR}/${globals.nextBindID()}`;
         globals.mkdirP(compileDir);
-        fsP.writeFile(compileDir+"/"+sourceFile[language], code);
+        await fsP.writeFile(compileDir+"/"+sourceFile[language], code);
 
         // execute code in docker container
         let [status, container]: [any, Docker.Container] = await docker.run(
@@ -92,10 +92,10 @@ export async function execute(language: string, code: Buffer,
         // create bind directory
         let runDir = `${globals.TMPDIR}/${globals.nextBindID()}`;
         globals.mkdirP(runDir);
-        fsP.writeFile(runDir+"/"+runFile[language], code);
-        fsP.chmod(runDir+"/"+runFile[language], "775");
-        fsP.writeFile(runDir+"/input.in", input);
-        fsP.writeFile(runDir+"/output.out", "");
+        await fsP.writeFile(runDir+"/"+runFile[language], code);
+        await fsP.chmod(runDir+"/"+runFile[language], "775");
+        await fsP.writeFile(runDir+"/input.in", input);
+        await fsP.writeFile(runDir+"/output.out", "");
 
         // execute code in docker container
         let [status, container]: [any, Docker.Container] = await docker.run(
@@ -141,16 +141,18 @@ export async function execute(language: string, code: Buffer,
 
 export async function judge(language: string, code: Buffer, expected: string,
     input: string = ""
-): Promise<string> {
+): Promise<[string, number]> {
+    let t0 = performance.now();
     let [status, output] = await execute(language, code, input);
+    let t1 = performance.now();
     if (!status || !output) {
-        return verdicts.IE;
+        return [verdicts.IE, t1-t0];
     } else if (status.StatusCode == 0) {
         console.log("Expected: ["+expected+"]");
         let chk = checker.checker(output, expected);
-        if (chk) {return verdicts.AC;}
-        else {return verdicts.WA;}
+        if (chk) {return [verdicts.AC, t1-t0];}
+        else {return [verdicts.WA, t1-t0];}
     } else {
-        return verdicts.RTE;
+        return [verdicts.RTE, t1-t0];
     }
 }

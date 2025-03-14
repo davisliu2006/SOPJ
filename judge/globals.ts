@@ -19,5 +19,5 @@ export let TMPDIR = DIR+"/../data/tmp";
 mkdirP(TMPDIR);
 export let dockerBindID = 0;
 export function nextBindID() {
-    return (dockerBindID+1)%1000000007;
+    return (++dockerBindID)%1000000007;
 }
