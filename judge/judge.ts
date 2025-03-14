@@ -142,9 +142,7 @@ export async function execute(language: string, code: Buffer,
 export async function judge(language: string, code: Buffer, expected: string,
     input: string = ""
 ): Promise<string> {
-    let t0 = performance.now();
     let [status, output] = await execute(language, code, input);
-    let t1 = performance.now();
     if (!status || !output) {
         return verdicts.IE;
     } else if (status.StatusCode == 0) {
