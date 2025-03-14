@@ -85,7 +85,6 @@ export async function submit_request(req: express.Request, res: express.Response
         let id = Number(query.insertId);
 
         if (globals.ISDEPLOY) {
-            lang = "cpp";
             let config: database.ProblemJSON = await database.problems.readConfig(problem);
             for (let subtask of config.subtasks) {
                 subtask.verdict = [];
@@ -97,13 +96,16 @@ export async function submit_request(req: express.Request, res: express.Response
             res.redirect(`/submissions-view?id=${id}`);
             let points = 0;
             let totPoints = 0;
-            for (let subtask of config.subtasks) {
-                subtask.verdict = [];
-                for (let test of subtask.tests) {
-                    let input = await database.problems.readTest(problem, test+".in");
-                    let expected = await database.problems.readTest(problem, test+".out");
-                    let verdict = await judge.judge(lang, code, expected, input);
-                    subtask.verdict.push(verdict);
+            let [cStatus, compile] = await judge.compile(lang, code);
+            if (compile) {
+                for (let subtask of config.subtasks) {
+                    subtask.verdict = [];
+                    for (let test of subtask.tests) {
+                        let input = await database.problems.readTest(problem, test+".in");
+                        let expected = await database.problems.readTest(problem, test+".out");
+                        let verdict = await judge.judge(lang, compile, expected, input);
+                        subtask.verdict.push(verdict);
+                    }
                 }
             }
             database.submissions.write(id, config);
