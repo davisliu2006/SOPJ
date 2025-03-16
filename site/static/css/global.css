@@ -298,7 +298,7 @@ span.unbold {
     border: solid 1px;
     padding: 6px;
     border-radius: 5px;
-    text-align: center;
+    font-size: 16px; text-align: center;
     background-color: rgb(200, 200, 200);
     cursor: pointer;
 }
