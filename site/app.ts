@@ -38,7 +38,7 @@ app.post("/submit-request", pages.submit_request);
 app.get("/problems-create", pages.problems_create);
 app.post("/create-problem", pages.create_problem);
 app.get("/problems-edit", pages.problems_edit);
-app.post("/edit-problem", pages.create_problem);
+app.post("/edit-problem", pages.edit_problem);
 
 app.get("/submissions", pages.submissions);
 app.get("/submissions-view", pages.submissions_view);
