@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>SOPJ</title>
+        <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <style>
+            #submission .text-entry {
+                width: 100%;
+            }
+            #submission #description {
+                height: 20em;
+            }
+            #submission .button {
+                width: 100%;
+            }
+
+            #submission .bounding-box {
+                padding-left: 10px; padding-right: 10px;
+            }
+            #submission #test-cases textarea {
+                height: 7em;
+            }
+        </style>
+
+        <!--header scripts-->
+        <script src="src/global.js"></script>
+        <script src="src/collapsables.js"></script>
+    </head>
+
+    <body>
+        <!--global-->
+        <div id="global">
+            <%- include("global.ejs") %>
+        </div>
+
+        <!--main-->
+        <div id="main">
+            <!--about-->
+            <div id="problem" class="text-block">
+                <h2>
+                    Edit Problem
+                    <hr>
+                </h2>
+                <div id="submission">
+                    <form action="/edit-problem" method="post">
+                        <input type="hidden" name="id" value="<%= problem.id %>">
+                        <label for="name"><b>Problem Name:</b>*</label><br>
+                        <input class="text-entry" type="text" name="name" id="name" value="<%= problem.name %>" required><br><br>
+                        <label for="description"><b>Problem Body:</b>*</label><br>
+                        <textarea class="text-entry" name="description" id="description"><%= problem.description %></textarea><br><br>
+                        <h3>Test Cases</h3>
+                        <div style="display: none;">
+                            <div id="collapsable-0" class="collapsable">
+                                <div class="collapsable-frame">
+                                    <div class="collapsable-inner">
+                                        <div class="inline-block bounding-box" style="width: 50%;">
+                                            <label>Input 0.in:</label><br>
+                                            <textarea class="text-entry" name="" id=""></textarea><br><br>
+                                        </div><div class="inline-block bounding-box" style="width: 50%;">
+                                            <label>Input 0.out:</label><br>
+                                            <textarea class="text-entry" name="" id=""></textarea><br><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collapsable-btn">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                    Test Case Template
+                                </div>
+                                <script>
+                                    initCollapsable(`#collapsable-0`);
+                                </script>
+                            </div>
+                        </div>
+                        <div id="test-cases"></div>
+                        <h3>Subtasks</h3>
+                        <div style="display: none;">
+                            <label><b>Subtask 0</b></label><br>
+                            <div id="checkboxes">
+                                <input type="checkbox" name="" id=""> Test Case 1 &ensp;
+                                <input type="checkbox" name="" id=""> Test Case 2 &ensp;
+                            </div><br><br>
+                        </div>
+                        <div id="subtasks"></div><br>
+                        <button class="button" type="submit">
+                            Submit
+                        </button>
+                    </form>
+                    <script>
+                        let nCases = 5;
+                        let nSubtasks = 5;
+                        {
+                            let testCases = document.querySelector("#submission #test-cases");
+                            let str = "";
+                            for (let i = 1; i <= nCases; i++) {
+                                str += `
+                                <div id="collapsable-${i}" class="collapsable" style="display: block;">
+                                    <div class="collapsable-frame">
+                                        <div class="collapsable-inner">
+                                            <div class="inline-block bounding-box" style="width: 50%;">
+                                                <label>Input ${i}.in:</label><br>
+                                                <textarea class="text-entry" name="" id=""></textarea><br><br>
+                                            </div><div class="inline-block bounding-box" style="width: 50%;">
+                                                <label>Output ${i}.out:</label><br>
+                                                <textarea class="text-entry" name="" id=""></textarea><br><br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="collapsable-btn">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                        Test Case ${i}
+                                    </div>
+                                </div>
+                                <div id="test-cases"></div>
+                                `
+                            }
+                            testCases.innerHTML = str;
+                            for (let i = 1; i <= nCases; i++) {
+                                initCollapsable(`#collapsable-${i}`);
+                            }
+                        }
+                        {
+                            let subtasks = document.querySelector("#submission #subtasks");
+                            let str = "";
+                            for (let i = 1; i <= nSubtasks; i++) {
+                                str += `
+                                <label><b>Subtask ${i}</b></label><br>
+                                `;
+                                for (let j = 1; j <= nCases; j++) {
+                                    str += `
+                                    <input type="checkbox" name="" id=""> Test Case ${j} &ensp;
+                                    `
+                                }
+                                str += `<br><br>`;
+                            }
+                            subtasks.innerHTML = str;
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <!--footer-->
+            <div id="footer">
+                <script src="src/load_footer.js"></script>
+            </div>
+        </div>
+        
+        <!--scripts-->
+        <script src="src/index.js"></script>
+    </body>
+</html>

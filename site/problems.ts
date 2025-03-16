@@ -48,6 +48,7 @@ export async function problems_submit(req: express.Request, res: express.Respons
         let user = req.user;
         if (!user) {
             res.redirect("/login");
+            return;
         }
 
         let problemID = (req.query["id"]? req.query["id"] : "");
@@ -68,6 +69,7 @@ export async function submit_request(req: express.Request, res: express.Response
         let user = req.user;
         if (!user) {
             res.redirect("/login");
+            return;
         }
 
         let problem = (req.body["problem"]? req.body["problem"] : "");

@@ -1,4 +1,5 @@
 import express from "express";
+export * from "./admin";
 export * from "./captcha";
 export * from "./contests";
 export * from "./index";
