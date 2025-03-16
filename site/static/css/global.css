@@ -434,6 +434,9 @@ textarea {
     border: solid 1px; border-radius: 10px;
     padding: 25px;
 }
+.bounding-box {
+    box-sizing: border-box;
+}
 
 /*markdown*/
 .markdown code {
