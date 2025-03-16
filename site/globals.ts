@@ -54,6 +54,7 @@ export async function validateUser(user: any): Promise<boolean> {
     try {
         let conn = await pool.getConnection();
         let rows = await conn.query("SELECT id, username FROM users WHERE id = ?;", [user.userid]);
+        conn.release();
         if (rows.length < 1) {return false;}
         if (rows[0].username != user.username) {return false;}
         return true;

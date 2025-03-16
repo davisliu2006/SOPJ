@@ -53,3 +53,34 @@ export async function create_problem(req: express.Request, res: express.Response
         res.redirect("/error-500");
     }
 }
+
+export async function problems_edit(req: express.Request, res: express.Response) {
+    try {
+        let user = req.user;
+        let id = (req.query["id"]? req.query["id"] : "");
+        if (!user) {
+            res.redirect("/login");
+            return;
+        }
+        if (id == "") {
+            res.redirect("/");
+            return;
+        }
+
+        let validate = globals.validateUser(user);
+        if (!validate) {
+            res.redirect("/logout");
+            return;
+        }
+
+        let conn = await globals.pool.getConnection();
+        let rows = await conn.query("SELECT id, name, description FROM problems WHERE id = ?", [id]);
+        conn.release();
+        let problem = rows[0];
+
+        res.render("problems-edit.ejs", {user, problem});
+    } catch (e) {
+        console.log(e);
+        res.redirect("/error-500");
+    }
+}

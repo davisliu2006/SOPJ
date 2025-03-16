@@ -39,10 +39,11 @@
                 </h2>
                 <div id="submission">
                     <form action="/create-problem" method="post">
+                        <input type="hidden" name="id" value="<%= problem.id %>">
                         <label for="name"><b>Problem Name:</b>*</label><br>
-                        <input class="text-entry" type="text" name="name" id="name" required><br><br>
+                        <input class="text-entry" type="text" name="name" id="name" value="<%= problem.name %>" required><br><br>
                         <label for="description"><b>Problem Body:</b>*</label><br>
-                        <textarea class="text-entry" name="description" id="description"></textarea><br><br>
+                        <textarea class="text-entry" name="description" id="description"><%= problem.description %></textarea><br><br>
                         <button class="button" type="submit">
                             Submit
                         </button>
