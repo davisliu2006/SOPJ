@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>SOPJ</title>
+        <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <style>
+            #submission .text-entry {
+                width: 100%;
+            }
+            #submission .button {
+                width: 100%;
+            }
+        </style>
+
+        <!--header scripts-->
+        <script src="src/global.js"></script>
+        <script src="src/collapsables.js"></script>
+    </head>
+
+    <body>
+        <!--global-->
+        <div id="global">
+            <%- include("global.ejs") %>
+        </div>
+
+        <!--main-->
+        <div id="main">
+            <!--about-->
+            <div id="problem" class="text-block">
+                <h2>
+                    Create Problem
+                    <hr>
+                </h2>
+                <div id="submission">
+                    <form action="/create-problem" method="post">
+                        <label for="name"><b>Problem Name:</b>*</label><br>
+                        <input class="text-entry" type="text" name="name" id="name" required><br><br>
+                        <label for="description"><b>Problem Body:</b>*</label><br>
+                        <textarea class="text-entry" name="description" id="description"></textarea><br><br>
+                        <button class="button" type="submit">
+                            Submit
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!--footer-->
+            <div id="footer">
+                <script src="src/load_footer.js"></script>
+            </div>
+        </div>
+        
+        <!--scripts-->
+        <script src="src/index.js"></script>
+    </body>
+</html>

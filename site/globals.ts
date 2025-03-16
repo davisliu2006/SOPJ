@@ -49,6 +49,19 @@ export function jwtAuth(req: express.Request, res: express.Response) {
         return null;
     }
 }
+export async function validateUser(user: any): Promise<boolean> {
+    if (!user.userid || !user.username) {return false;}
+    try {
+        let conn = await pool.getConnection();
+        let rows = await conn.query("SELECT id, username FROM users WHERE id = ?;", [user.userid]);
+        if (rows.length < 1) {return false;}
+        if (rows[0].username != user.username) {return false;}
+        return true;
+    } catch (e) {
+        console.log("User valiation failed.");
+        return false;
+    }
+}
 
 export namespace dbSetup {
     export function initUsers(conn: mariadb.PoolConnection) {
