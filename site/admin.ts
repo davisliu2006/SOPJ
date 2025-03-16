@@ -46,7 +46,7 @@ export async function create_problem(req: express.Request, res: express.Response
         );
         conn.release();
         let id = Number(query.insertId);
-
+        database.problems.create(id);
         res.redirect("/problems-view?id="+id);
     } catch (e) {
         console.log(e);
@@ -77,7 +77,6 @@ export async function problems_edit(req: express.Request, res: express.Response)
         let rows = await conn.query("SELECT id, name, description FROM problems WHERE id = ?", [id]);
         conn.release();
         let problem = rows[0];
-
         res.render("problems-edit.ejs", {user, problem});
     } catch (e) {
         console.log(e);
