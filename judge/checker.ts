@@ -20,5 +20,6 @@ export function checker(output: string, expected: string, options: any = {
     checker: "identical"
 }) {
     output = output.replace("\r", "");
+    expected = expected.replace("\r", "");
     return identical_checker(output, expected);
 }

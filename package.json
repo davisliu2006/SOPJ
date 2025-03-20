@@ -5,6 +5,7 @@
         "webserver": "cd site && nodemon app.ts"
     },
     "dependencies": {
+        "adm-zip": "^0.5.16",
         "bcrypt": "^5.1.1",
         "body-parser": "^1.20.3",
         "cookie-parser": "^1.4.7",
@@ -18,11 +19,13 @@
         "jsonwebtoken": "^9.0.2",
         "mariadb": "^3.4.0",
         "marked": "^15.0.7",
+        "multer": "^1.4.5-lts.1",
         "stream-to-string": "^1.2.1",
         "svg-captcha": "^1.4.0",
         "typescript": "^5.7.3"
     },
     "devDependencies": {
+        "@types/adm-zip": "^0.5.7",
         "@types/bcrypt": "^5.0.2",
         "@types/cookie-parser": "^1.4.8",
         "@types/dockerode": "^3.3.35",
@@ -30,6 +33,7 @@
         "@types/express-session": "^1.18.1",
         "@types/jsdom": "^21.1.7",
         "@types/jsonwebtoken": "^9.0.9",
+        "@types/multer": "^1.4.12",
         "nodemon": "^3.1.9",
         "ts-node": "^10.9.2"
     }
