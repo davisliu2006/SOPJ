@@ -11,7 +11,7 @@ export function mkdirP(path: string) {
     globals.mkdirP(globals.DB_DIR+"/"+path);
 }
 export function rmdir(path: string) {
-    fs.rmSync(path, {recursive: true});
+    fs.rmSync(globals.DB_DIR+"/"+path, {recursive: true});
 }
 export async function listDir(path: string): Promise<Array<string>> {
     return fsP.readdir(globals.DB_DIR+"/"+path);
@@ -54,7 +54,7 @@ export namespace problems {
     export async function clearTests(id: number) {
         let tests = await getTests(id);
         for (let path of tests) {
-            fs.rmSync(path);
+            rmdir(`/problems/${id}/${path}`);
         }
     }
 }

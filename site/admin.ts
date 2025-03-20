@@ -1,3 +1,4 @@
+import AdmZip from "adm-zip";
 import express from "express";
 import * as globals from "./globals";
 import * as database from "../database/database";
@@ -114,6 +115,41 @@ export async function edit_problem(req: express.Request, res: express.Response) 
         }
         await conn.query("UPDATE problems SET name = ?, description = ? WHERE id = ?", [name, description, id]);
         conn.release();
+
+        if (req.file) {
+            const zip = new AdmZip(req.file.buffer); // Parse the ZIP file
+            const zipEntries = zip.getEntries(); // Get all entries in the ZIP file
+            let validate = "";
+            let st = new Set<string>();
+            for (const entry of zipEntries) {
+                let entryName = entry.name;
+                if (!entry.isDirectory && entryName.endsWith(".in")) {
+                    st.add(entryName.substring(0, entryName.length-3));
+                } else if (!entry.isDirectory && entryName.endsWith(".out")) {
+                    if (st.has(entryName.substring(0, entryName.length-4))) {
+                        st.delete(entryName.substring(0, entryName.length-4));
+                    } else {
+                        validate = "Missing input files";
+                        break;
+                    }
+                }
+            }
+            if (validate == "" && st.size != 0) {
+                validate = "Missing output files";
+            }
+            if (validate == "") {
+                await database.problems.clearTests(id);
+                for (const entry of zipEntries) {
+                    let entryName = entry.name;
+                    if (!entry.isDirectory && (entryName.endsWith(".in") || entryName.endsWith(".out"))) {
+                        await database.problems.writeTest(id, entryName, entry.getData().toString());
+                    }
+                }
+            } else {
+                console.log(validate);
+            }
+        }
+        
         res.redirect("/problems-view?id="+id);
     } catch (e) {
         console.log(e);
