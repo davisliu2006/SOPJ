@@ -82,6 +82,9 @@ export async function problems_edit(req: express.Request, res: express.Response)
             return;
         }
         let problem = rows[0];
+        problem.config = JSON.stringify(
+            await database.problems.readConfig(Number(id)), null, 4
+        );
         res.render("problems-edit.ejs", {user, problem});
     } catch (e) {
         console.log(e);
@@ -95,6 +98,7 @@ export async function edit_problem(req: express.Request, res: express.Response) 
         let id = (req.body["id"]? req.body["id"] : "");
         let name = (req.body["name"]? req.body["name"] : "");
         let description = (req.body["description"]? req.body["description"] : "");
+        let config = req.body["config"];
         if (!user) {
             res.redirect("/login");
             return;
@@ -116,9 +120,10 @@ export async function edit_problem(req: express.Request, res: express.Response) 
         await conn.query("UPDATE problems SET name = ?, description = ? WHERE id = ?", [name, description, id]);
         conn.release();
 
+        // file upload
         if (req.file) {
-            const zip = new AdmZip(req.file.buffer); // Parse the ZIP file
-            const zipEntries = zip.getEntries(); // Get all entries in the ZIP file
+            let zip = new AdmZip(req.file.buffer);
+            let zipEntries = zip.getEntries();
             let validate = "";
             let st = new Set<string>();
             for (const entry of zipEntries) {
@@ -147,6 +152,15 @@ export async function edit_problem(req: express.Request, res: express.Response) 
                 }
             } else {
                 console.log(validate);
+            }
+        }
+
+        // config update
+        if (config) {
+            config = database.ProblemJSON.validate(JSON.parse(config));
+            console.log(config);
+            if (config) {
+                database.problems.writeConfig(id, config);
             }
         }
         

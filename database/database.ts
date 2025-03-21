@@ -33,7 +33,7 @@ export namespace problems {
         return JSON.parse(await readData(`problems/${id}/config.json`));
     }
     export async function writeConfig(id: number, data: ProblemJSON) {
-        writeData(`problms/${id}/config.json`, JSON.stringify(data));
+        writeData(`problems/${id}/config.json`, JSON.stringify(data));
     }
     export async function readTest(id: number, testName: string): Promise<string> {
         return readData(`/problems/${id}/${testName}`);
