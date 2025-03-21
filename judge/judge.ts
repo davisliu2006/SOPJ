@@ -4,6 +4,7 @@ import * as fsP from "fs/promises";
 import * as globals from "./globals";
 import * as checker from "./checker";
 import * as verdicts from "./verdicts";
+export * as verdicts from "./verdicts";
 
 // language file names
 const sourceFile = {

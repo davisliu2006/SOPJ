@@ -1,0 +1,32 @@
+span.Q {
+    color: black;
+    font-weight: bold;
+}
+span.IE {
+    color: maroon;
+    font-weight: bold;
+}
+span.CE {
+    color: gray;
+    font-weight: bold;
+}
+span.TLE {
+    color: gray;
+    font-weight: bold;
+}
+span.AB {
+    color: orange;
+    font-weight: bold;
+}
+span.RTE {
+    color: orange;
+    font-weight: bold;
+}
+span.WA {
+    color: red;
+    font-weight: bold;
+}
+span.AC {
+    color: green;
+    font-weight: bold;
+}

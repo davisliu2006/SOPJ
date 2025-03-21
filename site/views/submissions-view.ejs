@@ -8,6 +8,7 @@
         <title>SOPJ</title>
         <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
         <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/submissions.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <style>
             #main-table {
@@ -41,18 +42,20 @@
                     User: <%= submission.user %><br>
                     Language: <%= submission.language %>
                 </p>
-                <p>
+                <h3>
                     Status:
-                </p>
+                </h3>
+                <% let test_i = 0; let subtask_i = 0; %>
                 <% for (let subtask of submission.json.subtasks) { %>
                     <p>
-                        <%= subtask.name %><br>
+                        <b>Subtask <%= ++subtask_i %></b>
+                        (0/<%= subtask.points %> points)<br>
                         <% for (let v of subtask.verdict) { %>
-                            <%= v %><br>
+                            &emsp;Test Case <%= ++test_i %>: <span class="<%= v %>"><%= v %></span><br>
                         <% } %>
                     </p>
                 <% } %>
-                <p>Code:</p>
+                <h3>Code:</h3>
                 <pre><%= submission.code %></pre>
             </div>
 
