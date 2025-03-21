@@ -49,18 +49,18 @@ export function jwtAuth(req: express.Request, res: express.Response) {
         return null;
     }
 }
-export async function validateUser(user: any): Promise<boolean> {
-    if (!user.userid || !user.username) {return false;}
+export async function validateUser(user: any): Promise<number> {
+    if (!user.userid || !user.username) {return 0;}
     try {
         let conn = await pool.getConnection();
-        let rows = await conn.query("SELECT id, username FROM users WHERE id = ?;", [user.userid]);
+        let rows = await conn.query("SELECT id, username, permissions FROM users WHERE id = ?;", [user.userid]);
         conn.release();
-        if (rows.length < 1) {return false;}
-        if (rows[0].username != user.username) {return false;}
-        return true;
+        if (rows.length < 1) {return 0;}
+        if (rows[0].username != user.username) {return 0;}
+        return rows[0].permissions;
     } catch (e) {
         console.log("User valiation failed.");
-        return false;
+        return 0;
     }
 }
 
@@ -70,7 +70,9 @@ export namespace dbSetup {
             id INT AUTO_INCREMENT PRIMARY KEY, \
             username VARCHAR(50) NOT NULL UNIQUE, \
             password VARCHAR(255) NOT NULL, \
-            points INT DEFAULT 0 \
+            points INT DEFAULT 0, \
+            problems INT DEFAULT 0, \
+            permissions INT DEFAULT 1 \
         );");
     }
     export function initProblems(conn: mariadb.PoolConnection) {

@@ -11,9 +11,12 @@ export async function problems_create(req: express.Request, res: express.Respons
             return;
         }
 
-        let validate = globals.validateUser(user);
-        if (!validate) {
+        let validate = await globals.validateUser(user);
+        if (validate == 0) {
             res.redirect("/logout");
+            return;
+        } else if (validate != 10) {
+            res.redirect("/");
             return;
         }
 
@@ -34,9 +37,12 @@ export async function create_problem(req: express.Request, res: express.Response
             return;
         }
 
-        let validate = globals.validateUser(user);
-        if (!validate) {
+        let validate = await globals.validateUser(user);
+        if (validate == 0) {
             res.redirect("/logout");
+            return;
+        } else if (validate != 10) {
+            res.redirect("/");
             return;
         }
 
@@ -69,9 +75,12 @@ export async function problems_edit(req: express.Request, res: express.Response)
             return;
         }
 
-        let validate = globals.validateUser(user);
-        if (!validate) {
+        let validate = await globals.validateUser(user);
+        if (validate == 0) {
             res.redirect("/logout");
+            return;
+        } else if (validate != 10) {
+            res.redirect("/");
             return;
         }
 
@@ -105,9 +114,12 @@ export async function edit_problem(req: express.Request, res: express.Response) 
             return;
         }
 
-        let validate = globals.validateUser(user);
-        if (!validate) {
+        let validate = await globals.validateUser(user);
+        if (validate == 0) {
             res.redirect("/logout");
+            return;
+        } else if (validate != 10) {
+            res.redirect("/");
             return;
         }
 
