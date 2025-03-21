@@ -2,7 +2,12 @@
     "compilerOptions": {
         "target": "es6",
         "strict": false,
-        "esModuleInterop": true
+        "outDir": "dist",
+        "module": "CommonJS",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "skipLibCheck": true
     },
-    "include": ["node_modules"]
+    "include": ["*/*.ts"]
 }

@@ -5,6 +5,7 @@ __pycache__/
 bin/
 */bin/
 data/
+dist/
 js/
 */js/
 node_modules/
