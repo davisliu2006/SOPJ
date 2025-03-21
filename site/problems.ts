@@ -50,6 +50,11 @@ export async function problems_submit(req: express.Request, res: express.Respons
             res.redirect("/login");
             return;
         }
+        let validate = await globals.validateUser(user);
+        if (validate == 0) {
+            res.redirect("/logout");
+            return;
+        }
 
         let problemID = (req.query["id"]? req.query["id"] : "");
         let problem: any;
@@ -69,6 +74,11 @@ export async function submit_request(req: express.Request, res: express.Response
         let user = req.user;
         if (!user) {
             res.redirect("/login");
+            return;
+        }
+        let validate = await globals.validateUser(user);
+        if (validate == 0) {
+            res.redirect("/logout");
             return;
         }
 
