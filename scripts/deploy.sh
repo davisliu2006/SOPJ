@@ -1,2 +1,2 @@
 echo "Deploying..."
-node dist/site/app.js
+pm2 start dist/site/app.js --name "opj" || echo "site run failed"
