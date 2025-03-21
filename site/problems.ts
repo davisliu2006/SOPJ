@@ -101,7 +101,7 @@ export async function submit_request(req: express.Request, res: express.Response
             for (let subtask of config.subtasks) {
                 subtask.verdict = [];
                 for (let test of subtask.tests) {
-                    subtask.verdict.push("Q");
+                    subtask.verdict.push(judge.verdicts.Q);
                 }
             }
             database.submissions.write(id, config);
@@ -109,7 +109,8 @@ export async function submit_request(req: express.Request, res: express.Response
             let points = 0;
             let totPoints = 0;
             let [cStatus, compile] = await judge.compile(lang, code);
-            if (compile) {
+            console.log(cStatus);
+            if (cStatus.StatusCode == 0) {
                 for (let subtask of config.subtasks) {
                     subtask.verdict = [];
                     for (let test of subtask.tests) {
@@ -117,6 +118,13 @@ export async function submit_request(req: express.Request, res: express.Response
                         let expected = await database.problems.readTest(problem, test+".out");
                         let verdict = await judge.judge(lang, compile, expected, input);
                         subtask.verdict.push(verdict);
+                    }
+                }
+            } else {
+                for (let subtask of config.subtasks) {
+                    subtask.verdict = [];
+                    for (let test of subtask.tests) {
+                        subtask.verdict.push(judge.verdicts.CE);
                     }
                 }
             }

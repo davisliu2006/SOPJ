@@ -5,6 +5,7 @@ export const exitCode: Map<number,string> = new Map([
     [134, "Aborted"]
 ]);
 
+export const Q = "Q";
 export const IE = "IE";
 export const CE = "CE";
 export const TLE = "TLE";
