@@ -41,6 +41,9 @@
                     <hr>
                 </h2>
                 <div id="submission">
+                    <% if (errors) { %>
+                        <p><b>Submission Error: <%= errors %></b></p><br>
+                    <% } %>
                     <form action="/edit-problem" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<%= problem.id %>">
                         <label for="name"><b>Problem Name:</b>*</label><br>

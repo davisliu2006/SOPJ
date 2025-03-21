@@ -59,6 +59,7 @@ export async function problems_edit(req: express.Request, res: express.Response)
     try {
         let user = req.user;
         let id = (req.query["id"]? req.query["id"] : "");
+        let errors = (req.query["error"]? req.query["error"] : "");
         if (!user) {
             res.redirect("/login");
             return;
@@ -85,7 +86,7 @@ export async function problems_edit(req: express.Request, res: express.Response)
         problem.config = JSON.stringify(
             await database.problems.readConfig(Number(id)), null, 4
         );
-        res.render("problems-edit.ejs", {user, problem});
+        res.render("problems-edit.ejs", {user, problem, errors});
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
@@ -122,45 +123,58 @@ export async function edit_problem(req: express.Request, res: express.Response) 
 
         // file upload
         if (req.file) {
-            let zip = new AdmZip(req.file.buffer);
-            let zipEntries = zip.getEntries();
-            let validate = "";
-            let st = new Set<string>();
-            for (const entry of zipEntries) {
-                let entryName = entry.name;
-                if (!entry.isDirectory && entryName.endsWith(".in")) {
-                    st.add(entryName.substring(0, entryName.length-3));
-                } else if (!entry.isDirectory && entryName.endsWith(".out")) {
-                    if (st.has(entryName.substring(0, entryName.length-4))) {
-                        st.delete(entryName.substring(0, entryName.length-4));
-                    } else {
-                        validate = "Missing input files";
-                        break;
-                    }
-                }
-            }
-            if (validate == "" && st.size != 0) {
-                validate = "Missing output files";
-            }
-            if (validate == "") {
-                await database.problems.clearTests(id);
+            try {
+                let zip = new AdmZip(req.file.buffer);
+                let zipEntries = zip.getEntries();
+                let validate = "";
+                let st = new Set<string>();
                 for (const entry of zipEntries) {
                     let entryName = entry.name;
-                    if (!entry.isDirectory && (entryName.endsWith(".in") || entryName.endsWith(".out"))) {
-                        await database.problems.writeTest(id, entryName, entry.getData().toString());
+                    if (!entry.isDirectory && entryName.endsWith(".in")) {
+                        st.add(entryName.substring(0, entryName.length-3));
+                    } else if (!entry.isDirectory && entryName.endsWith(".out")) {
+                        if (st.has(entryName.substring(0, entryName.length-4))) {
+                            st.delete(entryName.substring(0, entryName.length-4));
+                        } else {
+                            validate = "Missing input files";
+                            break;
+                        }
                     }
                 }
-            } else {
-                console.log(validate);
+                if (validate == "" && st.size != 0) {
+                    validate = "Missing output files";
+                }
+                if (validate == "") {
+                    await database.problems.clearTests(id);
+                    for (const entry of zipEntries) {
+                        let entryName = entry.name;
+                        if (!entry.isDirectory && (entryName.endsWith(".in") || entryName.endsWith(".out"))) {
+                            await database.problems.writeTest(id, entryName, entry.getData().toString());
+                        }
+                    }
+                } else {
+                    res.redirect("/problems-edit?id="+id+"&"+"error="+validate);
+                    return;
+                }
+            } catch (e) {
+                res.redirect("/problems-edit?id="+id+"&"+"error=Invalid zip file");
+                return;
             }
         }
 
         // config update
         if (config) {
-            config = database.ProblemJSON.validate(JSON.parse(config));
+            try {
+                config = database.ProblemJSON.validate(JSON.parse(config));
+            } catch (e) {
+                config = null;
+            }
             console.log(config);
             if (config) {
                 database.problems.writeConfig(id, config);
+            } else {
+                res.redirect("/problems-edit?id="+id+"&"+"error=Invalid configuration");
+                return;
             }
         }
         
