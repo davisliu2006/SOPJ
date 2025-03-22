@@ -142,3 +142,18 @@ export function logout(req: express.Request, res: express.Response) {
     res.clearCookie("opj");
     res.redirect("/");
 }
+
+export function account(req: express.Request, res: express.Response) {
+    try {
+        let user = req.user;
+        if (!user) {
+            res.redirect("/login");
+            return;
+        }
+
+        res.render("account.ejs", {user});
+    } catch (e) {
+        console.log(e)
+        res.redirect("/error-500");
+    }
+}

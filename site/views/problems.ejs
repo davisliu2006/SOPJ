@@ -36,16 +36,23 @@
                 </h2>
                 <div id="search" class="content-box">
                     <form action="/problems">
-                        <div class="inline-block" style="margin-right: 25px;">
+                        <div class="inline-block">
                             <p style="margin-top: 0px;">Search</p>
                             <input class="text-entry" type="text" name="search" id="search-bar">
                         </div>
-                        <div class="inline-block">
+                        <div class="inline-block" style="margin-left: 25px;">
                             <p style="margin-top: 0px;">Points Range</p>
                             <input class="text-entry" type="number" name="pts-min" id="pts-min">
                             <input class="text-entry" type="number" name="pts-max" id="pts-max">
                         </div>
                         <button class="button">Search</button>
+                        <div class="inline-block" style="margin-left: 25px;">
+                            <p style="margin-top: 0px;">Sort By</p>
+                            <select name="sort-by" id="sort-by">
+                                <option value="name">Name</option>
+                                <option value="submissions">Submissions</option>
+                            </select>
+                        </div>
                     </form>
                 </div>
                 <br>

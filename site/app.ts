@@ -53,6 +53,7 @@ app.get("/signup", pages.signup);
 app.post("/signup-request", pages.signup_request);
 app.post("/login-request", pages.login_request);
 app.get("/logout", pages.logout)
+app.get("/account", pages.account)
 
 app.get("/captcha", pages.captcha);
 
