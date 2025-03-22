@@ -141,14 +141,21 @@ export async function edit_problem(req: express.Request, res: express.Response) 
                 let validate = "";
                 let st = new Set<string>();
                 for (const entry of zipEntries) {
+                    console.log(entry.name)
+                }
+                for (const entry of zipEntries) {
                     let entryName = entry.name;
                     if (!entry.isDirectory && entryName.endsWith(".in")) {
                         st.add(entryName.substring(0, entryName.length-3));
-                    } else if (!entry.isDirectory && entryName.endsWith(".out")) {
+                    }
+                }
+                for (const entry of zipEntries) {
+                    let entryName = entry.name;
+                    if (!entry.isDirectory && entryName.endsWith(".out")) {
                         if (st.has(entryName.substring(0, entryName.length-4))) {
                             st.delete(entryName.substring(0, entryName.length-4));
                         } else {
-                            validate = "Missing input files";
+                            validate = "Missing input files "+entryName.substring(0, entryName.length-4)+".in";
                             break;
                         }
                     }
