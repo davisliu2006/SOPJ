@@ -48,9 +48,9 @@ export async function compile(language: string, code: string): Promise<[any | nu
             process.stdout, // stream stdout to the host
             {
                 HostConfig: {
-                    Memory: 256*1024*1024, // memory limit (256 MB)
+                    Memory: 1024*1024*1024, // memory limit (1 GB)
                     CpuPeriod: 100000, // cpu period
-                    CpuQuota: 100000, // cpu quota (1 second)
+                    CpuQuota: 500000, // cpu quota (5 seconds)
                     NetworkMode: "none", // disable network access
                     // AutoRemove: true, // remove container after execution
                     Binds: [`${compileDir}:/home/judge/compile`], // mount input directory
