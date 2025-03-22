@@ -9,8 +9,16 @@ export async function submissions(req: express.Request, res: express.Response) {
         let conn = await globals.pool.getConnection();
         globals.dbSetup.initSubmissions(conn);
         let rows = await conn.query("SELECT id, problem, user, language FROM submissions;");
-        conn.release();
         submissions = rows;
+        for (let submission of submissions) {
+            let otherInfo: any[][] = [
+                await conn.query("SELECT name FROM problems WHERE id = ?;", [submission.problem]),
+                await conn.query("SELECT username FROM users WHERE id = ?;", [submission.user])
+            ];
+            submission.problemName = otherInfo[0][0].name;
+            submission.userName = otherInfo[1][0].username;
+        }
+        conn.release();
         res.render("submissions.ejs", {user, submissions});
     } catch (e) {
         console.log(e);
@@ -25,8 +33,14 @@ export async function submissions_view(req: express.Request, res: express.Respon
         let submission: any;
         let conn = await globals.pool.getConnection();
         let rows = await conn.query("SELECT id, problem, user, language, code, status FROM submissions WHERE id = ?;", [submissionID]);
-        conn.release();
         submission = rows[0];
+        let otherInfo: any[][] = [
+            await conn.query("SELECT name FROM problems WHERE id = ?;", [submission.problem]),
+            await conn.query("SELECT username FROM users WHERE id = ?;", [submission.user])
+        ];
+        submission.problemName = otherInfo[0][0].name;
+        submission.userName = otherInfo[1][0].username;
+        conn.release();
         submission.json = await database.submissions.read(submissionID);
         res.render("submissions-view.ejs", {user, submission});
     } catch (e) {
