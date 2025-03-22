@@ -147,7 +147,8 @@ export async function judge(language: string, code: Buffer, expected: string,
     if (!status || !output) {
         return verdicts.IE;
     } else if (status.StatusCode == 0) {
-        console.log("Expected: ["+expected+"]");
+        // console.log("Output: ["+output+"]");
+        // console.log("Expected: ["+expected+"]");
         let chk = checker.checker(output, expected);
         if (chk) {return verdicts.AC;}
         else {return verdicts.WA;}
