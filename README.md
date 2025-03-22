@@ -63,6 +63,13 @@ Ensure the application has access to Docker.
 sudo usermod -aG docker <user>
 ```
 
+Build compiler and runner images:
+
+```
+sudo docker build -t online_judge_compiler judge/compiler
+sudo docker build -t online_judge_runner judge/runner
+```
+
 ## Deployment
 
 Setup:
