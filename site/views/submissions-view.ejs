@@ -32,14 +32,24 @@
             <!--about-->
             <div id="problems" class="text-block">
                 <h2>
-                    Submission <%= submission.id %>
+                    Submission #<%= submission.id %> to
+                    <a href="/problems-view?id=<%= submission.problem %>">
+                        <%= submission.problemName %>
+                    </a> by
+                    <a href="/users-view?id=<%= submission.user %>">
+                        <%= submission.userName %>
+                    </a>
                     <hr>
                 </h2>
                 <p>
+                    Problem:
                     <a href="/problems-view?id=<%= submission.problem %>">
-                        Problem: <%= submission.problem %>
+                        <%= submission.problemName %>
                     </a><br>
-                    User: <%= submission.user %><br>
+                    User:
+                    <a href="/users-view?id=<%= submission.user %>">
+                        <%= submission.userName %>
+                    </a><br>
                     Language: <%= submission.language %>
                 </p>
                 <h3>

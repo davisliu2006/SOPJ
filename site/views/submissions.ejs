@@ -36,9 +36,10 @@
                 </h2>
                 <table id="main-table">
                     <tr>
-                        <th>Submission</th>
-                        <th>Problem</th>
-                        <th>Language</th>
+                        <th style="width: 10%;">id</th>
+                        <th style="width: 40%;">Problem</th>
+                        <th style="width: 40%;">User</th>
+                        <th style="width: 10%;">Language</th>
                     </tr>
                     <% for (let i = 0; i < submissions.length; i++) { %>
                         <tr>
@@ -48,7 +49,14 @@
                                 </a>
                             </td>
                             <td>
-                                <%= submissions[i].problem %>
+                                <a href="/problems-view?id=<%= submissions[i].problem %>">
+                                    <%= submissions[i].problemName %>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/users-view?id=<%= submissions[i].user %>">
+                                    <%= submissions[i].userName %>
+                                </a>
                             </td>
                             <td>
                                 <%= submissions[i].language %>
