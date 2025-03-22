@@ -55,6 +55,14 @@ GRANT ALL PRIVILEGES ON <database>.* TO '<user>'@'<host>';
 FLUSH PRIVILEGES;
 ```
 
+## Docker
+
+Ensure the application has access to Docker.
+
+```
+sudo usermod -aG docker <user>
+```
+
 ## Deployment
 
 Setup:
