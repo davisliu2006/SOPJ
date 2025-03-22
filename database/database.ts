@@ -36,10 +36,10 @@ export namespace problems {
         writeData(`problems/${id}/config.json`, JSON.stringify(data));
     }
     export async function readTest(id: number, testName: string): Promise<string> {
-        return readData(`/problems/${id}/${testName}`);
+        return readData(`problems/${id}/${testName}`);
     }
     export async function writeTest(id: number, testName: string, data: string) {
-        writeData(`/problems/${id}/${testName}`, data);
+        writeData(`problems/${id}/${testName}`, data);
     }
     export async function getTests(id: number): Promise<Array<string>> {
         let contents = await listDir(`/problems/${id}`);
@@ -54,7 +54,7 @@ export namespace problems {
     export async function clearTests(id: number) {
         let tests = await getTests(id);
         for (let path of tests) {
-            rmdir(`/problems/${id}/${path}`);
+            rmdir(`problems/${id}/${path}`);
         }
     }
 }
