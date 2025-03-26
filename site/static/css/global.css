@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 html {
     scroll-behavior: smooth;
@@ -73,6 +73,8 @@ hr {
 .align-left {text-align: left;}
 .align-center {text-align: center;}
 .align-right {text-align: right;}
+.align-top {vertical-align:top;}
+.align-bottom {vertical-align: bottom;}
 
 /*table*/
 table {
@@ -134,7 +136,7 @@ span.unbold {
 #top-bar-logo {
     float: left;
     padding: 16px 50px 16px 50px;
-    font-family: "Arial"; font-size: 24px; text-align: center; color: rgb(0, 0, 50);
+    font-family: "Inter"; font-size: 24px; text-align: center; color: rgb(0, 0, 50);
 }
 #top-bar-nav {
     float: left;
@@ -447,6 +449,11 @@ textarea {
 }
 .bounding-box {
     box-sizing: border-box;
+}
+.fill-box {
+    position: absolute;
+    top: 0px; left: 0px;
+    width: 100%;
 }
 
 /*markdown*/
