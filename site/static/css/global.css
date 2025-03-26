@@ -157,7 +157,7 @@ span.unbold {
 .top-bar-btn:hover, .login-btn:hover {
     /*animation*/
     background-size: 100% 1px;
-    transition: background-size 0.3s, color 0.5s;;
+    transition: background-size 0.3s, color 0.5s;
 }
 .top-bar-btn.active, .login-btn.active {
     color: rgb(200, 200, 200, 0.7);
@@ -234,6 +234,17 @@ span.unbold {
 #footer hr {
     width: 100%;
     opacity: 20%;
+}
+#footer a {
+    color: rgb(0, 0, 50);
+    background-image: linear-gradient(to right, rgb(0, 0, 50, 1) 0%, rgb(0, 0, 50, 1) 100%);
+    background-position: 50% 100%; background-size: 0% 1px; background-repeat: no-repeat;
+    transition: background-size 0.3s;
+}
+#footer a:hover {
+    /*animation*/
+    background-size: 100% 1px;
+    transition: background-size 0.3s;
 }
 #sub-footer {
     position: absolute;
