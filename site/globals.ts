@@ -11,6 +11,8 @@ export const DIR = env.DIR;
 console.log("Running from directory: "+DIR);
 
 // get environment variables
+export const DB_PASSWORD: string = env.DB_PASSWORD;
+export const DB_USER: string = env.DB_USER;
 export const HOSTNAME: string = env.HOSTNAME;
 export const ISDEPLOY: boolean = env.ISDEPLOY;
 export const JWTSECRET: string = env.JWTSECRET;
@@ -34,8 +36,8 @@ declare module "express-session" {
 // mariadb connection pool
 export const pool = mariadb.createPool({
     host: HOSTNAME,
-    user: "root",
-    password: "",
+    user: DB_USER,
+    password: DB_PASSWORD,
     database: "opj",
     connectionLimit: 5,
 });
