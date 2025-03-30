@@ -20,6 +20,8 @@ For sandbox code executor:
 
 Set environment variables in `include/env.ts`:
 ```ts
+export const DB_PASSWORD = "<db password>";
+export const DB_USER = "<db user>";
 export const DIR = "<project folder>/site";
 export const HOSTNAME = "<host name>";
 export const ISDEPLOY = <true/false>;
