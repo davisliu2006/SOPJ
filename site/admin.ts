@@ -85,7 +85,7 @@ export async function problems_edit(req: express.Request, res: express.Response)
         }
 
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, name, description FROM problems WHERE id = ?;", [id]);
+        let rows = await conn.query("SELECT id, name, description, time, memory FROM problems WHERE id = ?;", [id]);
         conn.release();
         if (rows.length < 1) {
             res.redirect("/");
@@ -108,6 +108,8 @@ export async function edit_problem(req: express.Request, res: express.Response) 
         let id = (req.body["id"]? req.body["id"] : "");
         let name = (req.body["name"]? req.body["name"] : "");
         let description = (req.body["description"]? req.body["description"] : "");
+        let time = Number(req.body["time"]? req.body["time"] : "");
+        let memory = Number(req.body["memory"]? req.body["memory"] : "");
         let config = req.body["config"];
         if (!user) {
             res.redirect("/login");
@@ -130,7 +132,10 @@ export async function edit_problem(req: express.Request, res: express.Response) 
             res.redirect("/");
             return;
         }
-        await conn.query("UPDATE problems SET name = ?, description = ? WHERE id = ?", [name, description, id]);
+        await conn.query(
+            "UPDATE problems SET name = ?, description = ?, time = ?, memory = ? WHERE id = ?",
+            [name, description, time, memory, id]
+        );
         conn.release();
 
         // file upload
