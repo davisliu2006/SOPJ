@@ -50,6 +50,11 @@
                         <input class="text-entry" type="text" name="name" id="name" value="<%= problem.name %>" required><br><br>
                         <label for="description"><b>Problem Body:</b>*</label><br>
                         <textarea class="text-entry" name="description" id="description"><%= problem.description %></textarea><br><br>
+                        <h3>Limits</h3>
+                        <label for="time"><b>Time Limit:</b>* (seconds)</label><br>
+                        <input class="text-entry" type="number" name="time" id="time" value="<%= problem.time %>" step="0.1" required><br><br>
+                        <label for="memory"><b>Memory Limit:</b>* (megabytes)</label><br>
+                        <input class="text-entry" type="number" name="memory" id="memory" value="<%= problem.memory %>" required><br><br>
                         <h3>Test Cases</h3>
                         <input type="file" name="test-cases" id="test-cases"><br><br>
                         <h3>Configuration</h3>

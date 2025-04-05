@@ -32,7 +32,7 @@ export async function problems_view(req: express.Request, res: express.Response)
         let problemID = (req.query["id"]? req.query["id"] : "");
         let problem: any;
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, name, points, description FROM problems WHERE id = ?;", [problemID]);
+        let rows = await conn.query("SELECT id, name, points, description, time, memory FROM problems WHERE id = ?;", [problemID]);
         conn.release();
         problem = rows[0];
         problem.description = await globals.mdToHTML(problem.description); // SECURITY IMPORTANCE
