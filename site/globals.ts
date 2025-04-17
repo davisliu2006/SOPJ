@@ -82,7 +82,9 @@ export namespace dbSetup {
             id INT AUTO_INCREMENT PRIMARY KEY, \
             name VARCHAR(50) NOT NULL, \
             points INT DEFAULT 0 \, \
-            description VARCHAR(10000) DEFAULT '' \
+            description VARCHAR(10000) DEFAULT '', \
+            time INT DEFAULT 1, \
+            memory INT DEFAULT 256 \
         );");
     }
     export function initSubmissions(conn: mariadb.PoolConnection) {
