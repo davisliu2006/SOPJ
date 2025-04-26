@@ -91,7 +91,7 @@ export async function submit_request(req: express.Request, res: express.Response
         globals.dbSetup.initUsers(conn);
         let query = await conn.query(
             "INSERT INTO submissions (problem, user, language, code, status) VALUES (?, ?, ?, ?, ?);",
-            [problem, user.userid, lang, code, "queuing"]
+            [problem, user.userid, lang, code, "Q"]
         );
         conn.release();
         let id = Number(query.insertId);
@@ -111,22 +111,40 @@ export async function submit_request(req: express.Request, res: express.Response
             let [cStatus, compile] = await judge.compile(lang, code);
             console.log(cStatus);
             if (cStatus.StatusCode == 0) {
+                let currVerdict = judge.verdicts.AC;
                 for (let subtask of config.subtasks) {
+                    let subtaskPass = 1;
                     subtask.verdict = [];
                     for (let test of subtask.tests) {
                         let input = await database.problems.readTest(problem, test+".in");
                         let expected = await database.problems.readTest(problem, test+".out");
                         let verdict = await judge.judge(lang, compile, expected, input);
                         subtask.verdict.push(verdict);
+                        currVerdict = judge.verdicts.priorityVerdict(currVerdict, verdict);
+                        if (verdict != judge.verdicts.AC) {
+                            subtaskPass = 0;
+                            // break;
+                        }
                     }
+                    totPoints += subtask.points;
+                    points += subtask.points*subtaskPass;
                 }
+                await conn.query(
+                    "UPDATE submissions SET points = ?, totpoints = ?, status = ? WHERE id = ?;",
+                    [points, totPoints, currVerdict, id]
+                );
             } else {
                 for (let subtask of config.subtasks) {
                     subtask.verdict = [];
                     for (let test of subtask.tests) {
                         subtask.verdict.push(judge.verdicts.CE);
                     }
+                    totPoints += subtask.points;
                 }
+                await conn.query(
+                    "UPDATE submissions SET points = ?, totpoints = ?, status = ? WHERE id = ?;",
+                    [points, totPoints, judge.verdicts.CE, id]
+                );
             }
             database.submissions.write(id, config);
         } else {
@@ -134,7 +152,7 @@ export async function submit_request(req: express.Request, res: express.Response
             for (let subtask of config.subtasks) {
                 subtask.verdict = [];
                 for (let test of subtask.tests) {
-                    subtask.verdict.push("IE");
+                    subtask.verdict.push(judge.verdicts.IE);
                 }
             }
             database.submissions.write(id, config);

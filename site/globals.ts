@@ -94,7 +94,9 @@ export namespace dbSetup {
             user INT NOT NULL \, \
             language VARCHAR(50) NOT NULL, \
             code VARCHAR(10000) DEFAULT '', \
-            status VARCHAR(50) DEFAULT '' \
+            status VARCHAR(50) DEFAULT '', \
+            points INT DEFAULT 0, \
+            totpoints INT DEFAULT 0 \
         );");
     }
 }

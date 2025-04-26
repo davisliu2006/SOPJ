@@ -8,7 +8,7 @@ export async function submissions(req: express.Request, res: express.Response) {
         let submissions: any;
         let conn = await globals.pool.getConnection();
         globals.dbSetup.initSubmissions(conn);
-        let rows = await conn.query("SELECT id, problem, user, language FROM submissions;");
+        let rows = await conn.query("SELECT id, problem, user, language, status, points, totpoints FROM submissions;");
         submissions = rows;
         for (let submission of submissions) {
             let otherInfo: any[][] = [
