@@ -8,6 +8,7 @@
         <title>SOPJ</title>
         <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
         <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/submissions.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <style>
             #main-table {
@@ -37,9 +38,11 @@
                 <table id="main-table">
                     <tr>
                         <th style="width: 10%;">id</th>
-                        <th style="width: 40%;">Problem</th>
-                        <th style="width: 40%;">User</th>
+                        <th style="width: 30%;">Problem</th>
+                        <th style="width: 30%;">User</th>
                         <th style="width: 10%;">Language</th>
+                        <th style="width: 10%;">Verdict</th>
+                        <th style="width: 10%;">Score</th>
                     </tr>
                     <% for (let i = 0; i < submissions.length; i++) { %>
                         <tr>
@@ -61,6 +64,16 @@
                             <td>
                                 <%= submissions[i].language %>
                             </td>
+                            <td>
+                                <span class="<%= submissions[i].status %>"><%= submissions[i].status %></span>
+                            </td>
+                            <td>
+                                <%= submissions[i].points %>/<%= submissions[i].totpoints %>
+                            </td>
+                            <!-- <td>
+                                <span class="<%= submissions[i].status %>"><%= submissions[i].status %></span>&ensp;
+                                (<%= submissions[i].points %>/<%= submissions[i].totpoints %>)
+                            </td> -->
                         </tr>
                     <% } %>
                 </table>
