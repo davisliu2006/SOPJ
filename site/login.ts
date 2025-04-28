@@ -5,21 +5,31 @@ import * as globals from "./globals";
 
 export function login(req: express.Request, res: express.Response) {
     let user = req.user;
+    if (user) {
+        res.redirect("/account");
+        return;
+    }
     let errors = (req.query["error"]? req.query["error"] : "");
-    res.render("login.ejs", {user, errors});
+    let redirect = req.query["redirect"];
+    res.render("login.ejs", {user, errors, redirect});
 };
 export async function login_request(req: express.Request, res: express.Response) {
     try {
         let errors = "";
         let username = (typeof(req.body["username"]) == "string"? req.body["username"] : "");
         let password = (typeof(req.body["password"]) == "string"? req.body["password"] : "");
+        let redirect = req.body["redirect"];
 
         // CAPTCHA
         let captcha = (typeof(req.body["captcha"]) == "string"? req.body["captcha"] : "");
         if (captcha != req.session.captcha) {
             console.log("CAPTCHA: got ["+captcha+"] expected ["+req.session.captcha+"]");
             errors = "CAPTCHA failed";
-            res.redirect("/login?error="+encodeURIComponent(errors));
+            if (redirect) {
+                res.redirect(`/login?error=${encodeURIComponent(errors)}&redirect=${encodeURIComponent(redirect)}`);
+            } else {
+                res.redirect(`/login?error=${encodeURIComponent(errors)}`);
+            }
             return;
         } else {
             console.log("CAPTCHA verification successful!");
@@ -31,7 +41,11 @@ export async function login_request(req: express.Request, res: express.Response)
         if (rows.length == 0) {
             conn.release();
             errors = "Account does not exist";
-            res.redirect("/login?error="+encodeURIComponent(errors));
+            if (redirect) {
+                res.redirect(`/login?error=${encodeURIComponent(errors)}&redirect=${encodeURIComponent(redirect)}`);
+            } else {
+                res.redirect(`/login?error=${encodeURIComponent(errors)}`);
+            }
             return;
         }
 
@@ -39,7 +53,11 @@ export async function login_request(req: express.Request, res: express.Response)
         if (!bcrypt.compareSync(password, user.password)) {
             conn.release();
             errors = "Incorrect password";
-            res.redirect("/login?error="+encodeURIComponent(errors));
+            if (redirect) {
+                res.redirect(`/login?error=${encodeURIComponent(errors)}&redirect=${encodeURIComponent(redirect)}`);
+            } else {
+                res.redirect(`/login?error=${encodeURIComponent(errors)}`);
+            }
             return;
         }
 
@@ -51,7 +69,11 @@ export async function login_request(req: express.Request, res: express.Response)
             httpOnly: true, secure: true, sameSite: "strict",
             maxAge: 1000*3600*24
         });
-        res.redirect("/");
+        if (redirect) {
+            res.redirect(`/${redirect}`);
+        } else {
+            res.redirect("/");
+        }
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
@@ -60,6 +82,10 @@ export async function login_request(req: express.Request, res: express.Response)
 
 export function signup(req: express.Request, res: express.Response) {
     let user = req.user;
+    if (user) {
+        res.redirect("/account");
+        return;
+    }
     let errors = (req.query["error"]? req.query["error"] : "");
     res.render("signup.ejs", {user, errors});
 };
