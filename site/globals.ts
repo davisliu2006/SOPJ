@@ -67,8 +67,8 @@ export async function validateUser(user: any): Promise<number> {
 }
 
 export namespace dbSetup {
-    export function initUsers(conn: mariadb.PoolConnection) {
-        conn.query("CREATE TABLE IF NOT EXISTS users ( \
+    export async function initUsers(conn: mariadb.PoolConnection) {
+        await conn.query("CREATE TABLE IF NOT EXISTS users ( \
             id INT AUTO_INCREMENT PRIMARY KEY, \
             username VARCHAR(50) NOT NULL UNIQUE, \
             password VARCHAR(255) NOT NULL, \
@@ -77,8 +77,8 @@ export namespace dbSetup {
             permissions INT DEFAULT 1 \
         );");
     }
-    export function initProblems(conn: mariadb.PoolConnection) {
-        conn.query("CREATE TABLE IF NOT EXISTS problems ( \
+    export async function initProblems(conn: mariadb.PoolConnection) {
+        await conn.query("CREATE TABLE IF NOT EXISTS problems ( \
             id INT AUTO_INCREMENT PRIMARY KEY, \
             name VARCHAR(50) NOT NULL, \
             points INT DEFAULT 0 \, \
@@ -87,8 +87,8 @@ export namespace dbSetup {
             memory INT DEFAULT 256 \
         );");
     }
-    export function initSubmissions(conn: mariadb.PoolConnection) {
-        conn.query("CREATE TABLE IF NOT EXISTS submissions ( \
+    export async function initSubmissions(conn: mariadb.PoolConnection) {
+        await conn.query("CREATE TABLE IF NOT EXISTS submissions ( \
             id INT AUTO_INCREMENT PRIMARY KEY, \
             problem INT NOT NULL, \
             user INT NOT NULL \, \
@@ -122,4 +122,9 @@ export async function mdToHTML(str: string) {
     });
 
     return str;
+}
+
+// sanitize url
+export function sanitizeURL(str: string) {
+    return str.replace(/^https?:\/\/[^\/]+/, "")
 }

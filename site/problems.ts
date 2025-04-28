@@ -9,7 +9,7 @@ export async function problems(req: express.Request, res: express.Response) {
         let problems: Array<any> = [];
         let search = (typeof(req.query["search"]) == "string"? req.query["search"] : "");
         let conn = await globals.pool.getConnection();
-        globals.dbSetup.initProblems(conn);
+        await globals.dbSetup.initProblems(conn);
         let rows;
         if (search == "") {
             rows = await conn.query("SELECT id, name, points FROM problems ORDER BY name;");
@@ -88,7 +88,7 @@ export async function submit_request(req: express.Request, res: express.Response
         console.log(code);
 
         let conn = await globals.pool.getConnection();
-        globals.dbSetup.initUsers(conn);
+        await globals.dbSetup.initUsers(conn);
         let query = await conn.query(
             "INSERT INTO submissions (problem, user, language, code, status) VALUES (?, ?, ?, ?, ?);",
             [problem, user.userid, lang, code, "Q"]

@@ -7,7 +7,7 @@ export async function users(req: express.Request, res: express.Response) {
         let search = (typeof(req.query["search"]) == "string"? req.query["search"] : "");
         let users: Array<any> = [];
         let conn = await globals.pool.getConnection();
-        globals.dbSetup.initUsers(conn);
+        await globals.dbSetup.initUsers(conn);
         let rows;
         if (search == "") {
             rows = await conn.query("SELECT id, username, points FROM users;");
