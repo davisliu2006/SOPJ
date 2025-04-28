@@ -36,7 +36,7 @@ export async function login_request(req: express.Request, res: express.Response)
         }
 
         let conn = await globals.pool.getConnection();
-        globals.dbSetup.initUsers(conn);
+        await globals.dbSetup.initUsers(conn);
         let rows = await conn.query("SELECT id, username, password FROM users WHERE username = ?;", [username]);
         if (rows.length == 0) {
             conn.release();
@@ -70,7 +70,7 @@ export async function login_request(req: express.Request, res: express.Response)
             maxAge: 1000*3600*24
         });
         if (redirect) {
-            res.redirect(`${redirect}`);
+            res.redirect(`${globals.sanitizeURL(redirect)}`);
         } else {
             res.redirect("/");
         }
@@ -131,7 +131,7 @@ export async function signup_request(req: express.Request, res: express.Response
         }
         
         let conn = await globals.pool.getConnection();
-        globals.dbSetup.initUsers(conn);
+        await globals.dbSetup.initUsers(conn);
         let rows = await conn.query("SELECT id, username, password FROM users WHERE username = ?;", [username]);
         if (rows.length != 0) {
             conn.release();
