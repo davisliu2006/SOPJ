@@ -47,7 +47,7 @@ export async function problems_submit(req: express.Request, res: express.Respons
     try {
         let user = req.user;
         if (!user) {
-            res.redirect("/login");
+            res.redirect(`/login?redirect=${req.originalUrl}`);
             return;
         }
         let validate = await globals.validateUser(user);

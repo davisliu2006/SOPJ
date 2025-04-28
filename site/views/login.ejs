@@ -49,6 +49,9 @@
                                 window.addEventListener("load", loadCaptcha);
                               </script>
                         </div><br>
+                        <% if (redirect) { %>
+                            <input type="hidden" name="redirect" value="<%= redirect %>">
+                        <% } %>
                         <% if (errors != "") {%>
                             <div id="errors">
                                 <label>
