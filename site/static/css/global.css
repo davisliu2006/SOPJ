@@ -33,6 +33,10 @@ ul {
     font-size: 18px; line-height: 1.5;
     color: rgb(0, 0, 0);
 }
+ol {
+    font-size: 18px; line-height: 1.5;
+    color: rgb(0, 0, 0);
+}
 a {
     text-decoration: none;
     color: rgb(0, 100, 150);
@@ -84,6 +88,7 @@ table {
 th {
     border: solid 1px;
     padding: 4px 12px 4px 12px;
+    background-color: rgb(200, 200, 200, 0.5);
 }
 td {
     border: solid 1px;
