@@ -70,7 +70,7 @@ export async function login_request(req: express.Request, res: express.Response)
             maxAge: 1000*3600*24
         });
         if (redirect) {
-            res.redirect(`/${redirect}`);
+            res.redirect(`${redirect}`);
         } else {
             res.redirect("/");
         }
