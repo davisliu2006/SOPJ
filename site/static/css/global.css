@@ -29,6 +29,9 @@ p {
     font-size: 18px; line-height: 1.5;
     color: rgb(0, 0, 0);
 }
+label {
+    font-size: 18px;
+}
 ul {
     font-size: 18px; line-height: 1.5;
     color: rgb(0, 0, 0);
@@ -335,6 +338,13 @@ span.unbold {
 textarea {
     resize: none;
     height: 10em;
+}
+
+select {
+    border: solid 1px rgb(0, 0, 0);
+    border-radius: 5px;
+    padding: 4px;
+    font-size: 16px;
 }
 
 /*image holder*/
