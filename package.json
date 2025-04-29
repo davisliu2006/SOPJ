@@ -9,6 +9,7 @@
         "bcrypt": "^5.1.1",
         "body-parser": "^1.20.3",
         "cookie-parser": "^1.4.7",
+        "date-fns": "^4.1.0",
         "dockerode": "^4.0.4",
         "dompurify": "^3.2.4",
         "dotenv": "^16.4.7",
