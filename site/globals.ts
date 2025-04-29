@@ -14,7 +14,7 @@ console.log("Running from directory: "+DIR);
 export const DB_PASSWORD: string = env.DB_PASSWORD;
 export const DB_USER: string = env.DB_USER;
 export const HOSTNAME: string = env.HOSTNAME;
-export const ISDEPLOY: boolean = env.ISDEPLOY;
+export const JUDGE_SUPPORT: boolean = env.JUDGE_SUPPORT;
 export const JWTSECRET: string = env.JWTSECRET;
 export const PORT: number = env.PORT;
 export const SESSIONSECRET: string = env.SESSIONSECRET;

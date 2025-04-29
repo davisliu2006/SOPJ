@@ -96,7 +96,7 @@ export async function submit_request(req: express.Request, res: express.Response
         conn.release();
         let id = Number(query.insertId);
 
-        if (globals.ISDEPLOY) {
+        if (globals.JUDGE_SUPPORT) {
             let config: database.ProblemJSON = await database.problems.readConfig(problem);
             for (let subtask of config.subtasks) {
                 subtask.verdict = [];
