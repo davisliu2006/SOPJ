@@ -35,13 +35,42 @@
                     Submissions
                     <hr>
                 </h2>
+                <div id="search" class="content-box">
+                    <form action="/submissions">
+                        <div class="inline-block">
+                            <label for="language">Language:</label>
+                            <select name="language" id="language">
+                                <option value="">Any</option>
+                                <option value="c++">C++</option>
+                                <option value="java">Java</option>
+                                <option value="python">Python</option>
+                            </select>
+                        </div>
+                        <div class="inline-block" style="margin-left: 25px;">
+                            <label for="status">Status:</label>
+                            <select name="status" id="status">
+                                <option value="">Any</option>
+                                <option value="AC">AC</option>
+                                <option value="WA">WA</option>
+                                <option value="TLE">TLE</option>
+                                <option value="RTE">RTE</option>
+                                <option value="CE">CE</option>
+                                <option value="Q">Queued</option>
+                                <option value="IE">IE</option>
+                            </select>
+                        </div>
+                        &ensp;
+                        <button class="button">Search</button>
+                    </form>
+                </div>
+                <br>
                 <table id="main-table">
                     <tr>
                         <th style="width: 20%;">Submission</th>
                         <th style="width: 30%;">Problem</th>
                         <th style="width: 20%;">User</th>
                         <th style="width: 10%;">Language</th>
-                        <th style="width: 10%;">Verdict</th>
+                        <th style="width: 10%;">Status</th>
                         <th style="width: 10%;">Score</th>
                     </tr>
                     <% for (let i = 0; i < submissions.length; i++) { %>
@@ -49,7 +78,8 @@
                             <td>
                                 <a href="/submissions-view?id=<%= submissions[i].id %>">
                                     Submission #<%= submissions[i].id %>
-                                </a>
+                                </a><br>
+                                <span class="minor" style="font-size: 14px;">0000-00-00 00:00</span>
                             </td>
                             <td>
                                 <a href="/problems-view?id=<%= submissions[i].problem %>">
@@ -65,7 +95,9 @@
                                 <%= submissions[i].language %>
                             </td>
                             <td class="align-center">
-                                <span class="<%= submissions[i].status %>"><%= submissions[i].status %></span>
+                                <a href="/submissions-view?id=<%= submissions[i].id %>">
+                                    <span class="<%= submissions[i].status %>"><%= submissions[i].status %></span>
+                                </a>
                             </td>
                             <td class="align-center">
                                 <%= submissions[i].points %> / <%= submissions[i].totpoints %>
