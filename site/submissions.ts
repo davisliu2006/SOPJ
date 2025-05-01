@@ -5,10 +5,36 @@ import * as database from "../database/database";
 export async function submissions(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
-        let submissions: any;
+        let userFilter = req.query["user"];
+        let problemFilter = req.query["problem"];
+        let langFilter = req.query["language"];
+        let statusFilter = req.query["status"];
+        let qString = "1 = 1";
+        let qParams = [];
+        if (userFilter) {
+            qString += " AND user = ?";
+            qParams.push(userFilter);
+        }
+        if (problemFilter) {
+            qString += " AND problem = ?";
+            qParams.push(problemFilter);
+        }
+        if (langFilter) {
+            qString += " AND language = ?";
+            qParams.push(langFilter);
+        }
+        if (statusFilter) {
+            qString += " AND status = ?";
+            qParams.push(statusFilter);
+        }
+
+        let submissions: Array<any> = [];
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initSubmissions(conn);
-        let rows = await conn.query("SELECT id, problem, user, language, status, points, totpoints FROM submissions;");
+        let rows = await conn.query(
+            `SELECT id, problem, user, language, status, points, totpoints FROM submissions WHERE ${qString};`,
+            qParams
+        );
         submissions = rows;
         for (let submission of submissions) {
             let otherInfo: any[][] = [

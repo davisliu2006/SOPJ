@@ -45,10 +45,10 @@
                 </div><div class="bounding-box inline-block align-top" style="width: 24%;">
                     <div id="submission" class="content-box">
                         <p style="margin-top: 0px;">
-                            <a href="/submissions">View Submissions</a>
+                            <a href="/submissions?problem=<%= problem.id %>">View Submissions</a>
                         </p>
                         <p>
-                            <a href="/submissions">My Submissions</a>
+                            <a href="/submissions?problem=<%= problem.id %>&user=<%= user.userid %>">My Submissions</a>
                         </p>
                         <p>
                             <a href="/problems-submit?id=<%= problem.id %>">Submit</a>
