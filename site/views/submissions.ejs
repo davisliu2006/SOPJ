@@ -64,6 +64,22 @@
                     </form>
                 </div>
                 <br>
+                <div class="page-selector">
+                    <div class="page-btn">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </div>
+                    <div style="display: flex;">
+                        <% for (let i = 0; i < 10; i++) { %>
+                            <div class="page-btn">
+                                <%= i+1 %>
+                            </div>
+                        <% } %>
+                    </div>
+                    <div class="page-btn">
+                        <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                </div>
+                <br>
                 <table id="main-table">
                     <tr>
                         <th style="width: 20%;">Submission</th>
