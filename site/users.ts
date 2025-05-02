@@ -5,15 +5,19 @@ export async function users(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
         let search = (typeof(req.query["search"]) == "string"? req.query["search"] : "");
+        let sortBy = (req.query["sort-by"]? req.query["sort-by"] : "username");
+        if (sortBy != "username" && sortBy != "points" && sortBy != "problems") {
+            sortBy = "username";
+        }
+        let sortOrder = (req.query["sort-order"]? req.query["sort-order"] : "0");
         let users: Array<any> = [];
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initUsers(conn);
-        let rows;
-        if (search == "") {
-            rows = await conn.query("SELECT id, username, points FROM users;");
-        } else {
-            rows = await conn.query(`SELECT id, username, points FROM users WHERE username LIKE '%${search}%';`);
-        }
+        let rows = await conn.query(
+            `SELECT id, username, points FROM users WHERE username LIKE ?
+                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")};`,
+            [`%${search}%`]
+        );
         conn.release();
         users = rows;
         res.render("users.ejs", {user, users});

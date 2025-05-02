@@ -8,15 +8,20 @@ export async function problems(req: express.Request, res: express.Response) {
         let user = req.user;
         let problems: Array<any> = [];
         let search = (typeof(req.query["search"]) == "string"? req.query["search"] : "");
+        let ptsMin = (req.query["pts-min"]? req.query["pts-min"] : "0");
+        let ptsMax = (req.query["pts-max"]? req.query["pts-max"] : "100");
+        let sortBy = (req.query["sort-by"]? req.query["sort-by"] : "name");
+        if (sortBy != "name" && sortBy != "points" && sortBy != "submissions") {
+            sortBy = "name";
+        }
+        let sortOrder = (req.query["sort-order"]? req.query["sort-order"] : "0");
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initProblems(conn);
-        let rows;
-        if (search == "") {
-            rows = await conn.query("SELECT id, name, points FROM problems ORDER BY name;");
-        } else {
-            rows = await conn.query(`SELECT id, name, points FROM problems WHERE name LIKE '%${search}%' ORDER BY name;`);
-        }
-        
+        let rows = await conn.query(
+            `SELECT id, name, points FROM problems WHERE ? <= points AND points <= ? AND name LIKE ?
+                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")};`,
+            [ptsMin, ptsMax, `%${search}%`]
+        );
         conn.release();
         problems = rows;
         res.render("problems.ejs", {user, problems});
