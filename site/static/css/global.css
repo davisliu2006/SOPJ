@@ -473,6 +473,27 @@ select {
     width: 100%;
 }
 
+/*search page selector*/
+.page-selector {
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(175, 175, 175);
+    border: solid 0.5px;
+    border-radius: 5px;
+    width: fit-content; height: fit-content;
+    overflow: hidden;
+}
+.page-selector .page-btn {
+    background-color: rgb(175, 175, 175);
+    border: solid 0.5px;
+    width: 50px; padding: 5px 0px 5px 0px;
+    text-align: center;
+    cursor: pointer;
+}
+.page-selector .page-btn:hover {
+    background-color: rgb(200, 200, 200);
+}
+
 /*markdown*/
 .markdown code {
     font-size: 18px;    

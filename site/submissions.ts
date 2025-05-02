@@ -10,6 +10,7 @@ export async function submissions(req: express.Request, res: express.Response) {
         let problemFilter = req.query["problem"];
         let langFilter = req.query["language"];
         let statusFilter = req.query["status"];
+        let page = (req.query["page"]? Number(req.query["page"]) : 0);
         let qString = "1 = 1";
         let qParams = [];
         if (userFilter) {
@@ -28,12 +29,13 @@ export async function submissions(req: express.Request, res: express.Response) {
             qString += " AND status = ?";
             qParams.push(statusFilter);
         }
+        qParams.push(page*100);
 
         let submissions: Array<any> = [];
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initSubmissions(conn);
         let rows = await conn.query(
-            `SELECT id, problem, user, language, status, points, totpoints, timestamp FROM submissions WHERE ${qString} ORDER BY id DESC;`,
+            `SELECT id, problem, user, language, status, points, totpoints, timestamp FROM submissions WHERE ${qString} ORDER BY id DESC LIMIT ?,100;`,
             qParams
         );
         submissions = rows;
