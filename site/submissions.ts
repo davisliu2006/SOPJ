@@ -1,3 +1,4 @@
+import * as dateFns from "date-fns";
 import express from "express";
 import * as globals from "./globals";
 import * as database from "../database/database";
@@ -32,7 +33,7 @@ export async function submissions(req: express.Request, res: express.Response) {
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initSubmissions(conn);
         let rows = await conn.query(
-            `SELECT id, problem, user, language, status, points, totpoints FROM submissions WHERE ${qString};`,
+            `SELECT id, problem, user, language, status, points, totpoints, timestamp FROM submissions WHERE ${qString} ORDER BY id DESC;`,
             qParams
         );
         submissions = rows;
@@ -43,6 +44,7 @@ export async function submissions(req: express.Request, res: express.Response) {
             ];
             submission.problemName = otherInfo[0][0].name;
             submission.userName = otherInfo[1][0].username;
+            submission.timestampStr = dateFns.format(submission.timestamp, "yyyy-MM-dd HH:mm");
         }
         conn.release();
         res.render("submissions.ejs", {user, submissions});

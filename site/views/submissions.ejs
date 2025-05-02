@@ -79,7 +79,9 @@
                                 <a href="/submissions-view?id=<%= submissions[i].id %>">
                                     Submission #<%= submissions[i].id %>
                                 </a><br>
-                                <span class="minor" style="font-size: 14px;">0000-00-00 00:00</span>
+                                <span class="minor" style="font-size: 14px;">
+                                    <%= submissions[i].timestampStr %>
+                                </span>
                             </td>
                             <td>
                                 <a href="/problems-view?id=<%= submissions[i].problem %>">
