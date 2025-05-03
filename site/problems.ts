@@ -24,7 +24,7 @@ export async function problems(req: express.Request, res: express.Response) {
         );
         conn.release();
         problems = rows;
-        res.render("problems.ejs", {user, problems});
+        res.render("problems.ejs", {user, problems, reqQuery: req.query});
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
