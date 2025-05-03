@@ -8,6 +8,7 @@
         <title>SOPJ</title>
         <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
         <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/submissions.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <style>
             #submission {
@@ -38,11 +39,40 @@
                     <hr>
                 </h2>
                 <p>
-                    Points: <%= userV.points %>
+                    Points: <%= userV.points %><br>
+                    Problems Solved: 0<br>
+                    Rank by Points: #0
+                </p>
+                <p>
+                    <a href="/submissions?user=<%= userV.id %>">View Submissions</a>
                 </p>
                 <p>
                     No information provided.
                 </p>
+                <h2>
+                    Solved Problems
+                    <hr>
+                </h2>
+                <table style="width: 100%;">
+                    <tr>
+                        <th style="width: 80%;">Problem</th>
+                        <th style="width: 10%;">Verdict</th>
+                        <th style="width: 10%;">Points</th>
+                    </tr>
+                    <% for (let problem of solvedP) { %>
+                        <tr>
+                            <td>
+                                <a href="/submissions?problem=<%= problem.id %>&user=<%= userV.id %>"><%= problem.name %></a>
+                            </td>
+                            <td class="align-center">
+                                <span class="<%= problem.verdict %>"><%= problem.verdict %></span>
+                            </td>
+                            <td class="align-center">
+                                <%= problem.ptsEarned %> / <%= problem.points %>
+                            </td>
+                        </tr>
+                    <% } %>
+                </table>
             </div>
 
             <!--footer-->
