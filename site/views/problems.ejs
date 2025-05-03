@@ -38,24 +38,34 @@
                     <form action="/problems">
                         <div class="inline-block">
                             <p style="margin-top: 0px;">Search:</p>
-                            <input class="text-entry" type="text" name="search" id="search-bar">
+                            <input class="text-entry" type="text" name="search" id="search-bar" value="<%= reqQuery.search %>">
                         </div>
                         <div class="inline-block" style="margin-left: 25px;">
                             <p style="margin-top: 0px;">Points Range:</p>
-                            <input class="text-entry" type="number" name="pts-min" id="pts-min">
-                            <input class="text-entry" type="number" name="pts-max" id="pts-max">
+                            <input class="text-entry" type="number" name="pts-min" id="pts-min" placeholder="min" value="<%= reqQuery["pts-min"] %>" style="width: 100px;">
+                            <input class="text-entry" type="number" name="pts-max" id="pts-max" placeholder="max" value="<%= reqQuery["pts-max"] %>" style="width: 100px;">
                         </div>
                         <button class="button">Search</button>
                         <div class="inline-block" style="margin-left: 25px;">
                             <p style="margin-top: 0px;">Sort By:</p>
                             <select name="sort-by" id="sort-by">
-                                <option value="name">Name</option>
-                                <option value="points">Points</option>
-                                <option value="submissions">Submissions</option>
+                                <option value="name"
+                                    <% if (reqQuery["sort-by"] == "name") { %>selected<% } %>
+                                >Name</option>
+                                <option value="points"
+                                    <% if (reqQuery["sort-by"] == "points") { %>selected<% } %>
+                                >Points</option>
+                                <option value="submissions"
+                                    <% if (reqQuery["sort-by"] == "submissions") { %>selected<% } %>
+                                >Submissions</option>
                             </select>
                             <select name="sort-order" id="sort-order">
-                                <option value="0">Ascending</option>
-                                <option value="1">Descending</option>
+                                <option value="0"
+                                    <% if (reqQuery["sort-order"] == "0") { %>selected<% } %>
+                                >Ascending</option>
+                                <option value="1"
+                                    <% if (reqQuery["sort-order"] == "1") { %>selected<% } %>
+                                >Descending</option>
                             </select>
                         </div>
                     </form>

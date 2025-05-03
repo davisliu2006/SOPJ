@@ -20,7 +20,7 @@ export async function users(req: express.Request, res: express.Response) {
         );
         conn.release();
         users = rows;
-        res.render("users.ejs", {user, users});
+        res.render("users.ejs", {user, users, reqQuery: req.query});
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
