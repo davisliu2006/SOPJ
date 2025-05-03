@@ -33,6 +33,12 @@
             <div id="problems" class="text-block">
                 <h2>
                     Submissions
+                    <% if (reqQuery.user) { %>
+                        by User #<%= reqQuery.user %>
+                    <% } %>
+                    <% if (reqQuery.problem) { %>
+                        to Problem #<%= reqQuery.problem %>
+                    <% } %>
                     <hr>
                 </h2>
                 <div id="search" class="content-box">

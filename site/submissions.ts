@@ -49,7 +49,7 @@ export async function submissions(req: express.Request, res: express.Response) {
             submission.timestampStr = dateFns.format(submission.timestamp, "yyyy-MM-dd HH:mm");
         }
         conn.release();
-        res.render("submissions.ejs", {user, submissions});
+        res.render("submissions.ejs", {user, submissions, reqQuery: req.query});
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
