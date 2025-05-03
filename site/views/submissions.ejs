@@ -64,6 +64,22 @@
                     </form>
                 </div>
                 <br>
+                <div class="page-selector">
+                    <div class="page-btn">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </div>
+                    <div style="display: flex;">
+                        <% for (let i = 0; i < 10; i++) { %>
+                            <div class="page-btn">
+                                <%= i+1 %>
+                            </div>
+                        <% } %>
+                    </div>
+                    <div class="page-btn">
+                        <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                </div>
+                <br>
                 <table id="main-table">
                     <tr>
                         <th style="width: 20%;">Submission</th>
@@ -79,7 +95,9 @@
                                 <a href="/submissions-view?id=<%= submissions[i].id %>">
                                     Submission #<%= submissions[i].id %>
                                 </a><br>
-                                <span class="minor" style="font-size: 14px;">0000-00-00 00:00</span>
+                                <span class="minor" style="font-size: 14px;">
+                                    <%= submissions[i].timestampStr %>
+                                </span>
                             </td>
                             <td>
                                 <a href="/problems-view?id=<%= submissions[i].problem %>">

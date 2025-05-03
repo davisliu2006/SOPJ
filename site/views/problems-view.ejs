@@ -48,7 +48,7 @@
                             <a href="/submissions?problem=<%= problem.id %>">View Submissions</a>
                         </p>
                         <p>
-                            <a href="/submissions?problem=<%= problem.id %>&user=<%= user.userid %>">My Submissions</a>
+                            <a href="/submissions?problem=<%= problem.id %>&user=<%= (user? user.userid : 0) %>">My Submissions</a>
                         </p>
                         <p>
                             <a href="/problems-submit?id=<%= problem.id %>">Submit</a>

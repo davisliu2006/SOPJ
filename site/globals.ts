@@ -96,7 +96,8 @@ export namespace dbSetup {
             code VARCHAR(10000) DEFAULT '', \
             status VARCHAR(50) DEFAULT '', \
             points INT DEFAULT 0, \
-            totpoints INT DEFAULT 0 \
+            totpoints INT DEFAULT 0, \
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP \
         );");
     }
 }

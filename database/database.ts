@@ -58,6 +58,8 @@ export namespace problems {
         }
     }
 }
+
+// submissions
 export namespace submissions {
     export async function read(id: number): Promise<ProblemJSON> {
         return JSON.parse(await readData(`submissions/${id}.json`));
