@@ -49,7 +49,7 @@ export async function submissions(req: express.Request, res: express.Response) {
             submission.timestampStr = dateFns.format(submission.timestamp, "yyyy-MM-dd HH:mm");
         }
         conn.release();
-        res.render("submissions.ejs", {user, submissions});
+        res.render("submissions.ejs", {user, submissions, reqQuery: req.query});
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
@@ -62,7 +62,7 @@ export async function submissions_view(req: express.Request, res: express.Respon
         let submissionID = Number(req.query["id"]? req.query["id"] : "");
         let submission: any;
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, problem, user, language, code, status FROM submissions WHERE id = ?;", [submissionID]);
+        let rows = await conn.query("SELECT id, problem, user, language, code, status, points, totpoints FROM submissions WHERE id = ?;", [submissionID]);
         submission = rows[0];
         let otherInfo: any[][] = [
             await conn.query("SELECT name FROM problems WHERE id = ?;", [submission.problem]),

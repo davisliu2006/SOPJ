@@ -33,30 +33,58 @@
             <div id="problems" class="text-block">
                 <h2>
                     Submissions
+                    <% if (reqQuery.user) { %>
+                        by User #<%= reqQuery.user %>
+                    <% } %>
+                    <% if (reqQuery.problem) { %>
+                        to Problem #<%= reqQuery.problem %>
+                    <% } %>
                     <hr>
                 </h2>
                 <div id="search" class="content-box">
                     <form action="/submissions">
+                        <input type="hidden" name="problem" value="<%= reqQuery.problem %>">
+                        <input type="hidden" name="user" value="<%= reqQuery.user %>">
                         <div class="inline-block">
                             <label for="language">Language:</label>
                             <select name="language" id="language">
                                 <option value="">Any</option>
-                                <option value="c++">C++</option>
-                                <option value="java">Java</option>
-                                <option value="python">Python</option>
+                                <option value="c++"
+                                    <% if (reqQuery.language == "c++") { %>selected<% } %>
+                                >C++</option>
+                                <option value="java"
+                                    <% if (reqQuery.language == "java") { %>selected<% } %>
+                                >Java</option>
+                                <option value="python"
+                                    <% if (reqQuery.language == "python") { %>selected<% } %>
+                                >Python</option>
                             </select>
                         </div>
                         <div class="inline-block" style="margin-left: 25px;">
                             <label for="status">Status:</label>
                             <select name="status" id="status">
                                 <option value="">Any</option>
-                                <option value="AC">AC</option>
-                                <option value="WA">WA</option>
-                                <option value="TLE">TLE</option>
-                                <option value="RTE">RTE</option>
-                                <option value="CE">CE</option>
-                                <option value="Q">Queued</option>
-                                <option value="IE">IE</option>
+                                <option value="AC"
+                                    <% if (reqQuery.status == "AC") { %>selected<% } %>
+                                >AC</option>
+                                <option value="WA"
+                                    <% if (reqQuery.status == "WA") { %>selected<% } %>
+                                >WA</option>
+                                <option value="TLE"
+                                    <% if (reqQuery.status == "TLE") { %>selected<% } %>
+                                >TLE</option>
+                                <option value="RTE"
+                                    <% if (reqQuery.status == "RTE") { %>selected<% } %>
+                                >RTE</option>
+                                <option value="CE"
+                                    <% if (reqQuery.status == "CE") { %>selected<% } %>
+                                >CE</option>
+                                <option value="Q"
+                                    <% if (reqQuery.status == "Q") { %>selected<% } %>
+                                >Queued</option>
+                                <option value="IE"
+                                    <% if (reqQuery.status == "IE") { %>selected<% } %>
+                                >IE</option>
                             </select>
                         </div>
                         &ensp;

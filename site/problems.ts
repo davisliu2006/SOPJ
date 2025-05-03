@@ -24,7 +24,7 @@ export async function problems(req: express.Request, res: express.Response) {
         );
         conn.release();
         problems = rows;
-        res.render("problems.ejs", {user, problems});
+        res.render("problems.ejs", {user, problems, reqQuery: req.query});
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
@@ -119,12 +119,12 @@ export async function submit_request(req: express.Request, res: express.Response
                 let currVerdict = judge.verdicts.AC;
                 for (let subtask of config.subtasks) {
                     let subtaskPass = 1;
-                    subtask.verdict = [];
+                    let vi = 0;
                     for (let test of subtask.tests) {
                         let input = await database.problems.readTest(problem, test+".in");
                         let expected = await database.problems.readTest(problem, test+".out");
                         let verdict = await judge.judge(lang, compile, expected, input);
-                        subtask.verdict.push(verdict);
+                        subtask.verdict[vi++] = verdict;
                         currVerdict = judge.verdicts.priorityVerdict(currVerdict, verdict);
                         if (verdict != judge.verdicts.AC) {
                             subtaskPass = 0;
@@ -133,6 +133,7 @@ export async function submit_request(req: express.Request, res: express.Response
                     }
                     totPoints += subtask.points;
                     points += subtask.points*subtaskPass;
+                    database.submissions.write(id, config);
                 }
                 await conn.query(
                     "UPDATE submissions SET points = ?, totpoints = ?, status = ? WHERE id = ?;",
@@ -152,6 +153,8 @@ export async function submit_request(req: express.Request, res: express.Response
                 );
             }
             database.submissions.write(id, config);
+
+            // update user points
         } else {
             let config: database.ProblemJSON = await database.problems.readConfig(problem);
             for (let subtask of config.subtasks) {

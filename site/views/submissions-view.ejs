@@ -55,9 +55,13 @@
                     </a><br>
                     Language: <%= submission.language %>
                 </p>
-                <h3>
+                <h3 style="margin-bottom: 0px;">
                     Status:
                 </h3>
+                <p style="margin-top: 0px;">
+                    &emsp;<span class="<%= submission.status %>"><%= submission.status %></span>
+                    (<%= submission.points %>/<%= submission.totpoints %> points)
+                </p>
                 <% let test_i = 0; let subtask_i = 0; %>
                 <% for (let subtask of submission.json.subtasks) { %>
                     <p>

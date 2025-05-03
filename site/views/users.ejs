@@ -37,18 +37,28 @@
                 <div id="search" class="content-box">
                     <form action="/users">
                         <label style="margin-top: 0px;">Search:</label>
-                        <input class="text-entry" type="text" name="search" id="search-bar">
+                        <input class="text-entry" type="text" name="search" id="search-bar" value="<%= reqQuery.search %>">
                         <button class="button">Search</button>
                         <div class="inline-block" style="margin-left: 25px;">
                             <label for="sort-by">Sort By:</label>
                             <select name="sort-by" id="sort-by">
-                                <option value="username">Username</option>
-                                <option value="points">Points</option>
-                                <option value="problems">Problems Solved</option>
+                                <option value="username"
+                                    <% if (reqQuery["sort-by"] == "name") { %>selected<% } %>
+                                >Username</option>
+                                <option value="points"
+                                    <% if (reqQuery["sort-by"] == "points") { %>selected<% } %>
+                                >Points</option>
+                                <option value="problems"
+                                    <% if (reqQuery["sort-by"] == "problems") { %>selected<% } %>
+                                >Problems Solved</option>
                             </select>
                             <select name="sort-order" id="sort-order">
-                                <option value="0">Ascending</option>
-                                <option value="1">Descending</option>
+                                <option value="0"
+                                    <% if (reqQuery["sort-order"] == "0") { %>selected<% } %>
+                                >Ascending</option>
+                                <option value="1"
+                                    <% if (reqQuery["sort-order"] == "1") { %>selected<% } %>
+                                >Descending</option>
                             </select>
                         </div>
                     </form>

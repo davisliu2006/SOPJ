@@ -65,7 +65,9 @@
                                 <a href="/submissions?problem=<%= problem.id %>&user=<%= userV.id %>"><%= problem.name %></a>
                             </td>
                             <td class="align-center">
-                                <span class="<%= problem.verdict %>"><%= problem.verdict %></span>
+                                <a href="/submissions?problem=<%= problem.id %>&user=<%= userV.id %>">
+                                    <span class="<%= problem.verdict %>"><%= problem.verdict %></span>
+                                </a>
                             </td>
                             <td class="align-center">
                                 <%= problem.ptsEarned %> / <%= problem.points %>
