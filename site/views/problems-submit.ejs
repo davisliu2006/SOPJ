@@ -17,11 +17,21 @@
             #submission .button {
                 width: 100%;
             }
+            #monaco-editor {
+                width: 100%;
+                height: 500px;
+                border: solid 1px;
+                overflow: hidden;
+                border-radius: 5px;
+            }
         </style>
 
         <!--header scripts-->
         <script src="src/global.js"></script>
         <script src="src/collapsables.js"></script>
+        <!--code editor-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/monaco-themes/dist/monaco-themes.js"></script>
     </head>
 
     <body>
@@ -41,7 +51,40 @@
                 <div id="submission">
                     <form action="/submit-request" method="post">
                         <input type="hidden" name="problem" value="<%= problem.id %>">
-                        <textarea class="text-entry" name="code" id="code" placeholder="Paste your code here."></textarea><br><br>
+
+                        <!--monaco editor-->
+                        <div id="monaco-editor">
+                            <script>
+                                require.config({paths: {vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs"}});
+
+                                require(["vs/editor/editor.main"], function() {
+                                    // theme
+                                    monaco.editor.defineTheme("theme-1", {
+                                        base: "vs-dark",
+                                        inherit: true,
+                                        rules: [],
+                                        colors: {
+                                            // "editor.background": "#fcfcfc"
+                                        }
+                                    });
+
+                                    // editor
+                                    let editor = monaco.editor.create(document.getElementById("monaco-editor"), {
+                                        language: "cpp",
+                                        theme: "theme-1",
+                                        fontSize: 16,
+                                        scrollBeyondLastLine: false
+                                    });
+
+                                    // update textarea on submit
+                                    document.querySelector("#submission form").addEventListener("submit", function () {
+                                        document.querySelector("#submission #code").value = editor.getValue();
+                                    });
+                                });
+                            </script>
+                        </div>
+
+                        <textarea class="text-entry" name="code" id="code" placeholder="Paste your code here." hidden></textarea><br>
                         <select name="language" id="language">
                             <option value="c++">C++ (G++ 17)</option>
                             <option value="java">Java (Java 8)</option>
