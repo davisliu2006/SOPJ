@@ -24,6 +24,8 @@
         <!--header scripts-->
         <script src="src/global.js"></script>
         <script src="src/collapsables.js"></script>
+        <!--code editor-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
     </head>
 
     <body>
@@ -38,6 +40,7 @@
             <div id="problem" class="text-block">
                 <h2>
                     Edit Problem
+                    <a href="/problems-view?id=<%= problem.id %>"><%= problem.name %></a>
                     <hr>
                 </h2>
                 <div id="submission">
@@ -58,7 +61,41 @@
                         <h3>Test Cases</h3>
                         <input type="file" name="test-cases" id="test-cases"><br><br>
                         <h3>Configuration</h3>
-                        <textarea class="text-entry" name="config" id="config"><%= problem.config %></textarea><br><br>
+
+                        <!--monaco editor-->
+                        <div id="monaco-editor">
+                            <script>
+                                require.config({paths: {vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs"}});
+
+                                require(["vs/editor/editor.main"], function() {
+                                    // theme
+                                    monaco.editor.defineTheme("theme-1", {
+                                        base: "vs-dark",
+                                        inherit: true,
+                                        rules: [],
+                                        colors: {
+                                            // "editor.background": "#fcfcfc"
+                                        }
+                                    });
+
+                                    // editor
+                                    let editor = monaco.editor.create(document.getElementById("monaco-editor"), {
+                                        language: "json",
+                                        theme: "theme-1",
+                                        fontSize: 16,
+                                        scrollBeyondLastLine: false
+                                    });
+                                    editor.setValue(`<%- problem.config %>`);
+
+                                    // update textarea on submit
+                                    document.querySelector("#submission form").addEventListener("submit", function () {
+                                        document.querySelector("#submission #config").value = editor.getValue();
+                                    });
+                                });
+                            </script>
+                        </div>
+
+                        <textarea class="text-entry" name="config" id="config" hidden><%= problem.config %></textarea><br><br>
                         <button class="button" type="submit">
                             Submit
                         </button>
