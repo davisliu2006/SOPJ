@@ -66,7 +66,11 @@
                 <% for (let subtask of submission.json.subtasks) { %>
                     <p>
                         <b>Subtask <%= ++subtask_i %></b>
-                        (0/<%= subtask.points %> points)<br>
+                        <% let subtaskPass = 1; %>
+                        <% for (let v of subtask.verdict) {
+                            if (v != "AC") {subtaskPass = 0;}
+                        } %>
+                        (<%= subtask.points*subtaskPass %>/<%= subtask.points %> points)<br>
                         <% for (let v of subtask.verdict) { %>
                             &emsp;Test Case <%= ++test_i %>: <span class="<%= v %>"><%= v %></span><br>
                         <% } %>
