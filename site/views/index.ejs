@@ -51,6 +51,13 @@
                         Popular Problems
                         <hr>
                     </h4>
+                    <ol style="margin-bottom: 0px;">
+                        <% for (let problem of popular) {%>
+                            <li>
+                                <a href="/problems-view?id=<%= problem.id %>"><%= problem.name %></a>
+                            </li>
+                        <% } %>
+                    </ol>
                 </div>
             </div>
 
