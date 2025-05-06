@@ -11,7 +11,7 @@ case "$1" in
         g++ compile/main.cpp -o compile/main
         ;;
     java)
-        javac Main.java
+        javac compile/Main.java -d compile
         ;;
     *)
         echo "Unsupported language"
