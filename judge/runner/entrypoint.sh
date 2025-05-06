@@ -17,7 +17,7 @@ case "$1" in
         python3 run/main.py < run/input.in > run/output.out
         ;;
     java)
-        java -cp Main < run/input.in > run/output.out
+        java -cp run Main < run/input.in > run/output.out
         ;;
     *)
         echo "Unsupported language"

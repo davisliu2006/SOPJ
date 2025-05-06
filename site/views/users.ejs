@@ -73,16 +73,16 @@
                     </tr>
                     <% for (let i = 0; i < users.length; i++) { %>
                         <tr>
-                            <td>
+                            <td class="align-center">
                                 <%= i+1 %>
                             </td>
                             <td>
                                 <a href="/users-view?id=<%= users[i].id %>"><%= users[i].username %></a>
                             </td>
-                            <td>
+                            <td class="align-center">
                                 <%= users[i].points %>
                             </td>
-                            <td>
+                            <td class="align-center">
                                 <%= users[i].problems %>
                             </td>
                         </tr>
