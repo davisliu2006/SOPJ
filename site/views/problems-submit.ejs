@@ -44,7 +44,8 @@
             <!--about-->
             <div id="problem" class="text-block">
                 <h2>
-                    <%= problem.name %>
+                    Submit to
+                    <a href="/problems-view?id=<%= problem.id %>"><%= problem.name %></a>
                     <hr>
                 </h2>
                 <div id="submission">
@@ -71,6 +72,7 @@
                                     let editor = monaco.editor.create(document.getElementById("monaco-editor"), {
                                         language: "cpp",
                                         theme: "theme-1",
+                                        automaticLayout: true,
                                         fontSize: 16,
                                         scrollBeyondLastLine: false
                                     });
