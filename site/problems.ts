@@ -105,8 +105,10 @@ export async function submit_request(req: express.Request, res: express.Response
             let config: database.ProblemJSON = await database.problems.readConfig(problem);
             for (let subtask of config.subtasks) {
                 subtask.verdict = [];
+                subtask.info = [];
                 for (let test of subtask.tests) {
                     subtask.verdict.push(judge.verdicts.Q);
+                    subtask.info.push({});
                 }
             }
             database.submissions.write(id, config);
@@ -123,8 +125,9 @@ export async function submit_request(req: express.Request, res: express.Response
                     for (let test of subtask.tests) {
                         let input = await database.problems.readTest(problem, test+".in");
                         let expected = await database.problems.readTest(problem, test+".out");
-                        let verdict = await judge.judge(lang, compile, expected, input);
-                        subtask.verdict[vi++] = verdict;
+                        let [verdict, info] = await judge.judge(lang, compile, expected, input);
+                        subtask.verdict[vi] = verdict;
+                        subtask.info[vi++] = info;
                         currVerdict = judge.verdicts.priorityVerdict(currVerdict, verdict);
                         if (verdict != judge.verdicts.AC) {
                             subtaskPass = 0;
