@@ -83,6 +83,9 @@
                                 <% if (info.time) { %>
                                     (<%= info.time.toFixed(2) %>s)
                                 <% } %>
+                                <% if (info.message) { %>
+                                    (<%= info.message %>)
+                                <% } %>
                             <% } %>
                             <br>
                         <% } %>
