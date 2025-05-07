@@ -158,7 +158,9 @@ export async function judge(language: string, code: Buffer, expected: string,
         } else {
             return [verdicts.WA, {time: t1-t0}];
         }
+    } else if (status.StatusCode == 137) {
+        return [verdicts.TLE, {time: t1-t0}];
     } else {
-        return [verdicts.RTE, {}];
+        return [verdicts.RTE, {time: t1-t0}];
     }
 }
