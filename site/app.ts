@@ -46,6 +46,7 @@ app.post("/edit-problem", upload.single("test-cases"), pages.edit_problem);
 
 app.get("/submissions", pages.submissions);
 app.get("/submissions-view", pages.submissions_view);
+app.get("/regrade-request", pages.regrade_request);
 
 app.get("/contests", pages.contests);
 
@@ -58,6 +59,7 @@ app.get("/account", pages.account)
 
 app.get("/captcha", pages.captcha);
 
+app.get("/permission-denied", pages.permission_denied);
 app.get("/error-500", pages.error_500);
 app.get("/*", pages.error_404);
 
