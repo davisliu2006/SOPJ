@@ -3,6 +3,7 @@ export class SubtaskJSON {
     points: number = 1;
     tests: Array<string> = [];
     verdict: Array<string> | null = null;
+    info: Array<any> | null = null;
 }
 
 export class ProblemJSON {

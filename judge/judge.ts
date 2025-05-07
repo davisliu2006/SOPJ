@@ -142,17 +142,25 @@ export async function execute(language: string, code: Buffer,
 
 export async function judge(language: string, code: Buffer, expected: string,
     input: string = ""
-): Promise<string> {
+): Promise<[string, any]> {
+    let t0 = performance.now()*0.001;
     let [status, output] = await execute(language, code, input);
+    let t1 = performance.now()*0.001;
+    console.log(`${t1-t0}s`);
     if (!status || !output) {
-        return verdicts.IE;
+        return [verdicts.IE, {}];
     } else if (status.StatusCode == 0) {
         // console.log("Output: ["+output+"]");
         // console.log("Expected: ["+expected+"]");
         let chk = checker.checker(output, expected);
-        if (chk) {return verdicts.AC;}
-        else {return verdicts.WA;}
+        if (chk) {
+            return [verdicts.AC, {time: t1-t0}];
+        } else {
+            return [verdicts.WA, {time: t1-t0}];
+        }
+    } else if (status.StatusCode == 137) {
+        return [verdicts.TLE, {time: t1-t0}];
     } else {
-        return verdicts.RTE;
+        return [verdicts.RTE, {time: t1-t0}];
     }
 }
