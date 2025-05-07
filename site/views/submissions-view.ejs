@@ -71,8 +71,16 @@
                             if (v != "AC") {subtaskPass = 0;}
                         } %>
                         (<%= subtask.points*subtaskPass %>/<%= subtask.points %> points)<br>
-                        <% for (let v of subtask.verdict) { %>
-                            &emsp;Test Case <%= ++test_i %>: <span class="<%= v %>"><%= v %></span><br>
+                        <% for (let vi = 0; vi < subtask.verdict.length; vi++) { %>
+                            <% let verdict = subtask.verdict[vi]; %>
+                            <% let info = (subtask.info? subtask.info[vi] : null); %>
+                            &emsp;Test Case <%= ++test_i %>: <span class="<%= verdict %>"><%= verdict %></span>
+                            <% if (info) { %>
+                                <% if (info.time) { %>
+                                    (<%= info.time.toFixed(2) %>s)
+                                <% } %>
+                            <% } %>
+                            <br>
                         <% } %>
                     </p>
                 <% } %>
