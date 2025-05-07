@@ -18,3 +18,8 @@ export function error_500(req: express.Request, res: express.Response) {
     let user = req.user;
     res.render("500.ejs", {user});
 }
+
+export function permission_denied(req: express.Request, res: express.Response) {
+    let user = req.user;
+    res.render("permission-denied.ejs", {user});
+}
