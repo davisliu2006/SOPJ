@@ -147,7 +147,7 @@ export async function judge(language: string, code: Buffer, expected: string,
     let [status, output] = await execute(language, code, input);
     let t1 = performance.now()*0.001;
     console.log(`${t1-t0}s`);
-    if (!status || !output) {
+    if (!status) {
         return [verdicts.IE, {}];
     } else if (status.StatusCode == 0) {
         // console.log("Output: ["+output+"]");
@@ -160,6 +160,12 @@ export async function judge(language: string, code: Buffer, expected: string,
         }
     } else if (status.StatusCode == 137) {
         return [verdicts.TLE, {time: t1-t0}];
+    } else if (status.StatusCode == 139) {
+        return [verdicts.RTE, {time: t1-t0, message: "segmentation fault"}];
+    } else if (status.StatusCode == 136) {
+        return [verdicts.RTE, {time: t1-t0, message: "arithmetic error"}];
+    } else if (status.StatusCode == 134) {
+        return [verdicts.RTE, {time: t1-t0, message: "aborted"}];
     } else {
         return [verdicts.RTE, {time: t1-t0}];
     }
