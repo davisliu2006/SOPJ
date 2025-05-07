@@ -96,7 +96,7 @@ export async function submit_request(req: express.Request, res: express.Response
         await globals.dbSetup.initUsers(conn);
         let query = await conn.query(
             "INSERT INTO submissions (problem, user, language, code, status) VALUES (?, ?, ?, ?, ?);",
-            [problem, user.userid, lang, code, "Q"]
+            [problem, user.userid, lang, code, judge.verdicts.Q]
         );
         conn.release();
         let id = Number(query.insertId);
