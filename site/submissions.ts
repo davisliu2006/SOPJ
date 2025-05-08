@@ -3,6 +3,7 @@ import express from "express";
 import * as globals from "./globals";
 import * as database from "../database/database";
 import * as judge from "../judge/judge";
+import * as validation from "./validation";
 
 export async function submissions(req: express.Request, res: express.Response) {
     try {
@@ -96,7 +97,7 @@ export async function regrade_request(req: express.Request, res: express.Respons
         let id = Number(req.query["id"]? req.query["id"] : "0");
         let conn = await globals.pool.getConnection();
         let submission = (await conn.query(
-            "SELECT problem, language, code FROM submissions WHERE id = ?;",
+            "SELECT problem, user, language, code FROM submissions WHERE id = ?;",
             [id]
         ))[0];
         let problem = submission.problem;
@@ -166,6 +167,7 @@ export async function regrade_request(req: express.Request, res: express.Respons
             database.submissions.write(id, config);
 
             // update user points
+            validation.validateUserPoints(submission.user);
         } else {
             let config: database.ProblemJSON = await database.problems.readConfig(problem);
             for (let subtask of config.subtasks) {
