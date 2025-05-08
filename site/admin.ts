@@ -16,7 +16,7 @@ export async function problems_create(req: express.Request, res: express.Respons
             res.redirect("/logout");
             return;
         } else if (validate != 10) {
-            res.redirect("/");
+            res.redirect("/permission-denied");
             return;
         }
 
@@ -42,7 +42,7 @@ export async function create_problem(req: express.Request, res: express.Response
             res.redirect("/logout");
             return;
         } else if (validate != 10) {
-            res.redirect("/");
+            res.redirect("/permission-denied");
             return;
         }
 
@@ -80,7 +80,7 @@ export async function problems_edit(req: express.Request, res: express.Response)
             res.redirect("/logout");
             return;
         } else if (validate != 10) {
-            res.redirect("/");
+            res.redirect("/permission-denied");
             return;
         }
 
@@ -121,7 +121,7 @@ export async function edit_problem(req: express.Request, res: express.Response) 
             res.redirect("/logout");
             return;
         } else if (validate != 10) {
-            res.redirect("/");
+            res.redirect("/permission-denied");
             return;
         }
 

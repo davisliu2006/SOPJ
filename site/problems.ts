@@ -2,6 +2,7 @@ import express from "express";
 import * as globals from "./globals";
 import * as database from "../database/database";
 import * as judge from "../judge/judge";
+import * as validation from "./validation";
 
 export async function problems(req: express.Request, res: express.Response) {
     try {
@@ -158,6 +159,7 @@ export async function submit_request(req: express.Request, res: express.Response
             database.submissions.write(id, config);
 
             // update user points
+            validation.validateUserPoints(user.userid);
         } else {
             let config: database.ProblemJSON = await database.problems.readConfig(problem);
             for (let subtask of config.subtasks) {

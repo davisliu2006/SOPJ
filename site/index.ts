@@ -6,6 +6,7 @@ export async function index(req: express.Request, res: express.Response) {
     let conn = await globals.pool.getConnection();
 
     // popular problems
+    globals.dbSetup.initSubmissions(conn);
     let submissions = await conn.query(`SELECT id, problem FROM submissions ORDER BY id DESC LIMIT 100;`);
     let freq = new Map<number,number>();
     for (let submission of submissions) {
