@@ -20,7 +20,9 @@ export async function users(req: express.Request, res: express.Response) {
         );
         conn.release();
         users = rows;
-        res.render("users.ejs", {user, users, reqQuery: req.query});
+        res.render("users.ejs", {
+            user, users, reqQuery: req.query
+        });
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");
@@ -57,7 +59,9 @@ export async function users_view(req: express.Request, res: express.Response) {
             else {return 0;}
         });
         conn.release();
-        res.render("users-view.ejs", {user, userV, solvedP});
+        res.render("users-view.ejs", {
+            user, userV, solvedP
+        });
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");

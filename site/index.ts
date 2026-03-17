@@ -7,7 +7,9 @@ export async function index(req: express.Request, res: express.Response) {
 
     // popular problems
     globals.dbSetup.initSubmissions(conn);
-    let submissions = await conn.query(`SELECT id, problem FROM submissions ORDER BY id DESC LIMIT 100;`);
+    let submissions = await conn.query(
+        `SELECT id, problem FROM submissions ORDER BY id DESC LIMIT 100;`
+    );
     let freq = new Map<number,number>();
     for (let submission of submissions) {
         if (!freq.has(submission.problem)) {
@@ -27,9 +29,9 @@ export async function index(req: express.Request, res: express.Response) {
     });
     let popular = [];
     for (let id of sorted) {
-        popular.push(
-            (await conn.query("SELECT id, name FROM problems WHERE id = ?;", [id]))[0]
-        );
+        popular.push((await conn.query(
+            "SELECT id, name FROM problems WHERE id = ?;", [id]
+        ))[0]);
     }
 
     conn.release();

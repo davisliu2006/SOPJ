@@ -85,7 +85,9 @@ export async function problems_edit(req: express.Request, res: express.Response)
         }
 
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, name, description, time, memory FROM problems WHERE id = ?;", [id]);
+        let rows = await conn.query(
+            "SELECT id, name, description, time, memory FROM problems WHERE id = ?;", [id]
+        );
         conn.release();
         if (rows.length < 1) {
             res.redirect("/");
@@ -126,7 +128,9 @@ export async function edit_problem(req: express.Request, res: express.Response) 
         }
 
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, name, description FROM problems WHERE id = ?;", [id]);
+        let rows = await conn.query(
+            "SELECT id, name, description FROM problems WHERE id = ?;", [id]
+        );
         if (rows.length < 1) {
             conn.release();
             res.redirect("/");
