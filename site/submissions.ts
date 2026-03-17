@@ -5,6 +5,9 @@ import * as database from "../database/database";
 import * as judge from "../judge/judge";
 import * as validation from "./validation";
 
+/**
+ * GET /submissions
+ */
 export async function submissions(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -58,13 +61,18 @@ export async function submissions(req: express.Request, res: express.Response) {
     }
 }
 
+/**
+ * GET /submissions-view
+ */
 export async function submissions_view(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
         let submissionID = Number(req.query["id"]? req.query["id"] : "");
         let submission: any;
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, problem, user, language, code, status, points, totpoints FROM submissions WHERE id = ?;", [submissionID]);
+        let rows = await conn.query(
+            "SELECT id, problem, user, language, code, status, points, totpoints FROM submissions WHERE id = ?;", [submissionID]
+        );
         submission = rows[0];
         let otherInfo: any[][] = [
             await conn.query("SELECT name FROM problems WHERE id = ?;", [submission.problem]),
@@ -81,6 +89,9 @@ export async function submissions_view(req: express.Request, res: express.Respon
     }
 }
 
+/**
+ * POST /regrade-request
+ */
 export async function regrade_request(req: express.Request, res: express.Response) {
     try {
         let user = req.user;

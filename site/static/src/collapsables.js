@@ -1,3 +1,6 @@
+/**
+ * @param {string} selector 
+ */
 function initCollapsable(selector) {
     let collapsable = document.querySelector(selector);
     let btn = collapsable.querySelector(".collapsable-btn");

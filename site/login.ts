@@ -3,6 +3,9 @@ import express from "express";
 import * as jwt from "jsonwebtoken";
 import * as globals from "./globals";
 
+/**
+ * GET /login
+ */
 export function login(req: express.Request, res: express.Response) {
     let user = req.user;
     if (user) {
@@ -13,6 +16,9 @@ export function login(req: express.Request, res: express.Response) {
     let redirect = req.query["redirect"];
     res.render("login.ejs", {user, errors, redirect});
 };
+/**
+ * POST /login-request
+ */
 export async function login_request(req: express.Request, res: express.Response) {
     try {
         let errors = "";
@@ -37,7 +43,9 @@ export async function login_request(req: express.Request, res: express.Response)
 
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initUsers(conn);
-        let rows = await conn.query("SELECT id, username, password FROM users WHERE username = ?;", [username]);
+        let rows = await conn.query(
+            "SELECT id, username, password FROM users WHERE username = ?;", [username]
+        );
         if (rows.length == 0) {
             conn.release();
             errors = "Account does not exist";
@@ -80,6 +88,9 @@ export async function login_request(req: express.Request, res: express.Response)
     }
 }
 
+/**
+ * GET /signup
+ */
 export function signup(req: express.Request, res: express.Response) {
     let user = req.user;
     if (user) {
@@ -89,6 +100,9 @@ export function signup(req: express.Request, res: express.Response) {
     let errors = (req.query["error"]? req.query["error"] : "");
     res.render("signup.ejs", {user, errors});
 };
+/**
+ * POST /signup-request
+ */
 export async function signup_request(req: express.Request, res: express.Response) {
     function validateUsername(str: string): string {
         if (str.length < 1 || str.length > 20) {
@@ -132,7 +146,9 @@ export async function signup_request(req: express.Request, res: express.Response
         
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initUsers(conn);
-        let rows = await conn.query("SELECT id, username, password FROM users WHERE username = ?;", [username]);
+        let rows = await conn.query(
+            "SELECT id, username, password FROM users WHERE username = ?;", [username]
+        );
         if (rows.length != 0) {
             conn.release();
             errors = "User already exists";
@@ -155,7 +171,9 @@ export async function signup_request(req: express.Request, res: express.Response
         }
 
         let hashed = bcrypt.hashSync(password, 8);
-        await conn.query("INSERT INTO users (username, password) VALUES (?, ?);", [username, hashed]);
+        await conn.query(
+            "INSERT INTO users (username, password) VALUES (?, ?);", [username, hashed]
+        );
         conn.release();
         res.redirect("/login");
     } catch (e) {
@@ -164,11 +182,17 @@ export async function signup_request(req: express.Request, res: express.Response
     }
 };
 
+/**
+ * GET /logout
+ */
 export function logout(req: express.Request, res: express.Response) {
     res.clearCookie("opj");
     res.redirect("/");
 }
 
+/**
+ * GET /account
+ */
 export function account(req: express.Request, res: express.Response) {
     try {
         let user = req.user;

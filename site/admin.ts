@@ -3,6 +3,9 @@ import express from "express";
 import * as globals from "./globals";
 import * as database from "../database/database";
 
+/**
+ * GET /problems-create
+ */
 export async function problems_create(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -27,6 +30,9 @@ export async function problems_create(req: express.Request, res: express.Respons
     }
 }
 
+/**
+ * POST /create-problem
+ */
 export async function create_problem(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -61,6 +67,9 @@ export async function create_problem(req: express.Request, res: express.Response
     }
 }
 
+/**
+ * GET /problems-edit
+ */
 export async function problems_edit(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -85,7 +94,9 @@ export async function problems_edit(req: express.Request, res: express.Response)
         }
 
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, name, description, time, memory FROM problems WHERE id = ?;", [id]);
+        let rows = await conn.query(
+            "SELECT id, name, description, time, memory FROM problems WHERE id = ?;", [id]
+        );
         conn.release();
         if (rows.length < 1) {
             res.redirect("/");
@@ -102,6 +113,9 @@ export async function problems_edit(req: express.Request, res: express.Response)
     }
 }
 
+/**
+ * POST /edit-problem
+ */
 export async function edit_problem(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -126,7 +140,9 @@ export async function edit_problem(req: express.Request, res: express.Response) 
         }
 
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, name, description FROM problems WHERE id = ?;", [id]);
+        let rows = await conn.query(
+            "SELECT id, name, description FROM problems WHERE id = ?;", [id]
+        );
         if (rows.length < 1) {
             conn.release();
             res.redirect("/");

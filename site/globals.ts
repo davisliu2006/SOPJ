@@ -43,6 +43,10 @@ export const pool = mariadb.createPool({
 });
 
 // authenitcate user
+/**
+ * Authenticate user using JWT token in cookies.
+ * @returns decoded user if valid, otherwise null
+ */
 export function jwtAuth(req: express.Request, res: express.Response) {
     try {
         let decode = jwt.verify(req.cookies["opj"], JWTSECRET);
@@ -51,6 +55,11 @@ export function jwtAuth(req: express.Request, res: express.Response) {
         return null;
     }
 }
+/**
+ * Validates a logged in user and checks their permissions.
+ * @param user - the user object from the JWT token
+ * @returns an integer representing the user's permissions or 0 if invalid
+ */
 export async function validateUser(user: any): Promise<number> {
     if (!user.userid || !user.username) {return 0;}
     try {
@@ -66,6 +75,9 @@ export async function validateUser(user: any): Promise<number> {
     }
 }
 
+/**
+ * Sets up the database tables if they do not exist.
+ */
 export namespace dbSetup {
     export async function initUsers(conn: mariadb.PoolConnection) {
         await conn.query("CREATE TABLE IF NOT EXISTS users ( \

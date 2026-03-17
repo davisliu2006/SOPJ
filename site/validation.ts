@@ -1,5 +1,9 @@
 import * as globals from "./globals";
 
+/**
+ * Validates user points based on submissions.
+ * @param id - user ID
+ */
 export async function validateUserPoints(id: number) {
     try {
         let conn = await globals.pool.getConnection();

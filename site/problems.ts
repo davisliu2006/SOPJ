@@ -4,6 +4,9 @@ import * as database from "../database/database";
 import * as judge from "../judge/judge";
 import * as validation from "./validation";
 
+/**
+ * GET /problems
+ */
 export async function problems(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -32,13 +35,18 @@ export async function problems(req: express.Request, res: express.Response) {
     }
 }
 
+/**
+ * GET /problems-view
+ */
 export async function problems_view(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
         let problemID = (req.query["id"]? req.query["id"] : "");
         let problem: any;
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, name, points, description, time, memory FROM problems WHERE id = ?;", [problemID]);
+        let rows = await conn.query(
+            "SELECT id, name, points, description, time, memory FROM problems WHERE id = ?;", [problemID]
+        );
         conn.release();
         problem = rows[0];
         problem.description = await globals.mdToHTML(problem.description); // SECURITY IMPORTANCE
@@ -49,6 +57,9 @@ export async function problems_view(req: express.Request, res: express.Response)
     }
 }
 
+/**
+ * GET /problems-submit
+ */
 export async function problems_submit(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -65,7 +76,9 @@ export async function problems_submit(req: express.Request, res: express.Respons
         let problemID = (req.query["id"]? req.query["id"] : "");
         let problem: any;
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, name FROM problems WHERE id = ?;", [problemID]);
+        let rows = await conn.query(
+            "SELECT id, name FROM problems WHERE id = ?;", [problemID]
+        );
         conn.release();
         problem = rows[0];
         res.render("problems-submit.ejs", {user, problem});
@@ -75,6 +88,9 @@ export async function problems_submit(req: express.Request, res: express.Respons
     }
 }
 
+/**
+ * POST /submit-request
+ */
 export async function submit_request(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
