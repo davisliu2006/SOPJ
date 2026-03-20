@@ -6,6 +6,7 @@ import * as jwt from "jsonwebtoken"
 import * as mariadb from "mariadb";
 import {marked} from "marked";
 import * as env from "../include/env";
+import {SQLSelectResult, UserData} from "./interfaces";
 
 export const DIR = env.DIR;
 console.log("Running from directory: "+DIR);
@@ -18,20 +19,6 @@ export const JUDGE_SUPPORT: boolean = env.JUDGE_SUPPORT;
 export const JWTSECRET: string = env.JWTSECRET;
 export const PORT: number = env.PORT;
 export const SESSIONSECRET: string = env.SESSIONSECRET;
-
-// type extensions
-declare global {
-    namespace Express {
-        interface Request {
-            user?: any;
-        }
-    }
-}
-declare module "express-session" {
-    interface SessionData {
-        captcha: string;
-    }
-}
 
 // mariadb connection pool
 export const pool = mariadb.createPool({
@@ -64,7 +51,9 @@ export async function validateUser(user: any): Promise<number> {
     if (!user.userid || !user.username) {return 0;}
     try {
         let conn = await pool.getConnection();
-        let rows = await conn.query("SELECT id, username, permissions FROM users WHERE id = ?;", [user.userid]);
+        let rows = await conn.query<SQLSelectResult<UserData>>(
+            "SELECT id, username, permissions FROM users WHERE id = ?;", [user.userid]
+        );
         conn.release();
         if (rows.length < 1) {return 0;}
         if (rows[0].username != user.username) {return 0;}

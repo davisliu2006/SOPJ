@@ -1,6 +1,7 @@
 import express from "express";
 import * as globals from "./globals";
 import * as database from "../database/database";
+import {ProblemData, SQLInsertResult, SQLSelectResult, SQLUpdateResult} from "./interfaces";
 import * as judge from "../judge/judge";
 import * as validation from "./validation";
 
@@ -10,7 +11,7 @@ import * as validation from "./validation";
 export async function problems(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
-        let problems: Array<any> = [];
+        let problems: Array<ProblemData> = [];
         let search = (typeof(req.query["search"]) == "string"? req.query["search"] : "");
         let ptsMin = (req.query["pts-min"]? req.query["pts-min"] : "0");
         let ptsMax = (req.query["pts-max"]? req.query["pts-max"] : "100");
@@ -21,7 +22,7 @@ export async function problems(req: express.Request, res: express.Response) {
         let sortOrder = (req.query["sort-order"]? req.query["sort-order"] : "0");
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initProblems(conn);
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<ProblemData>>(
             `SELECT id, name, points FROM problems WHERE ? <= points AND points <= ? AND name LIKE ?
                 ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")};`,
             [ptsMin, ptsMax, `%${search}%`]
@@ -42,9 +43,9 @@ export async function problems_view(req: express.Request, res: express.Response)
     try {
         let user = req.user;
         let problemID = (req.query["id"]? req.query["id"] : "");
-        let problem: any;
+        let problem: ProblemData;
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<ProblemData>>(
             "SELECT id, name, points, description, time, memory FROM problems WHERE id = ?;", [problemID]
         );
         conn.release();
@@ -74,9 +75,9 @@ export async function problems_submit(req: express.Request, res: express.Respons
         }
 
         let problemID = (req.query["id"]? req.query["id"] : "");
-        let problem: any;
+        let problem: ProblemData;
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<ProblemData>>(
             "SELECT id, name FROM problems WHERE id = ?;", [problemID]
         );
         conn.release();
@@ -111,7 +112,7 @@ export async function submit_request(req: express.Request, res: express.Response
 
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initUsers(conn);
-        let query = await conn.query(
+        let query = await conn.query<SQLInsertResult>(
             "INSERT INTO submissions (problem, user, language, code, status) VALUES (?, ?, ?, ?, ?);",
             [problem, user.userid, lang, code, judge.verdicts.Q]
         );
@@ -155,7 +156,7 @@ export async function submit_request(req: express.Request, res: express.Response
                     points += subtask.points*subtaskPass;
                     database.submissions.write(id, config);
                 }
-                await conn.query(
+                await conn.query<SQLUpdateResult>(
                     "UPDATE submissions SET points = ?, totpoints = ?, status = ? WHERE id = ?;",
                     [points, totPoints, currVerdict, id]
                 );
@@ -167,7 +168,7 @@ export async function submit_request(req: express.Request, res: express.Response
                     }
                     totPoints += subtask.points;
                 }
-                await conn.query(
+                await conn.query<SQLUpdateResult>(
                     "UPDATE submissions SET points = ?, totpoints = ?, status = ? WHERE id = ?;",
                     [points, totPoints, judge.verdicts.CE, id]
                 );

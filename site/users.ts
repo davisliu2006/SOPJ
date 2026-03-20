@@ -1,5 +1,6 @@
 import express from "express";
 import * as globals from "./globals";
+import {ProblemData, SQLSelectResult, SubmissionData, UserData} from "./interfaces";
 
 /**
  * GET /users
@@ -13,10 +14,10 @@ export async function users(req: express.Request, res: express.Response) {
             sortBy = "username";
         }
         let sortOrder = (req.query["sort-order"]? req.query["sort-order"] : "0");
-        let users: Array<any> = [];
+        let users: Array<UserData> = [];
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initUsers(conn);
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<UserData>>(
             `SELECT id, username, points FROM users WHERE username LIKE ?
                 ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")};`,
             [`%${search}%`]
@@ -40,16 +41,18 @@ export async function users_view(req: express.Request, res: express.Response) {
         let user = req.user;
         let userID = (req.query["id"]? req.query["id"] : "");
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query("SELECT id, username, points FROM users WHERE id = ?;", [userID]);
+        let rows = await conn.query<SQLSelectResult<UserData>>(
+            "SELECT id, username, points FROM users WHERE id = ?;", [userID]
+        );
         let userV = rows[0];
-        let submissions = await conn.query(
+        let submissions = await conn.query<SQLSelectResult<SubmissionData>>(
             "SELECT id, problem, status, points, totpoints FROM submissions WHERE user = ? AND points != 0 ORDER BY points;",
             [userID]
         );
-        let solvedP: Array<any> = [];
+        let solvedP: Array<ProblemData> = [];
         let st = new Set<number>();
         for (let submission of submissions) {
-            let problem = (await conn.query(
+            let problem = (await conn.query<SQLSelectResult<ProblemData>>(
                 "SELECT id, name, points FROM problems WHERE id = ?;",
                 [submission.problem])
             )[0];

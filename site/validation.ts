@@ -1,4 +1,5 @@
 import * as globals from "./globals";
+import {ProblemData, SQLSelectResult, SQLUpdateResult, SubmissionData} from "./interfaces";
 
 /**
  * Validates user points based on submissions.
@@ -7,7 +8,7 @@ import * as globals from "./globals";
 export async function validateUserPoints(id: number) {
     try {
         let conn = await globals.pool.getConnection();
-        let submissions = await conn.query(
+        let submissions = await conn.query<SQLSelectResult<SubmissionData>>(
             "SELECT problem, points, totpoints FROM submissions WHERE user = ?;",
             [id]
         );
@@ -23,11 +24,13 @@ export async function validateUserPoints(id: number) {
 
         let points = 0;
         for (let [key, val] of mp.entries()) {
-            let problem = (await conn.query("SELECT points FROM problems WHERE id = ?;", [key]))[0];
+            let problem = (await conn.query<SQLSelectResult<ProblemData>>(
+                "SELECT points FROM problems WHERE id = ?;", [key]
+            ))[0];
             if (!problem) {continue;}
             points += val*problem.points;
         }
-        await conn.query(
+        await conn.query<SQLUpdateResult>(
             "UPDATE users SET points = ? WHERE id = ?;",
             [points, id]
         );

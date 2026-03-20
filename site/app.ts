@@ -9,6 +9,7 @@ import session from "express-session";
 import multer from 'multer';
 import * as jwt from "jsonwebtoken";
 import * as globals from "./globals";
+import {JWTUser} from "./interfaces";
 import * as pages from "./pages";
 
 let app = express();
@@ -26,7 +27,7 @@ app.use(session({
 // login middleware
 app.use(function(req, res, next) {
     console.log("Unreleased DB connections: "+globals.pool.activeConnections());
-    req.user = globals.jwtAuth(req, res);
+    req.user = JWTUser.validate(globals.jwtAuth(req, res));
     next();
 })
 

@@ -28,7 +28,7 @@ const runFile = {
 let docker = new Docker();
 
 // compile code
-export async function compile(language: string, code: string): Promise<[any | null, Buffer | null]> {
+export async function compile(language: string, code: string): Promise<[DockerStatus | null, Buffer | null]> {
     if (!sourceFile[language]) {
         return [{StatusCode: 0}, Buffer.from(code)];
     }
@@ -42,7 +42,7 @@ export async function compile(language: string, code: string): Promise<[any | nu
         await fsP.writeFile(compileDir+"/"+sourceFile[language], code);
 
         // execute code in docker container
-        let [status, container]: [any, Docker.Container] = await docker.run(
+        let [status, container]: [DockerStatus, Docker.Container] = await docker.run(
             "online_judge_compiler", // docker image name
             [language], // command to run (language)
             process.stdout, // stream stdout to the host
@@ -86,7 +86,7 @@ export async function compile(language: string, code: string): Promise<[any | nu
 // execute code
 export async function execute(language: string, code: Buffer,
     input: string = ""
-): Promise<[any | null, string | null]> {
+): Promise<[DockerStatus | null, string | null]> {
     try {
         console.log("Running "+language+"...");
 
@@ -99,7 +99,7 @@ export async function execute(language: string, code: Buffer,
         await fsP.writeFile(runDir+"/output.out", "");
 
         // execute code in docker container
-        let [status, container]: [any, Docker.Container] = await docker.run(
+        let [status, container]: [DockerStatus, Docker.Container] = await docker.run(
             "online_judge_runner", // docker image name
             [language], // command to run (language)
             process.stdout, // stream stdout to the host
