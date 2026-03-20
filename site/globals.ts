@@ -57,7 +57,7 @@ export async function validateUser(user: any): Promise<number> {
         conn.release();
         if (rows.length < 1) {return 0;}
         if (rows[0].username != user.username) {return 0;}
-        return rows[0].permissions;
+        return rows[0].permissions ?? 0;
     } catch (e) {
         console.log("User valiation failed.");
         return 0;

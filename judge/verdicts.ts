@@ -1,3 +1,5 @@
+import {ObjectMap} from "./interfaces";
+
 export const exitCode: Map<number,string> = new Map([
     [139, "Segmentation fault"],
     [137, "Terminated"],
@@ -14,7 +16,7 @@ export const RTE = "RTE";
 export const WA = "WA";
 export const AC = "AC";
 
-export let priority = {
+export let priority: ObjectMap<number> = {
     Q: 10,
     IE: 9,
     CE: 8,

@@ -3,21 +3,22 @@ import * as fs from "fs";
 import * as fsP from "fs/promises";
 import * as globals from "./globals";
 import * as checker from "./checker";
+import {DockerStatus, ObjectMap} from "./interfaces";
 import * as verdicts from "./verdicts";
 export * as verdicts from "./verdicts";
 
 // language file names
-const sourceFile = {
+const sourceFile: ObjectMap<string> = {
     "c": "main.c",
     "c++": "main.cpp",
     "java": "Main.java"
 }
-const binFile = {
+const binFile: ObjectMap<string> = {
     "c": "main",
     "c++": "main",
     "java": "Main.class"
 }
-const runFile = {
+const runFile: ObjectMap<string> = {
     "c": "main",
     "c++": "main",
     "java": "Main.class",
@@ -152,7 +153,7 @@ export async function judge(language: string, code: Buffer, expected: string,
     } else if (status.StatusCode == 0) {
         // console.log("Output: ["+output+"]");
         // console.log("Expected: ["+expected+"]");
-        let chk = checker.checker(output, expected);
+        let chk = checker.checker(output ?? "", expected);
         if (chk) {
             return [verdicts.AC, {time: t1-t0}];
         } else {
