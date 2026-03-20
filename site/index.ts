@@ -1,6 +1,9 @@
 import express from "express";
 import * as globals from "./globals";
 
+/**
+ * GET /
+ */
 export async function index(req: express.Request, res: express.Response) {
     let user = req.user;
     let conn = await globals.pool.getConnection();
@@ -38,11 +41,17 @@ export async function index(req: express.Request, res: express.Response) {
     res.render("index.ejs", {user, popular});
 }
 
+/**
+ * GET /about
+ */
 export function about(req: express.Request, res: express.Response) {
     let user = req.user;
     res.render("about.ejs", {user});
 }
 
+/**
+ * GET /terms
+ */
 export function terms(req: express.Request, res: express.Response) {
     let user = req.user;
     res.render("terms.ejs", {user});

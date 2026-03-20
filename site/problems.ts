@@ -4,6 +4,9 @@ import * as database from "../database/database";
 import * as judge from "../judge/judge";
 import * as validation from "./validation";
 
+/**
+ * GET /problems
+ */
 export async function problems(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -32,6 +35,9 @@ export async function problems(req: express.Request, res: express.Response) {
     }
 }
 
+/**
+ * GET /problems-view
+ */
 export async function problems_view(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -51,6 +57,9 @@ export async function problems_view(req: express.Request, res: express.Response)
     }
 }
 
+/**
+ * GET /problems-submit
+ */
 export async function problems_submit(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -79,6 +88,9 @@ export async function problems_submit(req: express.Request, res: express.Respons
     }
 }
 
+/**
+ * POST /submit-request
+ */
 export async function submit_request(req: express.Request, res: express.Response) {
     try {
         let user = req.user;

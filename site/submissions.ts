@@ -5,6 +5,9 @@ import * as database from "../database/database";
 import * as judge from "../judge/judge";
 import * as validation from "./validation";
 
+/**
+ * GET /submissions
+ */
 export async function submissions(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -58,6 +61,9 @@ export async function submissions(req: express.Request, res: express.Response) {
     }
 }
 
+/**
+ * GET /submissions-view
+ */
 export async function submissions_view(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -83,6 +89,9 @@ export async function submissions_view(req: express.Request, res: express.Respon
     }
 }
 
+/**
+ * POST /regrade-request
+ */
 export async function regrade_request(req: express.Request, res: express.Response) {
     try {
         let user = req.user;

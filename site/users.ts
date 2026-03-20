@@ -1,6 +1,9 @@
 import express from "express";
 import * as globals from "./globals";
 
+/**
+ * GET /users
+ */
 export async function users(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
@@ -29,6 +32,9 @@ export async function users(req: express.Request, res: express.Response) {
     }
 }
 
+/**
+ * GET /users-view
+ */
 export async function users_view(req: express.Request, res: express.Response) {
     try {
         let user = req.user;
