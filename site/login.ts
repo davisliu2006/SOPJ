@@ -59,7 +59,7 @@ export async function login_request(req: express.Request, res: express.Response)
         }
 
         let user = rows[0];
-        if (!bcrypt.compareSync(password, user.password)) {
+        if (!bcrypt.compareSync(password, user.password!)) {
             conn.release();
             errors = "Incorrect password";
             if (redirect) {
@@ -72,7 +72,7 @@ export async function login_request(req: express.Request, res: express.Response)
 
         conn.release();
         let cookieToken = jwt.sign(JWTUser.staticValidate({
-            userid: user.id, username: user.username
+            userid: user.id!, username: user.username!
         }), globals.JWTSECRET);
         res.cookie("opj", cookieToken, {
             httpOnly: true, secure: true, sameSite: "strict",

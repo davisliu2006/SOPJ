@@ -16,10 +16,10 @@ export async function index(req: express.Request, res: express.Response) {
     );
     let freq = new Map<number,number>();
     for (let submission of submissions) {
-        if (!freq.has(submission.problem)) {
-            freq.set(submission.problem, 1);
+        if (!freq.has(submission.problem!)) {
+            freq.set(submission.problem!, 1);
         } else {
-            freq.set(submission.problem, freq.get(submission.problem)+1);
+            freq.set(submission.problem!, freq.get(submission.problem!)!+1);
         }
     }
     let sorted = [];
@@ -27,8 +27,8 @@ export async function index(req: express.Request, res: express.Response) {
         sorted.push(key);
     }
     sorted.sort(function(x, y) {
-        if (freq.get(x) > freq.get(y)) {return -1;}
-        else if (freq.get(x) < freq.get(y)) {return 1;}
+        if (freq.get(x)! > freq.get(y)!) {return -1;}
+        else if (freq.get(x)! < freq.get(y)!) {return 1;}
         else {return 0;}
     });
     let popular = [];

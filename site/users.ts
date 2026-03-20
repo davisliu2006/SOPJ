@@ -56,15 +56,15 @@ export async function users_view(req: express.Request, res: express.Response) {
                 "SELECT id, name, points FROM problems WHERE id = ?;",
                 [submission.problem])
             )[0];
-            if (st.has(problem.id)) {continue;}
-            st.add(problem.id);
-            problem.ptsEarned = problem.points * submission.points/submission.totpoints;
+            if (st.has(problem.id!)) {continue;}
+            st.add(problem.id!);
+            problem.ptsEarned = problem.points! * submission.points!/submission.totpoints!;
             problem.verdict = submission.status;
             solvedP.push(problem);
         }
         solvedP.sort(function(x, y) {
-            if (x.ptsEarned > y.ptsEarned) {return -1;}
-            else if (x.ptsEarned < y.ptsEarned) {return 1;}
+            if (x.ptsEarned! > y.ptsEarned!) {return -1;}
+            else if (x.ptsEarned! < y.ptsEarned!) {return 1;}
             else {return 0;}
         });
         conn.release();

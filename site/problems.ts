@@ -50,7 +50,7 @@ export async function problems_view(req: express.Request, res: express.Response)
         );
         conn.release();
         problem = rows[0];
-        problem.description = await globals.mdToHTML(problem.description); // SECURITY IMPORTANCE
+        problem.description = await globals.mdToHTML(problem.description!); // SECURITY IMPORTANCE
         res.render("problems-view.ejs", {user, problem});
     } catch (e) {
         console.log(e);
@@ -135,7 +135,7 @@ export async function submit_request(req: express.Request, res: express.Response
             let totPoints = 0;
             let [cStatus, compile] = await judge.compile(lang, code);
             console.log(cStatus);
-            if (cStatus.StatusCode == 0) {
+            if (cStatus!.StatusCode == 0) {
                 let currVerdict = judge.verdicts.AC;
                 for (let subtask of config.subtasks) {
                     let subtaskPass = 1;
@@ -143,9 +143,9 @@ export async function submit_request(req: express.Request, res: express.Response
                     for (let test of subtask.tests) {
                         let input = await database.problems.readTest(problem, test+".in");
                         let expected = await database.problems.readTest(problem, test+".out");
-                        let [verdict, info] = await judge.judge(lang, compile, expected, input);
-                        subtask.verdict[vi] = verdict;
-                        subtask.info[vi++] = info;
+                        let [verdict, info] = await judge.judge(lang, compile!, expected, input);
+                        subtask.verdict![vi] = verdict;
+                        subtask.info![vi++] = info;
                         currVerdict = judge.verdicts.priorityVerdict(currVerdict, verdict);
                         if (verdict != judge.verdicts.AC) {
                             subtaskPass = 0;

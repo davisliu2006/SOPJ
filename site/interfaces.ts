@@ -75,7 +75,7 @@ export interface SubmissionData {
 declare global {
     namespace Express {
         interface Request {
-            user?: JWTUser;
+            user?: JWTUser | null;
         }
     }
 }

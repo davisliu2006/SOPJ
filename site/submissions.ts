@@ -54,7 +54,7 @@ export async function submissions(req: express.Request, res: express.Response) {
             ))[0];
             submission.problemName = problemData.name;
             submission.userName = userData.username;
-            submission.timestampStr = dateFns.format(submission.timestamp, "yyyy-MM-dd HH:mm");
+            submission.timestampStr = dateFns.format(submission.timestamp!, "yyyy-MM-dd HH:mm");
         }
         conn.release();
         res.render("submissions.ejs", {user, submissions, reqQuery: req.query});
@@ -127,7 +127,7 @@ export async function regrade_request(req: express.Request, res: express.Respons
         conn.release();
 
         if (globals.JUDGE_SUPPORT) {
-            let config: database.ProblemJSON = await database.problems.readConfig(problem);
+            let config: database.ProblemJSON = await database.problems.readConfig(problem!);
             for (let subtask of config.subtasks) {
                 subtask.verdict = [];
                 subtask.info = [];
@@ -140,19 +140,19 @@ export async function regrade_request(req: express.Request, res: express.Respons
             res.redirect(`/submissions-view?id=${id}`);
             let points = 0;
             let totPoints = 0;
-            let [cStatus, compile] = await judge.compile(lang, code);
+            let [cStatus, compile] = await judge.compile(lang!, code!);
             console.log(cStatus);
-            if (cStatus.StatusCode == 0) {
+            if (cStatus!.StatusCode == 0) {
                 let currVerdict = judge.verdicts.AC;
                 for (let subtask of config.subtasks) {
                     let subtaskPass = 1;
                     let vi = 0;
                     for (let test of subtask.tests) {
-                        let input = await database.problems.readTest(problem, test+".in");
-                        let expected = await database.problems.readTest(problem, test+".out");
-                        let [verdict, info] = await judge.judge(lang, compile, expected, input);
-                        subtask.verdict[vi] = verdict;
-                        subtask.info[vi++] = info;
+                        let input = await database.problems.readTest(problem!, test+".in");
+                        let expected = await database.problems.readTest(problem!, test+".out");
+                        let [verdict, info] = await judge.judge(lang!, compile!, expected, input);
+                        subtask.verdict![vi] = verdict;
+                        subtask.info![vi++] = info;
                         currVerdict = judge.verdicts.priorityVerdict(currVerdict, verdict);
                         if (verdict != judge.verdicts.AC) {
                             subtaskPass = 0;
@@ -183,9 +183,9 @@ export async function regrade_request(req: express.Request, res: express.Respons
             database.submissions.write(id, config);
 
             // update user points
-            validation.validateUserPoints(submission.user);
+            validation.validateUserPoints(submission.user!);
         } else {
-            let config: database.ProblemJSON = await database.problems.readConfig(problem);
+            let config: database.ProblemJSON = await database.problems.readConfig(problem!);
             for (let subtask of config.subtasks) {
                 subtask.verdict = [];
                 for (let test of subtask.tests) {

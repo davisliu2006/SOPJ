@@ -14,11 +14,11 @@ export async function validateUserPoints(id: number) {
         );
         let mp = new Map<number,number>();
         for (let submission of submissions) {
-            let percent = submission.points/submission.totpoints;
-            if (!mp.has(submission.problem)) {
-                mp.set(submission.problem, percent);
-            } else if (percent > mp.get(submission.problem)) {
-                mp.set(submission.problem, percent);
+            let percent = submission.points!/submission.totpoints!;
+            if (!mp.has(submission.problem!)) {
+                mp.set(submission.problem!, percent);
+            } else if (percent > mp.get(submission.problem!)!) {
+                mp.set(submission.problem!, percent);
             }
         }
 
@@ -28,7 +28,7 @@ export async function validateUserPoints(id: number) {
                 "SELECT points FROM problems WHERE id = ?;", [key]
             ))[0];
             if (!problem) {continue;}
-            points += val*problem.points;
+            points += val*problem.points!;
         }
         await conn.query<SQLUpdateResult>(
             "UPDATE users SET points = ? WHERE id = ?;",
