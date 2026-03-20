@@ -2,6 +2,7 @@ import * as bcrypt from "bcrypt";
 import express from "express";
 import * as jwt from "jsonwebtoken";
 import * as globals from "./globals";
+import {JWTUser, SQLInsertResult, SQLSelectResult, UserData} from "./interfaces";
 
 /**
  * GET /login
@@ -43,7 +44,7 @@ export async function login_request(req: express.Request, res: express.Response)
 
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initUsers(conn);
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<UserData>>(
             "SELECT id, username, password FROM users WHERE username = ?;", [username]
         );
         if (rows.length == 0) {
@@ -70,9 +71,9 @@ export async function login_request(req: express.Request, res: express.Response)
         }
 
         conn.release();
-        let cookieToken = jwt.sign({
+        let cookieToken = jwt.sign(JWTUser.staticValidate({
             userid: user.id, username: user.username
-        }, globals.JWTSECRET);
+        }), globals.JWTSECRET);
         res.cookie("opj", cookieToken, {
             httpOnly: true, secure: true, sameSite: "strict",
             maxAge: 1000*3600*24
@@ -146,7 +147,7 @@ export async function signup_request(req: express.Request, res: express.Response
         
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initUsers(conn);
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<UserData>>(
             "SELECT id, username, password FROM users WHERE username = ?;", [username]
         );
         if (rows.length != 0) {
@@ -171,7 +172,7 @@ export async function signup_request(req: express.Request, res: express.Response
         }
 
         let hashed = bcrypt.hashSync(password, 8);
-        await conn.query(
+        await conn.query<SQLInsertResult>(
             "INSERT INTO users (username, password) VALUES (?, ?);", [username, hashed]
         );
         conn.release();

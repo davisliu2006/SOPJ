@@ -1,5 +1,6 @@
 import express from "express";
 import * as globals from "./globals";
+import {ProblemData, SQLSelectResult, SubmissionData} from "./interfaces";
 
 /**
  * GET /
@@ -10,7 +11,7 @@ export async function index(req: express.Request, res: express.Response) {
 
     // popular problems
     globals.dbSetup.initSubmissions(conn);
-    let submissions = await conn.query(
+    let submissions = await conn.query<SQLSelectResult<SubmissionData>>(
         `SELECT id, problem FROM submissions ORDER BY id DESC LIMIT 100;`
     );
     let freq = new Map<number,number>();
@@ -32,7 +33,7 @@ export async function index(req: express.Request, res: express.Response) {
     });
     let popular = [];
     for (let id of sorted) {
-        popular.push((await conn.query(
+        popular.push((await conn.query<SQLSelectResult<ProblemData>>(
             "SELECT id, name FROM problems WHERE id = ?;", [id]
         ))[0]);
     }

@@ -2,6 +2,7 @@ import AdmZip from "adm-zip";
 import express from "express";
 import * as globals from "./globals";
 import * as database from "../database/database";
+import {ProblemData, SQLInsertResult, SQLSelectResult, SQLUpdateResult} from "./interfaces";
 
 /**
  * GET /problems-create
@@ -53,7 +54,7 @@ export async function create_problem(req: express.Request, res: express.Response
         }
 
         let conn = await globals.pool.getConnection();
-        let query = await conn.query(
+        let query = await conn.query<SQLInsertResult>(
             "INSERT INTO problems (name, description) VALUES (?, ?);",
             [name, description]
         );
@@ -94,7 +95,7 @@ export async function problems_edit(req: express.Request, res: express.Response)
         }
 
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<ProblemData>>(
             "SELECT id, name, description, time, memory FROM problems WHERE id = ?;", [id]
         );
         conn.release();
@@ -140,7 +141,7 @@ export async function edit_problem(req: express.Request, res: express.Response) 
         }
 
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<ProblemData>>(
             "SELECT id, name, description FROM problems WHERE id = ?;", [id]
         );
         if (rows.length < 1) {
@@ -148,7 +149,7 @@ export async function edit_problem(req: express.Request, res: express.Response) 
             res.redirect("/");
             return;
         }
-        await conn.query(
+        await conn.query<SQLUpdateResult>(
             "UPDATE problems SET name = ?, description = ?, time = ?, memory = ? WHERE id = ?",
             [name, description, time, memory, id]
         );

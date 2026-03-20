@@ -4,6 +4,7 @@ import * as globals from "./globals";
 import * as database from "../database/database";
 import * as judge from "../judge/judge";
 import * as validation from "./validation";
+import {ProblemData, SQLSelectResult, SQLUpdateResult, SubmissionData, UserData} from "./interfaces";
 
 /**
  * GET /submissions
@@ -36,21 +37,23 @@ export async function submissions(req: express.Request, res: express.Response) {
         }
         qParams.push(page*100);
 
-        let submissions: Array<any> = [];
+        let submissions: Array<SubmissionData> = [];
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initSubmissions(conn);
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<SubmissionData>>(
             `SELECT id, problem, user, language, status, points, totpoints, timestamp FROM submissions WHERE ${qString} ORDER BY id DESC LIMIT ?,100;`,
             qParams
         );
         submissions = rows;
         for (let submission of submissions) {
-            let otherInfo: any[][] = [
-                await conn.query("SELECT name FROM problems WHERE id = ?;", [submission.problem]),
-                await conn.query("SELECT username FROM users WHERE id = ?;", [submission.user])
-            ];
-            submission.problemName = otherInfo[0][0].name;
-            submission.userName = otherInfo[1][0].username;
+            let problemData = (await conn.query<SQLSelectResult<ProblemData>>(
+                "SELECT name FROM problems WHERE id = ?;", [submission.problem]
+            ))[0];
+            let userData = (await conn.query<SQLSelectResult<UserData>>(
+                "SELECT username FROM users WHERE id = ?;", [submission.user]
+            ))[0];
+            submission.problemName = problemData.name;
+            submission.userName = userData.username;
             submission.timestampStr = dateFns.format(submission.timestamp, "yyyy-MM-dd HH:mm");
         }
         conn.release();
@@ -68,18 +71,20 @@ export async function submissions_view(req: express.Request, res: express.Respon
     try {
         let user = req.user;
         let submissionID = Number(req.query["id"]? req.query["id"] : "");
-        let submission: any;
+        let submission: SubmissionData;
         let conn = await globals.pool.getConnection();
-        let rows = await conn.query(
+        let rows = await conn.query<SQLSelectResult<SubmissionData>>(
             "SELECT id, problem, user, language, code, status, points, totpoints FROM submissions WHERE id = ?;", [submissionID]
         );
         submission = rows[0];
-        let otherInfo: any[][] = [
-            await conn.query("SELECT name FROM problems WHERE id = ?;", [submission.problem]),
-            await conn.query("SELECT username FROM users WHERE id = ?;", [submission.user])
-        ];
-        submission.problemName = otherInfo[0][0].name;
-        submission.userName = otherInfo[1][0].username;
+        let problemData = (await conn.query<SQLSelectResult<ProblemData>>(
+            "SELECT name FROM problems WHERE id = ?;", [submission.problem]
+        ))[0];
+        let userData = (await conn.query<SQLSelectResult<UserData>>(
+            "SELECT username FROM users WHERE id = ?;", [submission.user]
+        ))[0];
+        submission.problemName = problemData.name;
+        submission.userName = userData.username;
         conn.release();
         submission.json = await database.submissions.read(submissionID);
         res.render("submissions-view.ejs", {user, submission});
@@ -107,7 +112,7 @@ export async function regrade_request(req: express.Request, res: express.Respons
 
         let id = Number(req.query["id"]? req.query["id"] : "0");
         let conn = await globals.pool.getConnection();
-        let submission = (await conn.query(
+        let submission = (await conn.query<SQLSelectResult<SubmissionData>>(
             "SELECT problem, user, language, code FROM submissions WHERE id = ?;",
             [id]
         ))[0];
@@ -115,7 +120,7 @@ export async function regrade_request(req: express.Request, res: express.Respons
         let code = submission.code;
         let lang = submission.language;
 
-        await conn.query(
+        await conn.query<SQLUpdateResult>(
             "UPDATE submissions SET status = ? WHERE id = ?;",
             [judge.verdicts.Q, id]
         );
@@ -158,7 +163,7 @@ export async function regrade_request(req: express.Request, res: express.Respons
                     points += subtask.points*subtaskPass;
                     database.submissions.write(id, config);
                 }
-                await conn.query(
+                await conn.query<SQLUpdateResult>(
                     "UPDATE submissions SET points = ?, totpoints = ?, status = ? WHERE id = ?;",
                     [points, totPoints, currVerdict, id]
                 );
@@ -170,7 +175,7 @@ export async function regrade_request(req: express.Request, res: express.Respons
                     }
                     totPoints += subtask.points;
                 }
-                await conn.query(
+                await conn.query<SQLUpdateResult>(
                     "UPDATE submissions SET points = ?, totpoints = ?, status = ? WHERE id = ?;",
                     [points, totPoints, judge.verdicts.CE, id]
                 );
