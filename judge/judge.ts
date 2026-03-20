@@ -29,6 +29,11 @@ const runFile: ObjectMap<string> = {
 let docker = new Docker();
 
 // compile code
+/**
+ * Compiles the code in Docker.
+ * @param language - the language to use
+ * @param code - the source code to compile
+ */
 export async function compile(language: string, code: string): Promise<[DockerStatus | null, Buffer | null]> {
     if (!sourceFile[language]) {
         return [{StatusCode: 0}, Buffer.from(code)];
@@ -85,6 +90,12 @@ export async function compile(language: string, code: string): Promise<[DockerSt
 }
 
 // execute code
+/**
+ * Executes the code in Docker.
+ * @param language - the language to use
+ * @param code - the compiled code to execute
+ * @param input - the contents of the input file
+ */
 export async function execute(language: string, code: Buffer,
     input: string = ""
 ): Promise<[DockerStatus | null, string | null]> {
@@ -141,6 +152,14 @@ export async function execute(language: string, code: Buffer,
     }
 }
 
+// judge code
+/**
+ * Judges code against the expected output.
+ * @param language - the language to use
+ * @param code - the compiled code to execute
+ * @param expected - the expected output
+ * @param input - the contents of the input file
+ */
 export async function judge(language: string, code: Buffer, expected: string,
     input: string = ""
 ): Promise<[string, any]> {

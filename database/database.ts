@@ -4,6 +4,7 @@ import * as globals from "./globals";
 import {ProblemJSON, SubtaskJSON} from "./problem";
 export {ProblemJSON, SubtaskJSON} from "./problem";
 
+// generic database functions
 export function exists(path: string): boolean {
     return fs.existsSync(globals.DB_DIR+"/"+path);
 }
@@ -24,6 +25,9 @@ export async function writeData(path: string, data: string) {
 }
 
 // problems
+/**
+ * Interface for problem database.
+ */
 export namespace problems {
     export function create(id: number) {
         mkdirP(`problems/${id}`);
@@ -60,6 +64,9 @@ export namespace problems {
 }
 
 // submissions
+/**
+ * Interface for submissions database.
+ */
 export namespace submissions {
     export async function read(id: number): Promise<ProblemJSON> {
         return JSON.parse(await readData(`submissions/${id}.json`));

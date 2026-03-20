@@ -26,7 +26,10 @@ export let priority: ObjectMap<number> = {
     WA: 4,
     AC: 3
 }
-export function priorityVerdict(x: string, y: string) {
+/**
+ * @returns the verdict with higher priority
+ */
+export function priorityVerdict(x: string, y: string): string {
     if (priority[x] >= priority[y]) {return x;}
     else {return y;}
 }
