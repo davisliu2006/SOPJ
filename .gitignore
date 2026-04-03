@@ -15,6 +15,5 @@ venv/
 # files
 .DS_Store
 env.ts
-package-lock.json
 
 #extensions
