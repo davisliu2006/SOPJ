@@ -89,7 +89,7 @@
                                     editor.setValue(`<%- problem.config %>`);
 
                                     // update textarea on submit
-                                    document.querySelector("#submission form").addEventListener("submit", function () {
+                                    document.querySelector("#submission form").addEventListener("submit", function() {
                                         document.querySelector("#submission #config").value = editor.getValue();
                                     });
                                 });

@@ -20,12 +20,13 @@ export async function problems(req: express.Request, res: express.Response) {
             sortBy = "name";
         }
         let sortOrder = (req.query["sort-order"]? req.query["sort-order"] : "0");
+        let page = (req.query["page"]? Number(req.query["page"]) : 0);
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initProblems(conn);
         let rows = await conn.query<SQLSelectResult<ProblemData>>(
             `SELECT id, name, points FROM problems WHERE ? <= points AND points <= ? AND name LIKE ?
-                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")};`,
-            [ptsMin, ptsMax, `%${search}%`]
+                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")} LIMIT ?,100;`,
+            [ptsMin, ptsMax, `%${search}%`, page*100]
         );
         conn.release();
         problems = rows;
