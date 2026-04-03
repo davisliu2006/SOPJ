@@ -27,6 +27,7 @@ export const pool = mariadb.createPool({
     password: DB_PASSWORD,
     database: "opj",
     connectionLimit: 5,
+    allowPublicKeyRetrieval: true
 });
 
 // authenitcate user
