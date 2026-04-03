@@ -18,6 +18,7 @@
         <!--header scripts-->
         <script src="src/global.js"></script>
         <script src="src/collapsables.js"></script>
+        <script src="src/page_selector.js"></script>
     </head>
 
     <body>
@@ -69,6 +70,21 @@
                             </select>
                         </div>
                     </form>
+                </div>
+                <br>
+                <div class="page-selector"
+                page-count="100"
+                req-query="<%= JSON.stringify(reqQuery) %>">
+                    <div class="page-btn" id="lbtn">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </div>
+                    <div class="page-btn-holder"></div>
+                    <div class="page-btn" id="rbtn">
+                        <i class="fa-solid fa-angle-right"></i>
+                    </div>
+                    <script>
+                        initPageSelector("#problems .page-selector");
+                    </script>
                 </div>
                 <br>
                 <table id="main-table">

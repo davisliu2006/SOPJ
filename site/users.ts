@@ -14,13 +14,14 @@ export async function users(req: express.Request, res: express.Response) {
             sortBy = "username";
         }
         let sortOrder = (req.query["sort-order"]? req.query["sort-order"] : "0");
+        let page = (req.query["page"]? Number(req.query["page"]) : 0);
         let users: Array<UserData> = [];
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initUsers(conn);
         let rows = await conn.query<SQLSelectResult<UserData>>(
             `SELECT id, username, points FROM users WHERE username LIKE ?
-                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")};`,
-            [`%${search}%`]
+                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")} LIMIT ?,100;`,
+            [`%${search}%`, page*100]
         );
         conn.release();
         users = rows;

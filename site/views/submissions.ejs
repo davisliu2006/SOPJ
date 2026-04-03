@@ -19,6 +19,7 @@
         <!--header scripts-->
         <script src="src/global.js"></script>
         <script src="src/collapsables.js"></script>
+        <script src="src/page_selector.js"></script>
     </head>
 
     <body>
@@ -92,20 +93,19 @@
                     </form>
                 </div>
                 <br>
-                <div class="page-selector">
-                    <div class="page-btn">
+                <div class="page-selector"
+                page-count="100"
+                req-query="<%= JSON.stringify(reqQuery) %>">
+                    <div class="page-btn" id="lbtn">
                         <i class="fa-solid fa-angle-left"></i>
                     </div>
-                    <div style="display: flex;">
-                        <% for (let i = 0; i < 10; i++) { %>
-                            <div class="page-btn">
-                                <%= i+1 %>
-                            </div>
-                        <% } %>
-                    </div>
-                    <div class="page-btn">
+                    <div class="page-btn-holder"></div>
+                    <div class="page-btn" id="rbtn">
                         <i class="fa-solid fa-angle-right"></i>
                     </div>
+                    <script>
+                        initPageSelector("#problems .page-selector");
+                    </script>
                 </div>
                 <br>
                 <table id="main-table">
@@ -163,7 +163,5 @@
             </div>
         </div>
         
-        <!--scripts-->
-        <script src="src/index.js"></script>
     </body>
 </html>

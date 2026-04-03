@@ -483,9 +483,14 @@ select {
     width: fit-content; height: fit-content;
     overflow: hidden;
 }
+.page-selector .page-btn-holder {
+    display: flex;
+    flex-direction: row;
+}
 .page-selector .page-btn {
     background-color: rgb(175, 175, 175);
-    border: solid 0.5px;
+    color: rgb(0, 0, 0);
+    border: solid 0.5px rgb(0, 0, 0);
     width: 50px; padding: 5px 0px 5px 0px;
     text-align: center;
     cursor: pointer;
