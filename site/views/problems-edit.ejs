@@ -9,6 +9,8 @@
         <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
         <link rel="stylesheet" href="css/global.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <style>
             #submission .text-entry {
                 width: 100%;
@@ -29,6 +31,7 @@
     </head>
 
     <body>
+        <script>hljs.highlightAll();</script>
         <!--global-->
         <div id="global">
             <%- include("global.ejs") %>
@@ -59,9 +62,29 @@
                         <label for="memory"><b>Memory Limit:</b>* (megabytes)</label><br>
                         <input class="text-entry" type="number" name="memory" id="memory" value="<%= problem.memory %>" required><br><br>
                         <h3>Test Cases</h3>
-                        <input type="file" name="test-cases" id="test-cases"><br><br>
+                        <input type="file" name="test-cases" id="test-cases">
+                        <p>
+                            Your test cases should be in a zip file with the following structure:<br>
+                            <code style="font-size: 16px;">
+                                zip-file-name.zip<br>
+                                ├── test-1-name.in<br>
+                                ├── test-1-name.out<br>
+                                ├── test-2-name.in<br>
+                                ├── test-2-name.out<br>
+                                └── ...
+                            </code>
+                        </p>
                         <h3>Configuration</h3>
-
+<pre><code>// sample configuration
+{
+    "subtasks": [
+        {
+            "name": "Subtask 1",
+            "points": 50,
+            "tests": ["test-1-name", "test-2-name"]
+        }
+    ]
+}</code></pre>
                         <!--monaco editor-->
                         <div id="monaco-editor">
                             <script>

@@ -32,6 +32,9 @@ p {
 label {
     font-size: 18px;
 }
+pre {
+    font-size: 16px;
+}
 ul {
     font-size: 18px; line-height: 1.5;
     color: rgb(0, 0, 0);
