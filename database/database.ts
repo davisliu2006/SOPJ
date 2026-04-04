@@ -31,7 +31,7 @@ export async function writeData(path: string, data: string) {
 export namespace problems {
     export function create(id: number) {
         mkdirP(`problems/${id}`);
-        writeData(`problems/${id}/config.json`, JSON.stringify(new ProblemJSON()));
+        writeData(`problems/${id}/config.json`, JSON.stringify(ProblemJSON.createDefault()));
     }
     export async function readConfig(id: number): Promise<ProblemJSON> {
         return JSON.parse(await readData(`problems/${id}/config.json`));

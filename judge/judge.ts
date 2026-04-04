@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as fsP from "fs/promises";
 import * as globals from "./globals";
 import * as checker from "./checker";
-import {DockerStatus, ObjectMap} from "./interfaces";
+import {DockerStatus, ObjectMap, VerdictInfo} from "./interfaces";
 import * as verdicts from "./verdicts";
 export * as verdicts from "./verdicts";
 
@@ -162,7 +162,7 @@ export async function execute(language: string, code: Buffer,
  */
 export async function judge(language: string, code: Buffer, expected: string,
     input: string = ""
-): Promise<[string, any]> {
+): Promise<[string, VerdictInfo]> {
     let t0 = performance.now()*0.001;
     let [status, output] = await execute(language, code, input);
     let t1 = performance.now()*0.001;

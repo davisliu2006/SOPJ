@@ -1,23 +1,55 @@
-export class SubtaskJSON {
-    name: string = "Subtask 0";
-    points: number = 1;
-    tests: Array<string> = [];
-    verdict: Array<string> | null = null;
-    info: Array<any> | null = null;
+import {VerdictInfo} from "../judge/interfaces";
+
+export interface SubtaskJSON {
+    name: string;
+    points: number;
+    tests: Array<string>;
+    verdict?: Array<string>;
+    info?: Array<VerdictInfo>;
+}
+export namespace SubtaskJSON {
+    export function createDefault(): SubtaskJSON {
+        return {
+            name: "Subtask 0",
+            points: 1,
+            tests: []
+        };
+    }
+    export function validate(obj: any): SubtaskJSON | null {
+        if (!obj) {return null;}
+        if (typeof(obj.name) != "string") {return null;}
+        if (typeof(obj.points) != "number") {return null;}
+        if (!Array.isArray(obj.tests)) {return null;}
+        for (let test of obj.tests) {
+            if (typeof(test) != "string") {return null;}
+        }
+        if (obj.verdict) {
+            if (!Array.isArray(obj.verdict)) {return null;}
+            for (let verdict of obj.verdict) {
+                if (typeof(verdict) != "string") {return null;}
+            }
+        }
+        if (obj.info) {
+            if (!Array.isArray(obj.info)) {return null;}
+        }
+        return obj;
+    }
 }
 
-export class ProblemJSON {
-    subtasks: Array<SubtaskJSON> = [];
-
-    static validate(obj: any): ProblemJSON | null {
-        obj = obj as ProblemJSON;
+export interface ProblemJSON {
+    subtasks: Array<SubtaskJSON>;
+}
+export namespace ProblemJSON {
+    export function createDefault(): ProblemJSON {
+        return {
+            subtasks: []
+        };
+    }
+    export function validate(obj: any): ProblemJSON | null {
         if (!obj) {return null;}
-        obj.subtasks = obj.subtasks as Array<SubtaskJSON>;
-        if (!obj.subtasks || !Array.isArray(obj.subtasks)) {return null;}
+        if (!Array.isArray(obj.subtasks)) {return null;}
         for (let subtask of obj.subtasks) {
-            if (typeof(subtask.name) != "string") {return null;}
-            if (typeof(subtask.points) != "number") {return null;}
-            if (!Array.isArray(subtask.tests)) {return null;}
+            if (!SubtaskJSON.validate(subtask)) {return null;}
         }
         return obj;
     }
