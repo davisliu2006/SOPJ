@@ -5,3 +5,8 @@ export interface DockerStatus {
 export interface ObjectMap<T> {
     [key: string]: T;
 }
+
+export interface VerdictInfo {
+    time?: number;
+    message?: string;
+}
