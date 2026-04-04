@@ -10,6 +10,7 @@ import * as validation from "./validation";
  */
 export async function problems(req: express.Request, res: express.Response) {
     try {
+        const PAGE_SIZE = 100;
         let user = req.user;
         let problems: Array<ProblemData> = [];
         let search = (typeof(req.query["search"]) == "string"? req.query["search"] : "");
@@ -23,14 +24,22 @@ export async function problems(req: express.Request, res: express.Response) {
         let page = (req.query["page"]? Number(req.query["page"]) : 0);
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initProblems(conn);
+        let rowCount = (await conn.query<SQLSelectResult<{cnt: number}>>(
+            `SELECT COUNT(*) AS cnt FROM problems WHERE ? <= points AND points <= ? AND name LIKE ?
+                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")};`,
+            [ptsMin, ptsMax, `%${search}%`]
+        ))[0].cnt;
+        let pageCount = Math.ceil(Number(rowCount)/PAGE_SIZE);
         let rows = await conn.query<SQLSelectResult<ProblemData>>(
             `SELECT id, name, points FROM problems WHERE ? <= points AND points <= ? AND name LIKE ?
-                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")} LIMIT ?,100;`,
-            [ptsMin, ptsMax, `%${search}%`, page*100]
+                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")} LIMIT ?,${PAGE_SIZE};`,
+            [ptsMin, ptsMax, `%${search}%`, page*PAGE_SIZE]
         );
         conn.release();
         problems = rows;
-        res.render("problems.ejs", {user, problems, reqQuery: req.query});
+        res.render("problems.ejs", {
+            user, problems, reqQuery: req.query, pageCount
+        });
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");

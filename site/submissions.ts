@@ -11,6 +11,7 @@ import {ProblemData, SQLSelectResult, SQLUpdateResult, SubmissionData, UserData}
  */
 export async function submissions(req: express.Request, res: express.Response) {
     try {
+        const PAGE_SIZE = 100;
         let user = req.user;
         let userFilter = req.query["user"];
         let problemFilter = req.query["problem"];
@@ -35,14 +36,18 @@ export async function submissions(req: express.Request, res: express.Response) {
             qString += " AND status = ?";
             qParams.push(statusFilter);
         }
-        qParams.push(page*100);
 
         let submissions: Array<SubmissionData> = [];
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initSubmissions(conn);
-        let rows = await conn.query<SQLSelectResult<SubmissionData>>(
-            `SELECT id, problem, user, language, status, points, totpoints, timestamp FROM submissions WHERE ${qString} ORDER BY id DESC LIMIT ?,100;`,
+        let rowCount = (await conn.query<SQLSelectResult<{cnt: number}>>(
+            `SELECT COUNT(*) AS cnt FROM submissions WHERE ${qString};`,
             qParams
+        ))[0].cnt;
+        let pageCount = Math.ceil(Number(rowCount)/PAGE_SIZE);
+        let rows = await conn.query<SQLSelectResult<SubmissionData>>(
+            `SELECT id, problem, user, language, status, points, totpoints, timestamp FROM submissions WHERE ${qString} ORDER BY id DESC LIMIT ?,${PAGE_SIZE};`,
+            [...qParams, page*PAGE_SIZE]
         );
         submissions = rows;
         for (let submission of submissions) {
@@ -57,7 +62,9 @@ export async function submissions(req: express.Request, res: express.Response) {
             submission.timestampStr = dateFns.format(submission.timestamp!, "yyyy-MM-dd HH:mm");
         }
         conn.release();
-        res.render("submissions.ejs", {user, submissions, reqQuery: req.query});
+        res.render("submissions.ejs", {
+            user, submissions, reqQuery: req.query, pageCount
+        });
     } catch (e) {
         console.log(e);
         res.redirect("/error-500");

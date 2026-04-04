@@ -7,6 +7,7 @@ import {ProblemData, SQLSelectResult, SubmissionData, UserData} from "./interfac
  */
 export async function users(req: express.Request, res: express.Response) {
     try {
+        const PAGE_SIZE = 100;
         let user = req.user;
         let search = (typeof(req.query["search"]) == "string"? req.query["search"] : "");
         let sortBy = (req.query["sort-by"]? req.query["sort-by"] : "username");
@@ -18,15 +19,21 @@ export async function users(req: express.Request, res: express.Response) {
         let users: Array<UserData> = [];
         let conn = await globals.pool.getConnection();
         await globals.dbSetup.initUsers(conn);
+        let rowCount = (await conn.query<SQLSelectResult<{cnt: number}>>(
+            `SELECT COUNT(*) AS cnt FROM users WHERE username LIKE ?
+                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")};`,
+            [`%${search}%`]
+        ))[0].cnt;
+        let pageCount = Math.ceil(Number(rowCount)/PAGE_SIZE);
         let rows = await conn.query<SQLSelectResult<UserData>>(
             `SELECT id, username, points FROM users WHERE username LIKE ?
-                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")} LIMIT ?,100;`,
-            [`%${search}%`, page*100]
+                ORDER BY ${sortBy} ${(sortOrder == "1"? "DESC" : "ASC")} LIMIT ?,${PAGE_SIZE};`,
+            [`%${search}%`, page*PAGE_SIZE]
         );
         conn.release();
         users = rows;
         res.render("users.ejs", {
-            user, users, reqQuery: req.query
+            user, users, reqQuery: req.query, pageCount
         });
     } catch (e) {
         console.log(e);
