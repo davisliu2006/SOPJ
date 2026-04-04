@@ -17,12 +17,14 @@ function initPageSelector(selector) {
  */
 function _initPageSelector(element, pageCount, reqQuery) {
     const BTN_LIMIT = 10;
+    const SCROLL_MAX = Math.ceil(pageCount/BTN_LIMIT)-1;
 
     let pageBtnHolder = element.querySelector(".page-btn-holder");
     let lbtn = element.querySelector(".page-btn#lbtn");
     let rbtn = element.querySelector(".page-btn#rbtn");
 
-    let scroll = 0;
+    let selected = (reqQuery.page? Number(reqQuery.page) : 0);
+    let scroll = Math.floor(selected/BTN_LIMIT);
 
     function update() {
         pageBtnHolder.innerHTML = "";
@@ -31,9 +33,17 @@ function _initPageSelector(element, pageCount, reqQuery) {
             let pageBtn = document.createElement("a");
             pageBtn.classList.add("page-btn");
             pageBtn.textContent = i+1;
-            pageBtn.href = `?${jsonToQueryString({...reqQuery, page: i})}`;
+            if (selected == i) {
+                pageBtn.classList.add("disabled");
+            } else {
+                pageBtn.href = `?${jsonToQueryString({...reqQuery, page: i})}`;
+            }
             pageBtnHolder.appendChild(pageBtn);
         }
+        if (scroll == 0) {lbtn.classList.add("disabled");}
+        else {lbtn.classList.remove("disabled");}
+        if (scroll == SCROLL_MAX) {rbtn.classList.add("disabled");}
+        else {rbtn.classList.remove("disabled");}
     }
 
     lbtn.onclick = function() {
@@ -42,7 +52,7 @@ function _initPageSelector(element, pageCount, reqQuery) {
         }
     };
     rbtn.onclick = function() {
-        if (scroll < Math.ceil(pageCount/BTN_LIMIT)-1) {
+        if (scroll < SCROLL_MAX) {
             scroll++; update();
         }
     };

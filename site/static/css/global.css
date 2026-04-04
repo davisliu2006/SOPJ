@@ -332,11 +332,14 @@ span.unbold {
 
 .text-entry {
     box-sizing: border-box;
-    border: solid 1px;
+    border: solid 1px rgb(0, 0, 0);
     border-radius: 5px;
     padding: 4px;
     font-size: 16px; color: rgb(50, 50, 50);
     cursor: text;
+}
+.text-entry:hover {
+    border-color: rgb(0, 0, 0, 0.5);
 }
 textarea {
     resize: none;
@@ -350,6 +353,9 @@ select {
     font-size: 16px;
     background-color: rgb(255, 255, 255);
     /* cursor: pointer; */
+}
+select:hover {
+    border-color: rgb(0, 0, 0, 0.5);
 }
 
 /*image holder*/
@@ -500,6 +506,13 @@ select {
 }
 .page-selector .page-btn:hover {
     background-color: rgb(200, 200, 200);
+}
+.page-selector .page-btn.disabled {
+    color: rgb(0, 0, 0, 0.5);
+    cursor: default;
+}
+.page-selector .page-btn.disabled:hover {
+    background-color: rgb(175, 175, 175);
 }
 
 /*markdown*/
