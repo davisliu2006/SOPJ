@@ -5,12 +5,12 @@
         "webserver": "cd site && nodemon app.ts"
     },
     "dependencies": {
-        "adm-zip": "^0.5.16",
+        "adm-zip": "^0.6.1",
         "bcrypt": "^6.0.0",
         "body-parser": "^1.20.3",
         "cookie-parser": "^1.4.7",
         "date-fns": "^4.1.0",
-        "dockerode": "^4.0.4",
+        "dockerode": "^5.0.1",
         "dompurify": "^3.2.4",
         "dotenv": "^16.4.7",
         "ejs": "^3.1.10",
